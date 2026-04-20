@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/logoo.jpg" />
+    <link rel="apple-touch-icon" href="images/logoo.jpg" />
+    <meta property="og:title" content="StudyMart" />
+    <meta
+      property="og:description"
+      content="منصة تعليمية متكاملة للطلاب والمدرسين"
+    />
+    <meta
+      property="og:image"
+      content="https://yourdomain.com/images/logoo.jpg"
+    />
+    <meta property="og:url" content="https://yourdomain.com" />
+    <meta property="og:type" content="website" />
+    <meta
+      name="description"
+      content="StudyMart منصة تعليمية عربية متكاملة تجمع بين التعليم الإلكتروني والتجارة الرقمية، تتيح للطلاب شراء الدورات والملخصات الدراسية بسهولة، وتمكّن المدرسين من بيع محتواهم التعليمي بشكل آمن واحترافي عبر بوابات دفع موثوقة وتجربة تعلم حديثة."
+    />
+    <meta
+      property="og:title"
+      content="StudyMart – منصة التعليم الإلكتروني العربية"
+    />
+    <meta
+      property="og:description"
+      content="اشترِ وتعلّم من أفضل الدورات التعليمية العربية، وابدأ رحلتك التعليمية أو المهنية عبر منصة StudyMart."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      name="keywords"
+      content="منصة تعليمية عربية, كورسات اونلاين, بيع الدورات التعليمية, ملخصات دراسية, تعليم إلكتروني, منصة تعليم, شراء كورسات, محتوى تعليمي عربي"
+    />
+
+    <title>StudyMart</title>
+    <link rel="stylesheet" href="css/style.css" />
+
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+      <div class="light-bg"></div>
+
+      <div class="splash-content">
+        <h1>StudyMart</h1>
+        <p>حيث يبدأ التميز الأكاديمي</p>
+        <div class="loader"></div>
+      </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <div class="navbar-logo">
+          <span class="logo-icon">📚</span>
+          <span>StudyMart</span>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="#home">الرئيسية</a></li>
+          <li><a href="#courses">الدورات</a></li>
+          <li><a href="#books"> الكتب </a></li>
+          <li>
+            <a
+              href="#"
+              class="dashboard-link hidden"
+              onclick="showDashboard(event)"
+              >لوحة التحكم</a
+            >
+          </li>
+          <li>
+            <a href="#" class="cart-link" onclick="toggleCart(event)"
+              >🛒 السلة (<span id="cartCount">0</span>)</a
+            >
+          </li>
+          <li>
+            <button
+              class="theme-toggle"
+              onclick="toggleTheme()"
+              title="تبديل الوضع"
+            >
+              🌙
+            </button>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="profile-toggle hidden"
+              onclick="toggleProfile(event)"
+              title="الملف الشخصي"
+              >👤</a
+            >
+          </li>
+          <li>
+            <a href="#" class="btn-login" onclick="showLogin(event)"
+              >تسجيل الدخول</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- User Profile Sidebar -->
+    <div id="profileSidebar" class="profile-sidebar">
+      <div class="profile-header">
+        <span class="close" onclick="toggleProfile()">&times;</span>
+        <div class="profile-avatar" id="profileAvatar">
+          <img
+            id="profileImage"
+            src="https://via.placeholder.com/120"
+            alt="صورة البروفيل"
+          />
+        </div>
+        <h3 id="profileName">اسم المستخدم</h3>
+        <p id="profileEmail">email@gmail.com</p>
+      </div>
+      <div class="profile-menu">
+        <button class="profile-menu-item" onclick="showUserProfile()">
+          <span>👤</span>
+          <span>الملف الشخصي</span>
+        </button>
+        <button class="profile-menu-item" onclick="showDashboard()">
+          <span>📊</span>
+          <span>لوحة التحكم</span>
+        </button>
+        <button
+          class="profile-menu-item"
+          onclick="openStudentPurchasesChoice()"
+        >
+          <span>🛍️</span>
+          <span>مشترياتي</span>
+        </button>
+        <button class="profile-menu-item logout" onclick="handleLogout()">
+          <span>🚪</span>
+          <span>تسجيل الخروج</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Shopping Cart -->
+    <div id="cartSidebar" class="cart-sidebar">
+      <div class="cart-header">
+        <h3>سلة المشتريات</h3>
+        <span class="close" onclick="toggleCart()">&times;</span>
+      </div>
+      <div id="cartItems" class="cart-items">
+        <p class="empty-cart">السلة فارغة</p>
+      </div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          الإجمالي: <span id="cartTotal"> 0 </span> $
+        </div>
+        <button class="btn btn-primary" onclick="checkout()">الدفع</button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="home" class="main-content">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-content">
+          <h1>مرحباً بك في <span class="highlight">StudyMart</span></h1>
+          <p class="hero-subtitle">
+            منصة تعليمية متكاملة تجمع بين الطلاب والمدرسين لتبادل المعرفة
+            والخبرات
+          </p>
+          <div class="hero-buttons">
+            <button
+              class="btn btn-primary"
+              onclick="scrollToSection('courses')"
+            >
+              استكشف الدورات
+            </button>
+            <button class="btn btn-secondary" onclick="showRegister(event)">
+              ابدأ الآن
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="features">
+        <div class="features-container">
+          <div class="feature-card">
+            <div class="feature-icon"><i class="bx bx-trending-up"></i></div>
+            <h3>تتبع التقدم</h3>
+            <p>راقب تقدمك في كل دورة</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon"><i class="bx bxs-award"></i></div>
+            <h3>شهادات معتمدة</h3>
+            <p>احصل على شهادة بعد إتمام الدورة</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon"><i class="bx bxs-user-account"></i></div>
+            <h3>مدرسون محترفون</h3>
+            <p>خبراء في مجالاتهم</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon"><i class="bx bxs-book-open"></i></div>
+            <h3>دورات متنوعة</h3>
+            <p>مئات الدورات في مختلف المجالات</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Courses with Enhanced Filters -->
+      <section id="courses" class="courses">
+        <h2>جميع الدورات</h2>
+        <p class="courses-subtitle">اكتشف مجموعة واسعة من الدورات التعليمية</p>
+
+        <div class="filters-container">
+          <div class="search-bar">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="ابحث عن دورة..."
+              onkeyup="filterCourses()"
+            />
+            <button class="search-btn" onclick="filterCourses()">🔍</button>
+          </div>
+
+          <div class="advanced-filters">
+            <select
+              id="categoryFilter"
+              onchange="filterCourses()"
+              class="filter-select"
+            >
+              <option value="">جميع الفئات</option>
+              <option value="programming">برمجة</option>
+              <option value="design">تصميم جرافيك</option>
+              <option value="languages">لغات</option>
+              <option value="development">تنمية ذاتية</option>
+              <option value="trading">تداول</option>
+            </select>
+
+            <select
+              id="levelFilter"
+              onchange="filterCourses()"
+              class="filter-select"
+            >
+              <option value="">جميع المستويات</option>
+              <option value="beginner">مبتدئ</option>
+              <option value="intermediate">متوسط</option>
+              <option value="advanced">متقدم</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="courses-container" id="coursesList"></div>
+      </section>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeAuth()">&times;</span>
+        <div id="loginForm" class="auth-form">
+          <h2>تسجيل الدخول</h2>
+          <form onsubmit="handleLogin(event)">
+            <input
+              id="loginEmail"
+              type="email"
+              placeholder="البريد الإلكتروني"
+              required
+            />
+            <input
+              id="loginPassword"
+              type="password"
+              placeholder="كلمة المرور"
+              required
+            />
+            <button type="submit" class="btn btn-primary">دخول</button>
+          </form>
+          <div class="oauth-section">
+            <p class="divider">أو سجل عبر</p>
+            <button
+              class="btn oauth-btn facebook"
+              onclick="handleOAuth('facebook')"
+            >
+              f فيسبوك
+            </button>
+            <button
+              class="btn oauth-btn google"
+              onclick="handleOAuth('google')"
+            >
+              G جوجل
+            </button>
+          </div>
+          <p>
+            ليس لديك حساب؟
+            <a href="#" onclick="switchToRegister(event)">سجل هنا</a>
+          </p>
+        </div>
+        <div id="registerForm" class="auth-form hidden">
+          <h2>إنشاء حساب جديد</h2>
+          <div class="role-selection">
+            <label class="role-option">
+              <input type="radio" name="role" value="student" checked />
+              <span class="role-label">👨‍🎓 طالب</span>
+            </label>
+            <label class="role-option">
+              <input type="radio" name="role" value="teacher" />
+              <span class="role-label">👨‍🏫 معلم</span>
+            </label>
+          </div>
+          <form onsubmit="handleRegister(event)">
+            <input type="text" placeholder="الاسم الكامل" required />
+            <input type="email" placeholder="البريد الإلكتروني" required />
+            <input type="password" placeholder="كلمة المرور" required />
+            <input type="password" placeholder="تأكيد كلمة المرور" required />
+            <button type="submit" class="btn btn-primary">إنشاء حساب</button>
+          </form>
+          <div class="oauth-section">
+            <p class="divider">أو سجل عبر</p>
+            <button
+              class="btn oauth-btn facebook"
+              onclick="handleOAuth('facebook')"
+            >
+              f فيسبوك
+            </button>
+            <button
+              class="btn oauth-btn google"
+              onclick="handleOAuth('google')"
+            >
+              G جوجل
+            </button>
+          </div>
+          <p>
+            لديك حساب بالفعل؟
+            <a href="#" onclick="switchToLogin(event)">سجل دخول</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Details Modal -->
+    <div id="courseModal" class="modal">
+      <div class="modal-content course-details">
+        <span class="close" onclick="closeCourseModal()">&times;</span>
+        <div id="courseDetails"></div>
+      </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+      <div class="modal-content checkout-modal">
+        <span class="close" onclick="closeCheckout()">&times;</span>
+        <h2>الدفع والتسوق</h2>
+        <div id="checkoutContent"></div>
+      </div>
+    </div>
+
+    <!-- Dashboard Modal -->
+    <div id="dashboardModal" class="modal">
+      <div class="modal-content dashboard-modal">
+        <span class="close" onclick="closeDashboard()">&times;</span>
+        <div id="dashboardContent"></div>
+      </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div id="userProfileModal" class="modal">
+      <div class="modal-content user-profile-modal">
+        <span class="close" onclick="closeUserProfile()">&times;</span>
+        <div id="userProfileContent"></div>
+      </div>
+    </div>
+
+    <!-- Purchases Modal -->
+    <div id="purchasesModal" class="modal">
+      <div class="modal-content purchases-modal">
+        <span class="close" onclick="closePurchases()">&times;</span>
+        <div id="purchasesContent"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-top">
+          <div class="contact-card">
+            <div class="contact-icon">📍</div>
+            <div class="contact-content">
+              <h4>العنوان</h4>
+              <p>Egypt Asyut</p>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-icon">✉️</div>
+            <div class="contact-content">
+              <h4>البريد الإلكتروني</h4>
+              <p>
+                <a href="mailto:eslam.adel2596@gmail.com"
+                  >eslam.adel2596@gmail.com</a
+                >
+              </p>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-icon">📞</div>
+            <div class="contact-content">
+              <h4>الهاتف</h4>
+              <p><a href="tel:+201093397961">01093397961</a></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-middle">
+          <div class="payment-section">
+            <h4>طرق الدفع الآمنة</h4>
+            <div class="payment-methods">
+              <div class="payment-method">
+                <span>💳</span>
+                <p>بطاقة ائتمان</p>
+              </div>
+              <div class="payment-method">
+                <span>🏦</span>
+                <p>التحويل البنكي</p>
+              </div>
+              <div class="payment-method">
+                <span>📱</span>
+                <p>المحفظة الرقمية</p>
+              </div>
+              <div class="payment-method">
+                <span>🔐</span>
+                <p>فودافون كاش</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-content">
+          <div class="footer-column">
+            <h3>عن StudyMart</h3>
+            <ul>
+              <li><a href="#">الفريق</a></li>
+              <li><a href="#" id="openSeo">المقالات</a></li>
+              <li><a href="#">الأسئلة الشائعة</a></li>
+              <li><a href="#">خبراء الموقع</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>استكشف المزيد</h3>
+            <ul>
+              <li><a href="#courses">الدورات التدريسية</a></li>
+              <li><a href="#">المسارات</a></li>
+              <li><a href="#">المدرسين</a></li>
+              <li><a href="#">تقييمات الدورات</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>دعم وتواصل</h3>
+            <ul>
+              <li><a href="#">تواصل معنا</a></li>
+              <li><a href="#">سياسة الخصوصية</a></li>
+              <li><a href="#">شروط الاستخدام</a></li>
+              <li><a href="#">تحقق من الشهادة</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="social-footer">
+          <a href="#" class="social-btn tiktok"
+            ><i class="bx bxl-tiktok"></i
+          ></a>
+          <a href="#" class="social-btn youtube"
+            ><i class="bx bxl-youtube"></i
+          ></a>
+          <a href="#" class="social-btn linkedin"
+            ><i class="bx bxl-linkedin"></i
+          ></a>
+          <a href="#" class="social-btn instagram"
+            ><i class="bx bxl-instagram"></i
+          ></a>
+          <a href="#" class="social-btn facebOok"
+            ><i class="bx bxl-facebook"></i
+          ></a>
+        </div>
+
+        <div class="footer-copyright">
+          <p>&copy; 2025 StudyMart. جميع الحقوق محفوظة.</p>
+        </div>
+      </div>
+    </footer>
+
+    <div id="modal-overlay">
+      <div id="modal-content"></div>
+    </div>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
