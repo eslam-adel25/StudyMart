@@ -439,7 +439,7 @@ function toggleProfile(e) {
   if (e) e.preventDefault();
   document.getElementById("profileSidebar").classList.toggle("show");
 }
-
+// عرض وتحديث الملف الشخصي 
 function showUserProfile() {
   const modal = document.getElementById("userProfileModal");
   const content = document.getElementById("userProfileContent");
@@ -470,7 +470,7 @@ function showUserProfile() {
   modal.classList.add("show");
   toggleProfile();
 }
-
+// تحديث صورة الملف الشخصي
 function updateProfileImage() {
   const file = document.getElementById("profileImageInput").files[0];
 
@@ -478,12 +478,11 @@ function updateProfileImage() {
     const reader = new FileReader();
     reader.onload = (e) => {
       const imageData = e.target.result;
-      // 1. تحديث البيانات في كائن المستخدم
+
       userData.image = imageData;
-      // 2. تحديث الصورة في نافذة التعديل (المعاينة الصغيرة)
+
       const previewImg = document.getElementById("previewImage");
       if (previewImg) previewImg.src = imageData;
-      // 3. تحديث الصورة الكبيرة اللي في السايد بار (اللي في الصورة عندك)
       const mainProfileImg = document.getElementById("profileImage");
       if (mainProfileImg) {
         mainProfileImg.src = imageData;
@@ -493,19 +492,19 @@ function updateProfileImage() {
     reader.readAsDataURL(file);
   }
 }
+// حفظ التغييرات في الملف الشخصي 
 function saveProfile() {
   document.getElementById("profileName").textContent = userData.name;
   document.getElementById("profileEmail").textContent = userData.email;
-
   showCustomAlert("تم حفظ التغييرات بنجاح!");
-  //alert("تم حفظ التغييرات بنجاح!")
   closeUserProfile();
 }
 
 function closeUserProfile() {
   document.getElementById("userProfileModal").classList.remove("show");
 }
-//courseTitle
+
+// عرض لبدورات المشتراة 
 function showPurchases() {
   const modal = document.getElementById("purchasesModal");
   const content = document.getElementById("purchasesContent");
@@ -540,26 +539,22 @@ function showPurchases() {
 
 function continueCourse(courseTitle) {
   showCustomAlert(`جاري فتح دورة: ${courseTitle}`);
-  //alert(`جاري فتح دورة: ${courseTitle}`)
 }
-//////////////////////////////////////////////
+
 function continueCourse(courseTitle) {
   // نجيب الكورس
   const course = coursesData.find((c) => c.title === courseTitle);
 
   if (!course || !course.video) {
     showCustomAlert("لم يتم العثور على فيديو لهذه الدورة");
-    //alert("لم يتم العثور على فيديو لهذه الدورة")
     return;
   }
 
   // افتح صفحة مشغل الفيديو (Modal أو صفحة)
   openVideoPlayer(course);
 }
-////////////////////////////
 
-///////////////////////
-
+// open the video player modal 
 function openVideoPlayer(course) {
   const playerModal = document.createElement("div");
   playerModal.style.position = "fixed";
@@ -582,9 +577,6 @@ function openVideoPlayer(course) {
   document.body.appendChild(playerModal);
 }
 
-//newCourse
-
-////////////////////////////////////////////////////////
 function closePurchases() {
   document.getElementById("purchasesModal").classList.remove("show");
 }
@@ -597,26 +589,25 @@ function handleLogout() {
   document.querySelector(".dashboard-link").classList.add("hidden");
   toggleProfile();
   showCustomAlert("تم تسجيل الخروج بنجاح!");
-  //alert("تم تسجيل الخروج بنجاح!")
 }
-
+// فلتر حسب الفئة
 function filterByCategory(category) {
   document.getElementById("categoryFilter").value = category;
   filterCourses();
 }
-
+// فلتر حسب المستوى
 function filterByLevel(level) {
   document.getElementById("levelFilter").value = level;
   filterCourses();
 }
-
+// تبديل الوضع الليلي 
 function toggleTheme() {
   document.body.classList.toggle("dark-mode");
   const isDark = document.body.classList.contains("dark-mode");
   localStorage.setItem("theme", isDark ? "dark" : "light");
   document.querySelector(".theme-toggle").textContent = isDark ? "☀️" : "🌙";
 }
-
+// عرض الدورات
 function loadCourses() {
   const coursesList = document.getElementById("coursesList");
   coursesList.innerHTML = "";
