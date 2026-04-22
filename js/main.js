@@ -439,7 +439,7 @@ function toggleProfile(e) {
   if (e) e.preventDefault();
   document.getElementById("profileSidebar").classList.toggle("show");
 }
-// عرض وتحديث الملف الشخصي 
+// عرض وتحديث الملف الشخصي
 function showUserProfile() {
   const modal = document.getElementById("userProfileModal");
   const content = document.getElementById("userProfileContent");
@@ -492,7 +492,7 @@ function updateProfileImage() {
     reader.readAsDataURL(file);
   }
 }
-// حفظ التغييرات في الملف الشخصي 
+// حفظ التغييرات في الملف الشخصي
 function saveProfile() {
   document.getElementById("profileName").textContent = userData.name;
   document.getElementById("profileEmail").textContent = userData.email;
@@ -504,7 +504,7 @@ function closeUserProfile() {
   document.getElementById("userProfileModal").classList.remove("show");
 }
 
-// عرض لبدورات المشتراة 
+// عرض لبدورات المشتراة
 function showPurchases() {
   const modal = document.getElementById("purchasesModal");
   const content = document.getElementById("purchasesContent");
@@ -554,7 +554,7 @@ function continueCourse(courseTitle) {
   openVideoPlayer(course);
 }
 
-// open the video player modal 
+// open the video player modal
 function openVideoPlayer(course) {
   const playerModal = document.createElement("div");
   playerModal.style.position = "fixed";
@@ -600,7 +600,7 @@ function filterByLevel(level) {
   document.getElementById("levelFilter").value = level;
   filterCourses();
 }
-// تبديل الوضع الليلي 
+// تبديل الوضع الليلي
 function toggleTheme() {
   document.body.classList.toggle("dark-mode");
   const isDark = document.body.classList.contains("dark-mode");
@@ -645,7 +645,7 @@ function loadCourses() {
     coursesList.appendChild(courseCard);
   });
 }
-
+// فلتر الدورات حسب البحث والفئة والمستوى
 function filterCourses() {
   const searchInput = document
     .getElementById("searchInput")
@@ -712,7 +712,6 @@ function filterCourses() {
 function showCourseDetails(courseId) {
   if (!isLoggedIn) {
     showCustomAlert("يجب تسجيل الدخول أولاً");
-    //alert("يجب تسجيل الدخول أولاً")
     showLogin();
     return;
   }
@@ -789,28 +788,25 @@ function showCourseDetails(courseId) {
 function closeCourseModal() {
   document.getElementById("courseModal").classList.remove("show");
 }
-
+// اضافة الدورة الي السلة
 function addToCart(courseId) {
   const course = coursesData.find((c) => c.id === courseId);
   const existingItem = cart.find((item) => item.id === courseId);
 
   if (existingItem) {
     showCustomAlert("هذه الدورة موجودة بالفعل في السلة");
-    //alert("هذه الدورة موجودة بالفعل في السلة")
     return;
   }
   cart.push({
-    id: course.id, // ⭐ أهم سطر
+    id: course.id,
     title: course.title,
     price: course.price,
     type: "course",
   });
 
-  //cart.push({ ...course })
   saveCart();
   updateCartUI();
   showCustomAlert("تمت إضافة الدورة إلى السلة");
-  //alert("تمت إضافة الدورة إلى السلة")
   closeCourseModal();
 }
 
@@ -818,7 +814,7 @@ function toggleCart(e) {
   if (e) e.preventDefault();
   document.getElementById("cartSidebar").classList.toggle("show");
 }
-
+// تحديث واجهة السلة
 function updateCartUI() {
   const cartCount = document.getElementById("cartCount");
   const cartItems = document.getElementById("cartItems");
@@ -850,7 +846,7 @@ function updateCartUI() {
 
   cartTotal.textContent = total;
 }
-
+// حذف عنصر من السلة
 function removeFromCart(index) {
   cart.splice(index, 1);
   saveCart();
@@ -872,7 +868,6 @@ function loadCart() {
 function checkout() {
   if (cart.length === 0) {
     showCustomAlert("السلة فارغة");
-    //alert("السلة فارغة")
     return;
   }
 
@@ -915,7 +910,7 @@ function checkout() {
   modal.classList.add("show");
 }
 
-//////////////////////////////
+// عرض خيرات الدفع
 function openPaymentMethods() {
   const modal = document.createElement("div");
   modal.style = `
@@ -986,7 +981,7 @@ function completePayment() {
   toggleCart();
 }
 
-//showPurchases()
+// حساب المجموع النهائي
 function savePurchasedBooks() {
   localStorage.setItem(
     "userPurchasedBooks",
@@ -999,10 +994,12 @@ function loadPurchasedBooks() {
   if (saved) userPurchasedBooks = JSON.parse(saved);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadCart(); // عندك بالفعل
-  loadPurchasedBooks(); // ✅ أضف دي
-});
+function getFinalTotal() {
+  document.addEventListener("DOMContentLoaded", () => {
+    loadCart();
+    loadPurchasedBooks();
+  });
+}
 
 function payByCard() {
   showPaymentForm(`
@@ -1068,17 +1065,13 @@ function finalizeCardPayment() {
 
   if (!card || card === "4111 1111 1111 1111" || !pass) {
     showCustomAlert("من فضلك أدخل بيانات البطاقة بشكل صحيح");
-    //alert("من فضلك أدخل بيانات البطاقة بشكل صحيح")
     return;
   }
 
   const total = getFinalTotal();
 
-  // إتمام الدفع (الكود الأصلي)
   completePayment();
   showCustomAlert(`تم خصم مبلغ $${total} من بطاقتك الائتمانية بنجاح`);
-
-  //alert(`تم خصم مبلغ $${total} من بطاقتك الائتمانية بنجاح`)
 }
 
 function payByBank() {
@@ -1109,6 +1102,7 @@ function payByBank() {
     <button id="uploadBankBtn" class="btn btn-secondary" style="margin:15px 0">
       📤 رفع صورة إثبات الدفع
     </button>
+    
 
     <p id="bankFileName" style="color:green;font-size:14px"></p>
 
@@ -1127,7 +1121,6 @@ function payByBank() {
     if (fileInput.files.length > 0) {
       fileName.textContent = "✔ تم رفع إثبات الدفع بنجاح";
       showCustomAlert("تم رفع إثبات الدفع بنجاح");
-      //alert("تم رفع إثبات الدفع بنجاح");
     }
   };
 }
@@ -1147,6 +1140,7 @@ function restoreFakeFromAccount() {
     input.style.color = "#999";
   }
 }
+
 function finalizeBankPayment() {
   const total = getFinalTotal();
 
@@ -2172,7 +2166,7 @@ function createBooksSection() {
 
   const section = document.createElement("section");
   section.id = "books";
-  section.style.padding = "70px 20px";
+  section.className = "section-padding";
   section.style.background = "#f6f8fb";
 
   section.innerHTML = `
@@ -2263,68 +2257,39 @@ function renderBooks() {
 
   if (filtered.length === 0) {
     grid.innerHTML =
-      "<p style='grid-column:1/-1;text-align:center;color:#777'>لا توجد كتب مطابقة</p>";
+      "<p style='grid-column:1/-1;text-align:center;color:var(--text-secondary)'>لا توجد كتب مطابقة</p>";
     return;
   }
 
+  // استخدام DocumentFragment بيسرع التحميل جداً لأنه بيضيف العناصر مرة واحدة للـ DOM
+  const fragment = document.createDocumentFragment();
+
   filtered.forEach((book) => {
     const card = document.createElement("div");
-    card.style = `
-      background:#fff;
-      border-radius:14px;
-      overflow:hidden;
-      box-shadow:0 10px 25px rgba(0,0,0,.08);
-      display:flex;
-      flex-direction:column;
-      transition:.3s
-    `;
+    card.className = "course-card"; // استخدم نفس كلاس الكورسات عشان ياخد ستايل الوضع الليلي جاهز
 
     card.innerHTML = `
-      <div style="
-        height:200px;
-        background:url('${book.image}') center/cover
-      "></div>
-
-      <div style="padding:15px;flex:1">
-        <span style="
-          display:inline-block;
-          background:#e7efff;
-          color:#0b4cc2;
-          padding:4px 12px;
-          border-radius:20px;
-          font-size:12px
-        ">${book.category}</span>
-
-        <h4 style="margin:12px 0">${book.title}</h4>
-        <p style="color:#6b7280;font-size:14px">
-          المؤلف: ${book.author}
-        </p>
-      </div>
-
-      <div style="
-        padding:15px;
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        border-top:1px solid #eee
-      ">
-        <strong style="color:#0b4cc2">$${book.price}</strong>
-        <button class="btn btn-primary"
-          onclick="addBookToCart(${book.id})">
-          🛒 أضف للسلة
-        </button>
+      <div class="course-image" style="background-image: url('${book.image}'); height:200px; background-size:cover; background-position:center;"></div>
+      <div class="course-content">
+        <span class="course-category-tag">${book.category}</span>
+        <h3 style="margin:10px 0">${book.title}</h3>
+        <p style="color:var(--text-secondary); font-size:14px">المؤلف: ${book.author}</p>
+        <div class="course-footer" style="margin-top:15px; border-top:1px solid var(--border-color); padding-top:10px">
+          <span class="course-price">$${book.price}</span>
+          <button class="btn btn-primary" onclick="addBookToCart(${book.id})">🛒 السلة</button>
+        </div>
       </div>
     `;
-
-    grid.appendChild(card);
+    fragment.appendChild(card);
   });
+
+  grid.appendChild(fragment);
 }
 
 function addBookToCart(bookId) {
   // ❗ منع الإضافة بدون تسجيل دخول
   if (!isLoggedIn) {
     showCustomAlert("يجب تسجيل الدخول أولاً لإضافة كتاب إلى السلة");
-    //alert("يجب تسجيل الدخول أولاً لإضافة كتاب إلى السلة")
     showLogin();
     return;
   }
@@ -2334,7 +2299,6 @@ function addBookToCart(bookId) {
 
   if (exists) {
     showCustomAlert("هذا الكتاب موجود بالفعل في السلة");
-    //alert("هذا الكتاب موجود بالفعل في السلة");
     return;
   }
 
@@ -2348,13 +2312,11 @@ function addBookToCart(bookId) {
   saveCart();
   updateCartUI();
   showCustomAlert("تمت إضافة الكتاب إلى السلة");
-  //alert("تمت إضافة الكتاب إلى السلة");
 }
 
 window.addEventListener("load", renderBooks);
 
-/**************   */
-
+// اضافة دورة جديدة 
 function addNewCourse() {
   const title = document.getElementById("courseTitle").value;
   const price = document.getElementById("coursePrice").value;
@@ -2363,7 +2325,6 @@ function addNewCourse() {
   if (!selectedCourseImage) {
     hiddenImageInput.click();
     showCustomAlert("من فضلك اختر صورة للدورة أولًا");
-    //alert("من فضلك اختر صورة للدورة أولًا");
     return;
   }
 
@@ -2374,7 +2335,6 @@ function addNewCourse() {
 
   if (!title || !price) {
     showCustomAlert("يرجى ملء جميع الحقول");
-    //alert("يرجى ملء جميع الحقول")
     return;
   }
 
@@ -2385,7 +2345,6 @@ function addNewCourse() {
     longDescription: selectedCourseDescription,
     image: selectedCourseImage,
     video: selectedCourseVideo,
-    // progress: 0,
     price: Number.parseInt(price),
     rating: "4.5",
     instructor: userData.name,
@@ -2400,12 +2359,9 @@ function addNewCourse() {
   coursesData.push(newCourse);
   userTeacherCourses.push(title);
   showCustomAlert("تمت إضافة الدورة بنجاح!");
-  //alert("تمت إضافة الدورة بنجاح!")
   loadCourses();
   closeDashboard();
 }
-
-//////////////////////////////
 
 /////////////////////////////////////
 
@@ -2419,7 +2375,7 @@ function scrollToSection(sectionId) {
 function closeDashboard() {
   document.getElementById("dashboardModal").classList.remove("show");
 }
-
+// طباعة الشهادة
 function printCertificate(courseTitle, instructor, recipientName) {
   const displayName =
     recipientName && recipientName.trim().length > 0
@@ -2453,7 +2409,7 @@ function printCertificate(courseTitle, instructor, recipientName) {
       .replace(/'/g, "&#039;");
   }
 
-  // logo شفاف إن وُجد في userData.logo
+  //
   const logoUrl = userData && userData.logo ? userData.logo : "";
 
   const certificateHTML = `
@@ -2465,7 +2421,7 @@ function printCertificate(courseTitle, instructor, recipientName) {
     <title>شهادة - ${escapeHtml(courseTitle)}</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
-      /* طباعة دقيقة للون */
+      
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }
       @page { size: A4; margin: 0; }
       html,body{ height:100%; margin:0; padding:0; background:#f3f4f6; font-family:'Tajawal', Arial, sans-serif; direction:rtl; color:#0b1220; }
@@ -2520,7 +2476,6 @@ function printCertificate(courseTitle, instructor, recipientName) {
       .print-btn { position:absolute; left:18px; top:16px; z-index:20; background:#fff; border:1px solid rgba(0,0,0,0.06); color:#111; padding:8px 12px; border-radius:8px; cursor:pointer; }
       .print-btn:hover { background:#f6f6f6; }
 
-      /* طباعة: نزيل الظلال ونضبط الحواف لتظهر كما في المعاينة */
       @media print {
         html,body{ background: #fff; }
         .wrap { padding:0; }
@@ -2609,13 +2564,10 @@ function printCertificate(courseTitle, instructor, recipientName) {
     </div>
 
     <script>
-      // بعد التحميل ندعو الطباعة تلقائياً (المستخدم يمكن إلغاءها في نافذة الطباعة)
       window.onload = function() {
         setTimeout(() => {
           window.focus();
           window.print();
-          // إن أردت إغلاق النافذة بعد الطباعة أزل التعليق عن السطر التالي:
-          // setTimeout(() => window.close(), 700);
         }, 350);
       };
     </script>
@@ -2714,9 +2666,8 @@ document.addEventListener("change", function (e) {
   }
 });
 
-///////////////////
+//  alert
 function showCustomAlert(message) {
-  // لو موجود قبل كده امسحه
   const old = document.getElementById("customAlert");
   if (old) old.remove();
 
