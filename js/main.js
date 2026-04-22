@@ -1,3 +1,4 @@
+/* instructor and courses */
 const coursesData = [
   {
     id: 1,
@@ -313,7 +314,7 @@ const coursesData = [
   },
 ];
 
-/*         قسم الكتب       */
+/*  قسم الكتب   */
 
 const booksData = [
   {
@@ -383,13 +384,13 @@ const booksData = [
 
 const usersDB = [
   {
-    email: "student@test.com",
+    email: "student@gmail.com",
     password: "123456",
     role: "student",
     name: "طالب تجريبي",
   },
   {
-    email: "teacher@test.com",
+    email: "teacher@gmail.com",
     password: "123456",
     role: "teacher",
     name: "معلم تجريبي",
@@ -405,8 +406,6 @@ let bankReceiptImage = null;
 let newBookFile = null;
 let newBookCover = null;
 let userPurchasedBooks = [];
-// هتتحط فيها الكتب اللي المستخدم اشتراها فعليًا
-//let usersDBB = JSON.parse(localStorage.getItem("usersDBB")) || [];
 
 let cart = [];
 let userRole = "student";
@@ -415,20 +414,13 @@ let selectedCourseVideo = null;
 let selectedCourseDescription = null;
 let selectedCourseLevel = null;
 const currentUser = null;
-//const userCourses = []
 const userTeacherCourses = [];
 // المستخدم المسجل
 let userCourses = [];
 
-// البيانات الأساسية للدورات
-//let coursesData = [];
-
-// (لو مش موجودين)
-//let userData = { name: "User" };
-
 const userData = {
-  name: "eslamadel",
-  email: "eslamadel@example.com",
+  name: "Eslam Adel",
+  email: "student@gmail.com",
   image: "https://via.placeholder.com/120?text=User",
   courses: [],
 };
@@ -481,18 +473,26 @@ function showUserProfile() {
 
 function updateProfileImage() {
   const file = document.getElementById("profileImageInput").files[0];
+
   if (file) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      userData.image = e.target.result;
-      document.getElementById("previewImage").src = e.target.result;
-      document.getElementById("profileImage").innerHTML =
-        `<img src="${e.target.result}" alt="صورة البروفيل">`;
+      const imageData = e.target.result;
+      // 1. تحديث البيانات في كائن المستخدم
+      userData.image = imageData;
+      // 2. تحديث الصورة في نافذة التعديل (المعاينة الصغيرة)
+      const previewImg = document.getElementById("previewImage");
+      if (previewImg) previewImg.src = imageData;
+      // 3. تحديث الصورة الكبيرة اللي في السايد بار (اللي في الصورة عندك)
+      const mainProfileImg = document.getElementById("profileImage");
+      if (mainProfileImg) {
+        mainProfileImg.src = imageData;
+      }
     };
+
     reader.readAsDataURL(file);
   }
 }
-
 function saveProfile() {
   document.getElementById("profileName").textContent = userData.name;
   document.getElementById("profileEmail").textContent = userData.email;
