@@ -1,0 +1,552 @@
+/* ==================================================
+   Edit Profile Page Styles - StudyMart
+   ================================================== */
+
+.edit-profile-section {
+  width: 100%;
+  min-height: calc(100vh - 120px);
+  background-color: #f8fafc;
+  padding: 40px 20px 80px;
+  box-sizing: border-box;
+}
+
+body.dark-mode .edit-profile-section {
+  background-color: #0f172a;
+}
+
+.edit-profile-container {
+  width: min(95%, 1800px);
+  margin: 0 auto;
+}
+
+/* Page Header */
+.edit-profile-header {
+  text-align: right;
+  margin-bottom: 28px;
+}
+
+.edit-profile-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+  font-family: 'Tajawal', sans-serif;
+}
+
+body.dark-mode .edit-profile-title {
+  color: #f8fafc;
+}
+
+.edit-profile-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+  font-family: 'Tajawal', sans-serif;
+}
+
+body.dark-mode .edit-profile-subtitle {
+  color: #94a3b8;
+}
+
+/* Grid Layout */
+.edit-profile-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .edit-profile-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* Left Card: Profile Image */
+.edit-profile-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  text-align: center;
+}
+
+body.dark-mode .edit-profile-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.edit-profile-card .card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 24px 0;
+  font-family: 'Tajawal', sans-serif;
+}
+
+body.dark-mode .edit-profile-card .card-title {
+  color: #f8fafc;
+}
+
+.avatar-upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-circle-wrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin-bottom: 20px;
+}
+
+.avatar-circle-wrapper img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.avatar-camera-btn {
+  position: absolute;
+  bottom: 4px;
+  left: 6px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #6d28d9;
+  border: 3px solid #ffffff;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(109, 40, 217, 0.35);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  padding: 0;
+}
+
+body.dark-mode .avatar-camera-btn {
+  border-color: #1e293b;
+}
+
+.avatar-camera-btn:hover {
+  background-color: #5b21b6;
+  transform: scale(1.08);
+}
+
+.avatar-info-text {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-family: 'Tajawal', sans-serif;
+}
+
+body.dark-mode .avatar-info-text {
+  color: #94a3b8;
+}
+
+.avatar-info-text p {
+  margin: 2px 0;
+}
+
+.btn-change-image {
+  width: 100%;
+  height: 42px;
+  background-color: #6d28d9;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-change-image:hover {
+  background-color: #5b21b6;
+  box-shadow: 0 4px 12px rgba(109, 40, 217, 0.25);
+}
+
+/* Right Section Form */
+.edit-profile-form-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-sub-section {
+  margin-bottom: 28px;
+}
+
+.sub-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 18px 0;
+  text-align: right;
+  font-family: 'Tajawal', sans-serif;
+}
+
+body.dark-mode .sub-section-title {
+  color: #f8fafc;
+}
+
+.profile-input-group {
+  margin-bottom: 18px;
+  text-align: right;
+}
+
+.profile-input-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+  font-family: 'Tajawal', sans-serif;
+}
+
+body.dark-mode .profile-input-label {
+  color: #e2e8f0;
+}
+
+.profile-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.profile-text-input {
+  width: 100%;
+  height: 48px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #0f172a;
+  font-family: 'Tajawal', sans-serif;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+body.dark-mode .profile-text-input {
+  background: #1e293b;
+  border-color: #334155;
+  color: #f8fafc;
+}
+
+.profile-input-wrapper.icon-right .profile-text-input {
+  padding: 0 44px 0 16px;
+}
+
+.profile-input-wrapper.icon-left .profile-text-input {
+  padding: 0 16px 0 44px;
+}
+
+.profile-text-input:focus {
+  outline: none;
+  border-color: #6d28d9;
+  box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.12);
+}
+
+.input-icon-box {
+  position: absolute;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.pwd-toggle-icon {
+  position: absolute;
+  left: 12px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: color 0.2s ease;
+}
+
+.pwd-toggle-icon:hover {
+  color: #6d28d9;
+}
+
+.field-error-message {
+  display: block;
+  font-size: 12px;
+  color: #ef4444;
+  margin-top: 5px;
+  text-align: right;
+  font-weight: 500;
+  font-family: 'Tajawal', sans-serif;
+}
+
+/* Action Buttons Bottom */
+.edit-profile-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+body.dark-mode .edit-profile-actions {
+  border-color: #334155;
+}
+
+.btn-profile-save {
+  height: 44px;
+  padding: 0 32px;
+  background-color: #6d28d9;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-profile-save:hover {
+  background-color: #5b21b6;
+  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.3);
+}
+
+.btn-profile-cancel {
+  height: 44px;
+  padding: 0 28px;
+  background-color: #ffffff;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.dark-mode .btn-profile-cancel {
+  background-color: #1e293b;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+.btn-profile-cancel:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+body.dark-mode .btn-profile-cancel:hover {
+  background-color: #334155;
+}
+
+/* ==================================================
+   Security Section & Change Password Styles
+   ================================================== */
+
+.security-sub-section {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid #e2e8f0;
+}
+
+body.dark-mode .security-sub-section {
+  border-color: #334155;
+}
+
+.security-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+body.dark-mode .security-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+/* Password Strength Meter */
+.pwd-strength-container {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+body.dark-mode .pwd-strength-container {
+  background-color: #0f172a;
+  border-color: #334155;
+}
+
+.pwd-strength-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 8px;
+  font-family: 'Tajawal', sans-serif;
+}
+
+.pwd-strength-label {
+  color: #64748b;
+  font-weight: 600;
+}
+
+body.dark-mode .pwd-strength-label {
+  color: #94a3b8;
+}
+
+.pwd-strength-text {
+  font-weight: 700;
+  color: #ef4444;
+  transition: color 0.2s ease;
+}
+
+.pwd-strength-bar-track {
+  width: 100%;
+  height: 6px;
+  background-color: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+body.dark-mode .pwd-strength-bar-track {
+  background-color: #334155;
+}
+
+.pwd-strength-bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 10px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.pwd-strength-bar-fill.very-weak {
+  width: 20%;
+  background-color: #ef4444;
+}
+
+.pwd-strength-bar-fill.weak {
+  width: 40%;
+  background-color: #f97316;
+}
+
+.pwd-strength-bar-fill.medium {
+  width: 60%;
+  background-color: #eab308;
+}
+
+.pwd-strength-bar-fill.strong {
+  width: 80%;
+  background-color: #3b82f6;
+}
+
+.pwd-strength-bar-fill.very-strong {
+  width: 100%;
+  background-color: #10b981;
+}
+
+/* Password Rules Checklist */
+.pwd-rules-checklist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.pwd-rule-item {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background-color: #e2e8f0;
+  color: #64748b;
+  font-family: 'Tajawal', sans-serif;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+body.dark-mode .pwd-rule-item {
+  background-color: #334155;
+  color: #94a3b8;
+}
+
+.pwd-rule-item.valid {
+  background-color: #dcfce7;
+  color: #15803d;
+  font-weight: 600;
+}
+
+body.dark-mode .pwd-rule-item.valid {
+  background-color: #064e3b;
+  color: #86efac;
+}
+
+/* Security Submit Action */
+.security-action-row {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn-change-password {
+  height: 44px;
+  padding: 0 28px;
+  background-color: #6d28d9;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-change-password:hover {
+  background-color: #5b21b6;
+  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.3);
+}
+
+.btn-change-password:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+

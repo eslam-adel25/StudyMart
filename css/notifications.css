@@ -1,0 +1,867 @@
+/* ==========================================================================
+   نظام الإشعارات الشامل والنوافذ المنبثقة (Notification & Modal System)
+   ========================================================================== */
+
+/* حاوية التوستات القابلة للتجميع في الزاوية العلوية (Toast Container) */
+#toast-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999999;
+  display: flex;
+  flex-col: column;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 420px;
+  width: calc(100% - 48px);
+  pointer-events: none;
+}
+
+[dir="rtl"] #toast-container {
+  right: auto;
+  left: 24px;
+}
+
+/* التوست الفردي - بطاقة نجاح (Success Toast Card) */
+.sm-toast {
+  pointer-events: auto;
+  position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px 20px 20px 20px;
+  box-shadow: 0 16px 36px -6px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.04);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: all 0.3s ease;
+  font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.sm-toast.hiding {
+  animation: toastFadeOut 0.25s ease forwards;
+}
+
+/* شريط التقدم الزمني للتوست (Toast Progress Bar) */
+.sm-toast-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #10b981;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  transform-origin: left center;
+  transition: transform linear;
+}
+
+[dir="rtl"] .sm-toast-progress {
+  transform-origin: right center;
+}
+
+/* أنواع التوستات المتنوعة والأيقونات السيمانتية (Semantic Toast Variants) */
+.sm-toast.sm-toast-success {
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.sm-toast.sm-toast-success .sm-toast-progress {
+  background: #10b981;
+}
+
+.sm-toast.sm-toast-error {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  animation: toastShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.sm-toast.sm-toast-error .sm-toast-progress {
+  background: #ef4444;
+}
+
+.sm-toast.sm-toast-warning {
+  background: #fffbe1;
+  border: 1px solid #fde68a;
+}
+
+.sm-toast.sm-toast-warning .sm-toast-progress {
+  background: #f59e0b;
+}
+
+.sm-toast.sm-toast-info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.sm-toast.sm-toast-info .sm-toast-progress {
+  background: #3b82f6;
+}
+
+.sm-toast.sm-toast-loading {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+}
+
+.sm-toast.sm-toast-loading .sm-toast-progress {
+  background: #7c3aed;
+  animation: pulseProgress 1.5s infinite linear;
+}
+
+/* تنسيق أيقونات التوست السيمانتية الشاملة */
+.sm-toast-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  transition: all 0.25s ease;
+}
+
+.sm-toast-icon-success {
+  background: #10b981;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.sm-toast-icon-error {
+  background: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
+.sm-toast-icon-warning {
+  background: #f59e0b;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+}
+
+.sm-toast-icon-info {
+  background: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.sm-toast-icon-loading {
+  background: rgba(124, 58, 237, 0.12);
+  color: #7c3aed;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
+}
+
+.sm-toast-spinner-icon {
+  animation: smToastSpin 1.2s linear infinite;
+}
+
+@keyframes smToastSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulseProgress {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* تفاصيل النص داخل التوست (Toast Content) */
+.sm-toast-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 8px;
+}
+
+[dir="rtl"] .sm-toast-content {
+  padding-right: 0;
+  padding-left: 8px;
+}
+
+.sm-toast-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.3;
+}
+
+.sm-toast-error .sm-toast-title {
+  color: #dc2626;
+}
+
+.sm-toast-desc {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+.sm-toast-error .sm-toast-desc {
+  color: #7f1d1d;
+}
+
+/* زر إغلاق التوست (Toast Close Button) */
+.sm-toast-close {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  margin-top: -2px;
+}
+
+.sm-toast-close:hover {
+  color: #334155;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================================================
+   نافذة التأكيد والتحذير (Confirmation Dialog)
+   ========================================================================== */
+
+.sm-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999999;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: overlayFadeIn 0.2s ease forwards;
+  font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.sm-dialog-overlay.hiding {
+  animation: overlayFadeOut 0.2s ease forwards;
+}
+
+.sm-dialog-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 32px 28px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  animation: dialogScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sm-dialog-card.hiding {
+  animation: dialogScaleOut 0.2s ease forwards;
+}
+
+/* الأيقونة العلوية لسلة المهملات مع الزخرفة */
+.sm-dialog-icon-wrapper {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #fef2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: #ef4444;
+}
+
+.sm-dialog-sparkles {
+  position: absolute;
+  top: -6px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  pointer-events: none;
+}
+
+.sm-dialog-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.sm-dialog-desc {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+/* أزرار الحذف والإلغاء الدائرية (Pill Buttons) */
+.sm-dialog-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.sm-btn-pill {
+  flex: 1;
+  height: 46px;
+  border-radius: 9999px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  font-family: inherit;
+}
+
+.sm-btn-pill-cancel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+}
+
+.sm-btn-pill-cancel:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #1e293b;
+}
+
+.sm-btn-pill-danger {
+  background: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+}
+
+.sm-btn-pill-danger:hover {
+  background: #dc2626;
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.4);
+}
+
+.sm-btn-pill-primary {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+}
+
+.sm-btn-pill-primary:hover {
+  background: #1d4ed8;
+}
+
+/* ==========================================================================
+   نافذة التحميل والرفع (Loading / Upload Dialog)
+   ========================================================================== */
+
+.sm-loading-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px 28px;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.15);
+  animation: dialogScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.sm-loading-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.sm-loading-icon-blue {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 50%;
+  border: 2px solid #2563eb;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.sm-loading-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.sm-loading-desc {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+.sm-loading-close {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+[dir="rtl"] .sm-loading-close {
+  left: 18px;
+  right: auto;
+}
+
+.sm-loading-close:hover {
+  color: #334155;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.sm-loading-bottom {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.sm-loading-progress-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sm-loading-percent-row {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.sm-loading-progress-track {
+  height: 7px;
+  background: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.sm-loading-progress-fill {
+  height: 100%;
+  background: #2563eb;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.sm-loading-cancel-btn {
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 10px;
+  background: #e2e8f0;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.sm-loading-cancel-btn:hover {
+  background: #cbd5e1;
+  color: #0f172a;
+}
+
+/* ==========================================================================
+   الأنيميشن والحركات التفاعلية (Animations)
+   ========================================================================== */
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toastFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.92);
+  }
+}
+
+@keyframes toastShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes overlayFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes dialogScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes dialogScaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+}
+
+/* ====================================================
+   NAV NOTIFICATION PANEL DROPDOWN
+   ==================================================== */
+.nav-notification-panel {
+  width: 360px;
+  max-width: calc(100vw - 20px);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+  animation: dialogScaleIn 0.25s ease forwards;
+  font-family: 'Tajawal', sans-serif;
+}
+
+.notif-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: #f8fafc;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.notif-panel-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notif-unread-tag {
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-weight: 700;
+}
+
+.notif-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-text-action {
+  background: none;
+  border: none;
+  color: #0284c7;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.btn-text-action:hover {
+  text-decoration: underline;
+}
+
+.btn-close-panel {
+  background: #e2e8f0;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #475569;
+  cursor: pointer;
+}
+
+.notif-panel-body {
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+/* ====================================================
+   MOBILE NOTIFICATION PANEL DROPDOWN (< 768px)
+   ==================================================== */
+@media (max-width: 767px) {
+  .nav-notification-panel {
+    width: 310px !important;
+    max-width: calc(100vw - 16px) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.22) !important;
+  }
+
+  .notif-panel-header {
+    padding: 10px 12px !important;
+  }
+
+  .notif-panel-title {
+    font-size: 13.5px !important;
+  }
+
+  .notif-unread-tag {
+    font-size: 10px !important;
+    padding: 2px 6px !important;
+  }
+
+  .btn-text-action {
+    font-size: 11px !important;
+    padding: 2px 4px !important;
+  }
+
+  .btn-close-panel {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 11px !important;
+  }
+
+  .notif-panel-body {
+    max-height: 280px !important;
+    overflow-y: auto !important;
+  }
+
+  .notif-item {
+    padding: 10px 12px !important;
+    gap: 10px !important;
+  }
+
+  .notif-item-title {
+    font-size: 12px !important;
+  }
+
+  .notif-item-desc {
+    font-size: 11px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .notif-type-icon {
+    font-size: 17px !important;
+  }
+}
+
+.notif-empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #64748b;
+}
+
+.notif-empty-state span {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f8fafc;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  position: relative;
+}
+
+.notif-item:hover {
+  background: #f1f5f9;
+}
+
+.notif-item.unread {
+  background: #f0f9ff;
+}
+
+.notif-item.unread:hover {
+  background: #e0f2fe;
+}
+
+.notif-type-icon {
+  font-size: 20px;
+}
+
+.notif-item-content {
+  flex: 1;
+}
+
+.notif-item-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.notif-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0284c7;
+  display: inline-block;
+}
+
+.notif-item-desc {
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.notif-item-time {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.notif-item-del {
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.notif-item-del:hover {
+  color: #ef4444;
+}
+
+/* ====================================================
+   DARK MODE THEME CONSISTENCY FOR NOTIFICATIONS & DIALOGS
+   ==================================================== */
+body.dark-mode .sm-toast {
+  background: var(--card-bg, #1f2937);
+  border-color: var(--border-color, #374151);
+  color: var(--text-primary, #f3f4f6);
+}
+
+body.dark-mode .sm-dialog-card {
+  background: var(--card-bg, #1f2937);
+  color: var(--text-primary, #f3f4f6);
+  border: 1px solid var(--border-color, #374151);
+}
+
+body.dark-mode .sm-dialog-title {
+  color: var(--text-primary, #f3f4f6);
+}
+
+body.dark-mode .sm-dialog-desc {
+  color: var(--text-secondary, #d1d5db);
+}
+
+body.dark-mode .sm-btn-pill-cancel {
+  background: var(--secondary-color, #1f2937);
+  border-color: var(--border-color, #374151);
+  color: var(--text-primary, #f3f4f6);
+}
+
+body.dark-mode .sm-btn-pill-cancel:hover {
+  background: var(--border-color, #374151);
+}
+
+body.dark-mode .sm-loading-card {
+  background: var(--card-bg, #1f2937);
+  color: var(--text-primary, #f3f4f6);
+  border: 1px solid var(--border-color, #374151);
+}
+
+body.dark-mode .sm-loading-title {
+  color: var(--text-primary, #f3f4f6);
+}
+
+body.dark-mode .sm-loading-desc {
+  color: var(--text-secondary, #d1d5db);
+}
+
+body.dark-mode .nav-notification-panel {
+  background: var(--card-bg, #1f2937);
+  border-color: var(--border-color, #374151);
+}
+
+body.dark-mode .notif-panel-header {
+  background: var(--secondary-color, #1f2937);
+  border-bottom-color: var(--border-color, #374151);
+}
+
+body.dark-mode .notif-panel-title {
+  color: var(--text-primary, #f3f4f6);
+}
+
+body.dark-mode .btn-close-panel {
+  background: var(--border-color, #374151);
+  color: var(--text-primary, #f3f4f6);
+}
+
+body.dark-mode .notif-item {
+  border-bottom-color: var(--border-color, #374151);
+}
+
+body.dark-mode .notif-item:hover {
+  background: var(--secondary-color, #1f2937);
+}
+
+body.dark-mode .notif-item.unread {
+  background: rgba(37, 99, 235, 0.15);
+}
+
+body.dark-mode .notif-item-title {
+  color: var(--text-primary, #f3f4f6);
+}
+
+body.dark-mode .notif-item-desc {
+  color: var(--text-secondary, #d1d5db);
+}
+
+

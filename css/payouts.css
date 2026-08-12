@@ -1,0 +1,747 @@
+/* =========================================================
+   Withdrawals & Payouts Center (Egyptian Mobile Wallets) CSS
+   ========================================================= */
+
+.po-container {
+  width: min(95%, 1800px);
+  margin: 0 auto;
+  padding: 24px 32px;
+  box-sizing: border-box;
+  direction: rtl;
+  font-family: 'Tajawal', sans-serif;
+  color: var(--text-color, #1e293b);
+}
+
+body.dark-mode .po-container {
+  color: #f8fafc;
+}
+
+/* Page Header */
+.po-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+}
+
+body.dark-mode .po-header {
+  border-bottom-color: #334155;
+}
+
+.po-title-group h1 {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.po-breadcrumb {
+  font-size: 13px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+body.dark-mode .po-breadcrumb {
+  color: #94a3b8;
+}
+
+.po-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.po-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.po-btn-primary {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.po-btn-primary:hover {
+  background: #059669;
+}
+
+.po-btn-indigo {
+  background: #6366f1;
+  color: #ffffff;
+}
+
+.po-btn-indigo:hover {
+  background: #4f46e5;
+}
+
+.po-btn-outline {
+  background: transparent;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+body.dark-mode .po-btn-outline {
+  border-color: #475569;
+  color: #cbd5e1;
+}
+
+.po-btn-outline:hover {
+  background: #f1f5f9;
+}
+
+body.dark-mode .po-btn-outline:hover {
+  background: #334155;
+}
+
+.po-btn-danger {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.po-btn-danger:hover {
+  background: #dc2626;
+}
+
+/* Metrics Dashboard Cards Grid */
+.po-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1024px) {
+  .po-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .po-metrics-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+}
+
+.po-metric-card {
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  position: relative;
+  overflow: hidden;
+}
+
+body.dark-mode .po-metric-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.po-metric-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.po-metric-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.po-metric-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+body.dark-mode .po-metric-label {
+  color: #94a3b8;
+}
+
+.po-metric-value {
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.po-metric-sub {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Egyptian Wallet Badges & Supported Network Notice */
+.po-wallet-notice-card {
+  background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+}
+
+.po-wallet-brands {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.po-brand-chip {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Status Badges */
+.po-wallet-verified-badge {
+  background: #d1fae5;
+  color: #059669;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  line-height: 1.3;
+}
+
+body.dark-mode .po-wallet-verified-badge {
+  background: #065f46;
+  color: #d1fae5;
+}
+
+.po-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.po-badge-pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.po-badge-review {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.po-badge-approved {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.po-badge-paid {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.po-badge-rejected {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.po-badge-cancelled {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+body.dark-mode .po-badge-pending { background: #78350f; color: #fef3c7; }
+body.dark-mode .po-badge-review { background: #075985; color: #e0f2fe; }
+body.dark-mode .po-badge-approved { background: #3730a3; color: #e0e7ff; }
+body.dark-mode .po-badge-paid { background: #065f46; color: #d1fae5; }
+body.dark-mode .po-badge-rejected { background: #991b1b; color: #fee2e2; }
+body.dark-mode .po-badge-cancelled { background: #334155; color: #cbd5e1; }
+
+/* Content Cards & Forms */
+.po-card {
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+
+body.dark-mode .po-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.po-card-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Data Table Styling */
+.po-table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border-color, #e2e8f0);
+}
+
+body.dark-mode .po-table-container {
+  border-color: #334155;
+}
+
+.po-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: right;
+}
+
+.po-table th {
+  background: var(--card-header-bg, #f8fafc);
+  padding: 14px 16px;
+  font-weight: 700;
+  color: #475569;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  white-space: nowrap;
+}
+
+body.dark-mode .po-table th {
+  background: #0f172a;
+  color: #cbd5e1;
+  border-bottom-color: #334155;
+}
+
+.po-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-color, #f1f5f9);
+  vertical-align: middle;
+}
+
+body.dark-mode .po-table td {
+  border-bottom-color: #334155;
+}
+
+.po-table tr:hover {
+  background: rgba(16, 185, 129, 0.03);
+}
+
+/* Timeline Components for Request Detail */
+.po-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 20px 0;
+  position: relative;
+  padding-right: 20px;
+}
+
+.po-timeline::before {
+  content: "";
+  position: absolute;
+  right: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--border-color, #cbd5e1);
+}
+
+body.dark-mode .po-timeline::before {
+  background: #334155;
+}
+
+.po-timeline-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.po-timeline-dot {
+  position: absolute;
+  right: -20px;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 3px solid var(--card-bg, #ffffff);
+  box-shadow: 0 0 0 2px #10b981;
+}
+
+.po-timeline-title {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.po-timeline-time {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* Forms & Inputs */
+.po-form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.po-form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+}
+
+body.dark-mode .po-form-group label {
+  color: #cbd5e1;
+}
+
+.po-form-group input,
+.po-form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color, #cbd5e1);
+  background: var(--card-bg, #ffffff);
+  color: inherit;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+body.dark-mode .po-form-group input,
+body.dark-mode .po-form-group select {
+  background: #0f172a;
+  border-color: #475569;
+}
+
+.po-form-group input:focus,
+.po-form-group select:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+.po-input-hint {
+  font-size: 12px;
+  color: #64748b;
+}
+
+body.dark-mode .po-input-hint {
+  color: #94a3b8;
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE OPTIMIZATIONS (< 768px)
+   ========================================================= */
+@media (max-width: 768px) {
+  .po-container {
+    padding: 12px 12px !important;
+  }
+
+  .po-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    margin-bottom: 14px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .po-title-group h1 {
+    font-size: 18px !important;
+    gap: 6px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .po-title-group h1 span {
+    font-size: 11px !important;
+    padding: 2px 8px !important;
+  }
+
+  .po-breadcrumb {
+    font-size: 11px !important;
+    gap: 4px !important;
+  }
+
+  .po-actions {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .po-actions .po-btn {
+    flex: 1 1 calc(50% - 4px) !important;
+    justify-content: center !important;
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .po-btn {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Two Column Grids Collapse on Mobile */
+  .po-two-col-grid,
+  .po-req-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* Egyptian Wallet Notice Card */
+  .po-wallet-notice-card {
+    padding: 12px 14px !important;
+    margin-bottom: 16px !important;
+    border-radius: 12px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .po-wallet-notice-title {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    margin-bottom: 4px !important;
+  }
+
+  .po-wallet-notice-sub {
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+    opacity: 0.95 !important;
+  }
+
+  .po-wallet-brands {
+    gap: 6px !important;
+    margin-top: 2px !important;
+  }
+
+  .po-brand-chip {
+    padding: 3px 8px !important;
+    font-size: 10px !important;
+    border-radius: 12px !important;
+    gap: 4px !important;
+  }
+
+  /* Summary Metrics Grid on Mobile */
+  .po-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .po-metric-card {
+    padding: 10px 12px !important;
+    border-radius: 10px !important;
+  }
+
+  .po-metric-top {
+    margin-bottom: 4px !important;
+  }
+
+  .po-metric-icon {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 14px !important;
+    border-radius: 8px !important;
+  }
+
+  .po-metric-label {
+    font-size: 11px !important;
+  }
+
+  .po-metric-value {
+    font-size: 15px !important;
+  }
+
+  .po-metric-sub {
+    font-size: 10px !important;
+    margin-top: 2px !important;
+  }
+
+  /* Content Cards */
+  .po-card {
+    padding: 14px 14px !important;
+    margin-bottom: 14px !important;
+    border-radius: 12px !important;
+  }
+
+  .po-card-title {
+    font-size: 14px !important;
+    margin-bottom: 10px !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  /* Wallet Items */
+  .po-wallet-card-inner {
+    padding: 12px 14px !important;
+    gap: 10px !important;
+    align-items: center !important;
+  }
+
+  .po-wallet-verified-badge {
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+    border-radius: 14px !important;
+    white-space: nowrap !important;
+    line-height: 1.2 !important;
+  }
+
+  .po-wallet-item-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px !important;
+  }
+
+  .po-wallet-item-actions {
+    display: flex !important;
+    gap: 6px !important;
+    justify-content: flex-end !important;
+  }
+
+  /* Toolbar */
+  .po-toolbar-flex {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .po-toolbar-flex > div,
+  .po-toolbar-flex > select {
+    width: 100% !important;
+  }
+
+  /* Table styling on Mobile */
+  .po-table th,
+  .po-table td {
+    padding: 8px 10px !important;
+    font-size: 11px !important;
+  }
+
+  .po-table {
+    min-width: 540px !important;
+  }
+
+  /* Form groups */
+  .po-form-group {
+    margin-bottom: 12px !important;
+  }
+
+  .po-form-group label {
+    font-size: 12px !important;
+  }
+
+  .po-form-group input,
+  .po-form-group select {
+    padding: 9px 12px !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+  }
+
+  .po-input-hint {
+    font-size: 11px !important;
+  }
+
+  .po-details-footer {
+    flex-direction: column !important;
+    gap: 12px !important;
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .po-container {
+    padding: 8px 8px !important;
+  }
+
+  .po-actions .po-btn {
+    flex: 1 1 100% !important;
+  }
+
+  .po-metrics-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+/* PRINTABLE RECEIPT A4 STYLES */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printablePayoutReceipt, #printablePayoutReceipt * {
+    visibility: visible;
+  }
+  #printablePayoutReceipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 30px;
+    background: #ffffff !important;
+    color: #000000 !important;
+    direction: rtl;
+    font-family: sans-serif;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

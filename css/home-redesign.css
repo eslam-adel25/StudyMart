@@ -1,0 +1,3223 @@
+/* =========================================================
+   STUDYMART HOMEPAGE REDESIGN STYLES
+   Pixel-Accurate to Reference Image
+   ========================================================= */
+
+:root {
+  --sm-purple-primary: #6d28d9;
+  --sm-purple-dark: #4c1d95;
+  --sm-purple-light: #8b5cf6;
+  --sm-purple-bg: #f5f3ff;
+  --sm-purple-soft: #ede9fe;
+  
+  --sm-text-dark: #0f172a;
+  --sm-text-muted: #475569;
+  --sm-text-light: #64748b;
+  
+  --sm-card-bg: #ffffff;
+  --sm-border: #e2e8f0;
+  --sm-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02);
+  --sm-shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+  --sm-shadow-lg: 0 20px 30px -10px rgba(109, 40, 217, 0.12);
+}
+
+/* Base resets & Container bounds */
+.home-section {
+  width: min(95%, 1800px);
+  margin: 0 auto 40px auto;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+
+body.dark-mode {
+  --sm-text-dark: #f8fafc;
+  --sm-text-muted: #cbd5e1;
+  --sm-text-light: #94a3b8;
+  --sm-card-bg: #1e293b;
+  --sm-border: #334155;
+}
+
+/* =========================================================
+   1. NAVBAR VISUAL ENHANCEMENTS
+   ========================================================= */
+.navbar {
+  background: var(--sm-card-bg) !important;
+  border-bottom: 1px solid var(--sm-border) !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
+}
+
+.navbar-logo {
+  font-weight: 800 !important;
+  font-size: 24px !important;
+  color: var(--sm-text-dark) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+@media (max-width: 768px) {
+  .navbar-logo {
+    font-size: 16px !important;
+    color: var(--sm-purple-primary) !important;
+  }
+  .navbar-logo span {
+    font-size: 16px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-logo {
+    font-size: 14px !important;
+  }
+  .navbar-logo span {
+    font-size: 14px !important;
+  }
+}
+
+.navbar-logo span {
+  color: var(--sm-purple-primary);
+}
+
+.nav-menu a {
+  font-weight: 600 !important;
+  color: var(--sm-text-muted) !important;
+  transition: color 0.2s ease !important;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+  color: var(--sm-purple-primary) !important;
+}
+
+.navbar .btn-login {
+  background: var(--sm-purple-primary) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  padding: 8px 20px !important;
+  box-shadow: 0 4px 12px rgba(109, 40, 217, 0.25) !important;
+}
+
+.navbar .btn-login:hover {
+  background: var(--sm-purple-dark) !important;
+}
+
+/* =========================================================
+   2. HERO SECTION (Refactored Pixel-Perfect UI)
+   ========================================================= */
+.hero-wrapper {
+  background: #ffffff;
+  background-image: 
+    radial-gradient(circle at 85% 20%, rgba(237, 233, 254, 0.7) 0%, rgba(245, 243, 255, 0.3) 45%, transparent 75%),
+    radial-gradient(circle at 15% 85%, rgba(252, 231, 243, 0.5) 0%, rgba(250, 245, 255, 0.2) 40%, transparent 70%);
+  border-radius: 28px;
+  padding: 56px 48px;
+  margin-top: 20px;
+  margin-bottom: 28px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px -15px rgba(109, 40, 217, 0.07), 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .hero-wrapper {
+  background: #0f172a;
+  background-image: 
+    radial-gradient(circle at 85% 20%, rgba(49, 46, 129, 0.6) 0%, transparent 60%),
+    radial-gradient(circle at 15% 85%, rgba(88, 28, 135, 0.4) 0%, transparent 60%);
+  border-color: #1e293b;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  gap: 40px;
+  align-items: center;
+}
+
+.hero-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  text-align: right;
+  z-index: 2;
+}
+
+.hero-title {
+  font-size: clamp(34px, 4.2vw, 50px);
+  font-weight: 900;
+  line-height: 1.25;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+body.dark-mode .hero-title {
+  color: #f8fafc;
+}
+
+.hero-title .brand-purple {
+  color: #7c3aed;
+  display: block;
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  line-height: 1.75;
+  color: #64748b;
+  margin: 0;
+  max-width: 500px;
+  font-weight: 500;
+}
+
+body.dark-mode .hero-subtitle {
+  color: #94a3b8;
+}
+
+/* Search Bar Inside Hero */
+.hero-search-box {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 6px 8px 6px 14px;
+  box-shadow: 0 10px 30px -5px rgba(109, 40, 217, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
+  margin-top: 4px;
+  max-width: 500px;
+  transition: all 0.25s ease;
+}
+
+.hero-search-box:focus-within {
+  border-color: #7c3aed;
+  box-shadow: 0 12px 35px -5px rgba(109, 40, 217, 0.16), 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+body.dark-mode .hero-search-box {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.hero-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 10px 12px;
+  font-size: 15px;
+  font-family: 'Tajawal', sans-serif;
+  color: #0f172a;
+  font-weight: 500;
+}
+
+body.dark-mode .hero-search-input {
+  color: #f8fafc;
+}
+
+.hero-search-input::placeholder {
+  color: #94a3b8;
+}
+
+.hero-search-btn {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  color: #ffffff;
+  border: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.35);
+}
+
+.hero-search-btn:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(109, 40, 217, 0.45);
+}
+
+/* Hero Action Buttons */
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 6px;
+}
+
+.btn-hero-primary {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  color: #ffffff;
+  border: none;
+  padding: 13px 32px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 24px -4px rgba(109, 40, 217, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-hero-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -4px rgba(109, 40, 217, 0.45);
+}
+
+.btn-hero-secondary {
+  background: #ffffff;
+  color: #7c3aed;
+  border: 1.5px solid #ddd6fe;
+  padding: 13px 32px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-hero-secondary:hover {
+  background: #f5f3ff;
+  border-color: #c4b5fd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.12);
+}
+
+body.dark-mode .btn-hero-secondary {
+  background: #1e293b;
+  border-color: #4c1d95;
+  color: #c4b5fd;
+}
+
+/* Hero Graphic Area */
+.hero-graphic-area {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-illustration-svg {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  filter: drop-shadow(0 20px 30px rgba(109, 40, 217, 0.12));
+}
+
+/* Floating Animations for Graphic Cards */
+@keyframes heroFloatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes heroFloatDelay {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.hero-float-card-1 {
+  animation: heroFloatSlow 4.5s ease-in-out infinite;
+}
+
+.hero-float-card-2 {
+  animation: heroFloatDelay 5s ease-in-out 1s infinite;
+}
+
+.hero-float-card-3 {
+  animation: heroFloatSlow 5.5s ease-in-out 0.5s infinite;
+}
+
+/* =========================================================
+   3. STATISTICS BAR (Refactored Pixel-Perfect UI)
+   ========================================================= */
+.stats-bar-wrapper {
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 20px;
+  padding: 24px 32px;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
+  margin-bottom: 40px;
+  transition: all 0.3s ease;
+}
+
+.stats-bar-wrapper:hover {
+  box-shadow: 0 15px 35px -5px rgba(109, 40, 217, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
+  transform: translateY(-2px);
+}
+
+body.dark-mode .stats-bar-wrapper {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  align-items: center;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  position: relative;
+  padding: 8px 12px;
+  transition: all 0.25s ease;
+  border-radius: 12px;
+}
+
+.stat-item:hover {
+  background: rgba(245, 243, 255, 0.6);
+}
+
+body.dark-mode .stat-item:hover {
+  background: rgba(51, 65, 85, 0.5);
+}
+
+.stat-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: #e2e8f0;
+}
+
+body.dark-mode .stat-item:not(:last-child)::after {
+  background: #334155;
+}
+
+.stat-number-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.stat-icon-svg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-purple-icon {
+  color: #7c3aed;
+}
+
+.stat-blue-icon {
+  color: #0284c7;
+}
+
+.stat-gold-icon {
+  color: #f59e0b;
+}
+
+.stat-number {
+  font-size: 24px;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+}
+
+.stat-number.stat-purple {
+  color: #7c3aed;
+}
+
+.stat-number.stat-blue {
+  color: #0284c7;
+}
+
+.stat-number.stat-dark {
+  color: #0f172a;
+}
+
+body.dark-mode .stat-number.stat-dark {
+  color: #f8fafc;
+}
+
+.stat-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+body.dark-mode .stat-label {
+  color: #94a3b8;
+}
+
+/* =========================================================
+   4. POPULAR CATEGORIES (أقسام شائعة)
+   ========================================================= */
+.categories-section {
+  margin-bottom: 50px;
+}
+
+.section-header-centered {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.section-title-lg {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--sm-text-dark);
+  margin: 0 0 8px 0;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 16px;
+}
+
+.category-card {
+  background: var(--sm-card-bg);
+  border: 1px solid var(--sm-border);
+  border-radius: 16px;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: var(--sm-shadow-sm);
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--sm-purple-light);
+  box-shadow: var(--sm-shadow-md);
+}
+
+.category-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  transition: transform 0.2s ease;
+}
+
+.category-icon-box svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+  display: block;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+  .category-icon-box svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@media (max-width: 640px) {
+  .category-icon-box svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.category-card:hover .category-icon-box {
+  transform: scale(1.1);
+}
+
+.category-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--sm-text-dark);
+}
+
+.view-all-categories-wrapper {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.view-all-link {
+  color: var(--sm-purple-primary);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.2s ease;
+  cursor: pointer;
+}
+
+.view-all-link:hover {
+  gap: 10px;
+  color: var(--sm-purple-dark);
+}
+
+/* =========================================================
+   5. FEATURED COURSES & BOOKS SECTIONS
+   ========================================================= */
+.section-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.courses-filter-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--sm-border);
+  padding-bottom: 12px;
+  overflow-x: auto;
+}
+
+.tab-pill {
+  background: transparent;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--sm-text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tab-pill:hover {
+  color: var(--sm-purple-primary);
+  background: var(--sm-purple-bg);
+}
+
+.tab-pill.active {
+  background: var(--sm-purple-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(109, 40, 217, 0.25);
+}
+
+/* Slider / Grid Container */
+.carousel-container {
+  position: relative;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--sm-card-bg);
+  border: 1px solid var(--sm-border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  color: var(--sm-text-dark);
+  transition: all 0.2s ease;
+}
+
+.carousel-arrow:hover {
+  background: var(--sm-purple-primary);
+  color: #ffffff;
+  border-color: var(--sm-purple-primary);
+}
+
+.carousel-arrow.prev { right: -18px; }
+.carousel-arrow.next { left: -18px; }
+
+/* Grid Override for standard courses & books */
+.courses-container,
+.books-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)) !important;
+  gap: 22px !important;
+}
+
+/* Course Card Redesign */
+.course-card, .book-card {
+  background: var(--sm-card-bg);
+  border: 1px solid var(--sm-border);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--sm-shadow-sm);
+}
+
+.course-card:hover, .book-card:hover {
+  transform: translateY(-50px);
+  transform: translateY(-4px);
+  box-shadow: var(--sm-shadow-md);
+  border-color: rgba(109, 40, 217, 0.3);
+}
+
+.course-card .course-image {
+  height: 160px;
+  position: relative;
+}
+
+.course-type-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--sm-purple-primary);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 12px;
+  z-index: 2;
+}
+
+.book-type-badge {
+  display: none !important;
+}
+
+.course-content, .book-content {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.course-title, .book-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--sm-text-dark);
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+  height: 44px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.instructor-row, .author-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.instructor-avatar, .author-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.instructor-name, .author-name {
+  font-size: 13px;
+  color: var(--sm-text-light);
+  font-weight: 600;
+}
+
+.rating-students-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--sm-text-light);
+  margin-bottom: 14px;
+}
+
+.rating-stars {
+  color: #f59e0b;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.price-discount-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.current-price {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--sm-text-dark);
+}
+
+.old-price {
+  font-size: 13px;
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+.discount-badge {
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-right: auto;
+}
+
+.card-actions-row {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.btn-card-details {
+  flex: 1;
+  background: var(--sm-purple-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  text-align: center;
+}
+
+.btn-card-details:hover {
+  background: var(--sm-purple-dark);
+}
+
+.btn-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--sm-border);
+  background: var(--sm-card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--sm-text-muted);
+  transition: all 0.2s ease;
+}
+
+.btn-card-icon:hover {
+  border-color: var(--sm-purple-primary);
+  color: var(--sm-purple-primary);
+  background: var(--sm-purple-bg);
+}
+
+/* =========================================================
+   6. TOP TEACHERS (أفضل المعلمين)
+   ========================================================= */
+.teachers-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+}
+
+.teacher-card {
+  background: var(--sm-card-bg);
+  border: 1px solid var(--sm-border);
+  border-radius: 20px;
+  padding: 24px 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.25s ease;
+  box-shadow: var(--sm-shadow-sm);
+}
+
+.teacher-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sm-shadow-md);
+  border-color: var(--sm-purple-light);
+}
+
+.teacher-avatar-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 14px;
+  border: 4px solid var(--sm-purple-soft);
+  box-shadow: 0 4px 12px rgba(109, 40, 217, 0.15);
+}
+
+.teacher-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--sm-text-dark);
+  margin: 0 0 4px 0;
+}
+
+.teacher-role {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sm-text-light);
+  margin-bottom: 12px;
+}
+
+.teacher-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--sm-text-dark);
+  padding-top: 10px;
+  border-top: 1px dashed var(--sm-border);
+  width: 100%;
+}
+
+/* =========================================================
+   7. STUDENT REVIEWS (آراء الطلاب)
+   ========================================================= */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.review-card {
+  background: var(--sm-card-bg);
+  border: 1px solid var(--sm-border);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  box-shadow: var(--sm-shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sm-shadow-md);
+}
+
+.review-product-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.review-product-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.review-product-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--sm-border);
+}
+
+.review-product-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.review-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--sm-purple-bg);
+  color: var(--sm-purple-primary);
+  width: fit-content;
+}
+
+.review-product-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sm-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quote-icon {
+  font-size: 20px;
+  color: var(--sm-purple-light);
+  opacity: 0.35;
+  line-height: 1;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.review-rating-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #f59e0b;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.review-stars-icons {
+  letter-spacing: 1px;
+}
+
+.review-rating-num {
+  color: var(--sm-text-dark);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.review-rating-sep {
+  color: var(--sm-text-light);
+  opacity: 0.5;
+  font-weight: 400;
+}
+
+.review-date-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sm-text-light);
+}
+
+.review-card-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--sm-text-dark);
+  margin: 0 0 6px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.35;
+}
+
+.review-text-wrapper {
+  margin-bottom: 16px;
+}
+
+.review-text {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--sm-text-muted);
+  margin: 0;
+  font-weight: 400;
+}
+
+.review-text.clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.read-more-btn {
+  background: none;
+  border: none;
+  padding: 4px 0 0 0;
+  color: var(--sm-purple-primary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.read-more-btn:hover {
+  text-decoration: underline;
+}
+
+.review-author-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid var(--sm-border);
+  margin-top: auto;
+}
+
+.review-student-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--sm-border);
+}
+
+.review-student-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--sm-text-dark);
+  line-height: 1.2;
+}
+
+.review-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #16a34a;
+  margin-top: 3px;
+}
+
+.view-all-reviews-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.view-all-reviews-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  background: var(--sm-card-bg);
+  color: var(--sm-purple-primary);
+  border: 1.5px solid var(--sm-purple-soft);
+  box-shadow: var(--sm-shadow-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-all-reviews-btn:hover {
+  background: var(--sm-purple-bg);
+  border-color: var(--sm-purple-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--sm-shadow-md);
+}
+
+body.dark-mode .view-all-reviews-btn {
+  background: var(--sm-card-bg);
+  border-color: #4c1d95;
+  color: #a78bfa;
+}
+
+body.dark-mode .view-all-reviews-btn:hover {
+  background: #2e1065;
+  border-color: #8b5cf6;
+}
+
+/* =========================================================
+   8. WHY STUDYMART (لماذا تختار StudyMart ؟)
+   ========================================================= */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.why-card {
+  background: var(--sm-card-bg, #ffffff);
+  border: 1px solid var(--sm-border, #f1f5f9);
+  border-radius: 16px;
+  padding: 24px 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.why-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(109, 40, 217, 0.08);
+  border-color: #ddd6fe;
+}
+
+.why-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.why-card:hover .why-icon-box {
+  transform: scale(1.08);
+}
+
+.why-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--sm-text-dark, #0f172a);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.why-desc {
+  font-size: 12px;
+  color: var(--sm-text-light, #64748b);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* =========================================================
+   9. BOTTOM CTA BANNER (ابدأ رحلتك التعليمية اليوم)
+   ========================================================= */
+.bottom-cta-banner {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+  border-radius: 24px;
+  padding: 44px 70px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  direction: ltr;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(109, 40, 217, 0.25);
+  margin-top: 40px;
+  margin-bottom: 50px;
+}
+
+.bottom-cta-graphic-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.bottom-cta-text {
+  max-width: 540px;
+  z-index: 2;
+  direction: rtl;
+  text-align: right;
+}
+
+.bottom-cta-title {
+  font-size: 30px;
+  font-weight: 900;
+  margin: 0 0 12px 0;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.bottom-cta-desc {
+  font-size: 15px;
+  color: #f3e8ff;
+  margin: 0 0 24px 0;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.bottom-cta-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.btn-cta-purple {
+  background: #5b21b6;
+  color: #ffffff;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+.btn-cta-purple:hover {
+  background: #4c1d95;
+  transform: translateY(-2px);
+}
+
+.btn-cta-white {
+  background: #ffffff;
+  color: #7c3aed;
+  border: 1px solid #7c3aed;
+  padding: 12px 30px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.btn-cta-white:hover {
+  background: #faf5ff;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   10. REDESIGNED SITE FOOTER
+   ========================================================= */
+.site-footer-v2 {
+  width: 100%;
+  max-width: 100% !important;
+  background: var(--sm-card-bg, #ffffff);
+  border-top: 1px solid var(--sm-border, #f1f5f9);
+  padding: 50px 0 24px 0;
+  margin-top: 50px;
+  direction: rtl;
+  box-sizing: border-box;
+}
+
+.footer-v2-container {
+  width: min(95%, 1800px);
+  margin-inline: auto;
+  padding-inline: 32px;
+  box-sizing: border-box;
+}
+
+.footer-v2-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  gap: min(80px, 5vw);
+  margin-bottom: 40px;
+}
+
+.footer-brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary-color, #7c3aed);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  direction: rtl;
+  white-space: nowrap;
+}
+
+.footer-logo-accent {
+  color: #7c3aed;
+}
+
+.footer-brand-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--sm-text-light, #64748b);
+  margin: 0;
+  max-width: 320px;
+}
+
+.footer-social-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.social-pill-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f5f3ff;
+  color: #7c3aed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+body.dark-mode .social-pill-btn {
+  background: rgba(124, 58, 237, 0.2);
+  color: #c4b5fd;
+}
+
+
+.social-pill-btn:hover {
+  background: #7c3aed;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+}
+
+.footer-col-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--sm-text-dark, #0f172a);
+  margin: 0 0 16px 0;
+}
+
+.footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links-list a {
+  color: var(--sm-text-light, #64748b);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links-list a:hover {
+  color: #7c3aed;
+}
+
+.newsletter-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.newsletter-desc {
+  font-size: 13px;
+  color: var(--sm-text-light, #64748b);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 8px;
+}
+
+.newsletter-input {
+  flex: 1;
+  background: var(--sm-card-bg, #f8fafc);
+  border: 1px solid var(--sm-border, #e2e8f0);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-family: 'Tajawal', sans-serif;
+  color: var(--sm-text-dark, #0f172a);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.newsletter-input:focus {
+  border-color: #7c3aed;
+}
+
+.newsletter-btn {
+  background: #7c3aed;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 0 20px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.newsletter-btn:hover {
+  background: #6d28d9;
+}
+
+.footer-bottom-bar {
+  border-top: 1px solid var(--sm-border, #f1f5f9);
+  padding-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.copyright-text {
+  font-size: 13px;
+  color: var(--sm-text-light, #64748b);
+  margin: 0;
+  font-weight: 500;
+}
+
+/* =========================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================= */
+@media (max-width: 1080px) {
+  .categories-grid { grid-template-columns: repeat(4, 1fr); }
+  .teachers-grid { grid-template-columns: repeat(3, 1fr); }
+  .why-grid { grid-template-columns: repeat(3, 1fr); }
+  .footer-v2-grid { grid-template-columns: 1fr 1fr; }
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
+  .stat-item:nth-child(3)::after { display: none; }
+  .reviews-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+}
+
+@media (max-width: 768px) {
+  .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .hero-text-content { text-align: center; align-items: center; }
+  .hero-wrapper { padding: 30px 20px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .stat-item::after { display: none !important; }
+  .categories-grid { grid-template-columns: repeat(2, 1fr); }
+  .teachers-grid { grid-template-columns: repeat(2, 1fr); }
+  .why-grid { grid-template-columns: repeat(2, 1fr); }
+  .bottom-cta-banner { flex-direction: column; text-align: center; padding: 36px 20px; gap: 24px; }
+  .bottom-cta-text { text-align: center; max-width: 100%; }
+  .bottom-cta-actions { justify-content: center; flex-wrap: wrap; }
+  .footer-v2-grid { grid-template-columns: 1fr; }
+  .footer-bottom-bar { flex-direction: column; gap: 14px; text-align: center; }
+}
+
+@media (max-width: 640px) {
+  .reviews-grid { grid-template-columns: 1fr; gap: 16px; }
+}
+
+@media (max-width: 480px) {
+  .categories-grid { grid-template-columns: repeat(2, 1fr); }
+  .teachers-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .hero-actions { flex-direction: column; width: 100%; }
+  .btn-hero-primary, .btn-hero-secondary { width: 100%; }
+}
+
+/* =========================================================
+   RESPONSIVE COURSE & BOOK CARDS GRID RULES
+   ========================================================= */
+
+/* Tablet (768px - 1199px): Exactly 2 cards per row */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .courses-container,
+  .books-grid,
+  #coursesList,
+  #booksGrid,
+  #standaloneCoursesList,
+  #standaloneBooksGrid,
+  .all-courses-grid,
+  .my-books-grid-container,
+  .my-books-grid,
+  .favorites-grid:not(.list-view):not(.favorites-list-view) {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  .course-card .course-image,
+  .book-card .course-image,
+  .course-image,
+  .book-cover-wrapper {
+    height: 140px !important;
+  }
+
+  .course-content,
+  .book-content,
+  .course-card-body,
+  .book-card-info {
+    padding: 14px !important;
+  }
+
+  .course-content h3,
+  .book-content h3,
+  .course-title,
+  .book-title,
+  .card-title,
+  .book-card-title {
+    font-size: 14px !important;
+    height: 38px !important;
+  }
+}
+
+/* Mobile (<768px): Exactly 3 cards per row with proportional scaling */
+@media (max-width: 767px) {
+  .home-section,
+  .books-container,
+  .courses-section,
+  .books-section {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  .courses-container,
+  #coursesList,
+  #standaloneCoursesList,
+  .all-courses-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 5px !important;
+  }
+
+  .books-grid,
+  #booksGrid,
+  #standaloneBooksGrid,
+  .books-container .books-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px 10px !important;
+  }
+
+  .favorites-grid:not(.list-view):not(.favorites-list-view) {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .my-books-grid-container,
+  .my-books-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* Compact layout for "كتبي" top controls section on mobile (<768px) */
+  #myBooksPage.my-books-page-section {
+    padding: 12px 10px 30px !important;
+  }
+
+  #myBooksPage .my-books-page {
+    gap: 10px !important;
+  }
+
+  #myBooksPage .my-books-header-bar {
+    margin-bottom: 0 !important;
+  }
+
+  #myBooksPage .my-books-close-btn {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  #myBooksPage .my-books-top-header {
+    margin-bottom: 0 !important;
+  }
+
+  #myBooksPage .my-books-top-header .header-icon-title {
+    gap: 8px !important;
+  }
+
+  #myBooksPage .title-badge-icon.purple-badge {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+    flex-shrink: 0 !important;
+  }
+
+  #myBooksPage .title-badge-icon.purple-badge svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  #myBooksPage .my-books-title {
+    font-size: clamp(16px, 4.5vw, 19px) !important;
+    margin: 0 0 2px 0 !important;
+    line-height: 1.2 !important;
+  }
+
+  #myBooksPage .my-books-subtitle {
+    font-size: clamp(11px, 3vw, 12px) !important;
+    line-height: 1.25 !important;
+  }
+
+  #myBooksPage .my-books-controls-row {
+    margin-top: 2px !important;
+    gap: 8px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  #myBooksPage .filter-pills-group {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    align-items: center !important;
+  }
+
+  #myBooksPage .filter-pill {
+    padding: 5px 10px !important;
+    font-size: clamp(11px, 2.8vw, 12px) !important;
+    border-radius: 8px !important;
+    height: 32px !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  #myBooksPage .dropdown-filter-pill {
+    display: inline-flex !important;
+  }
+
+  #myBooksPage .search-input-wrapper {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  #myBooksPage .search-input-wrapper input {
+    height: 34px !important;
+    padding: 6px 34px 6px 12px !important;
+    font-size: clamp(11px, 2.8vw, 12px) !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  #myBooksPage .search-input-wrapper .search-icon {
+    right: 10px !important;
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  .course-card,
+  .book-card,
+  .my-course-card,
+  .book-card-item,
+  .favorite-card {
+    border-radius: 8px !important;
+    box-shadow: none !important;
+  }
+
+  .course-card .course-image,
+  .book-card .course-image,
+  .course-image,
+  .book-cover-wrapper,
+  .course-card-thumb {
+    height: clamp(55px, 17vw, 85px) !important;
+    position: relative !important;
+    font-size: clamp(9px, 2.2vw, 12px) !important;
+  }
+
+  .course-image img,
+  .book-cover-wrapper img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .course-fav-btn {
+    top: 3px !important;
+    left: 3px !important;
+    width: clamp(18px, 5vw, 24px) !important;
+    height: clamp(18px, 5vw, 24px) !important;
+  }
+
+  .course-fav-btn svg {
+    width: clamp(10px, 3vw, 13px) !important;
+    height: clamp(10px, 3vw, 13px) !important;
+  }
+
+  .course-type-badge,
+  .book-type-badge,
+  .course-badge,
+  .course-category-tag,
+  .book-card-category {
+    top: 3px !important;
+    right: 3px !important;
+    font-size: clamp(6px, 1.8vw, 8px) !important;
+    padding: 1px 3px !important;
+    border-radius: 3px !important;
+  }
+
+  .course-content,
+  .book-content,
+  .course-card-body,
+  .book-card-info {
+    padding: 4px 5px !important;
+  }
+
+  .course-content h3,
+  .book-content h3,
+  .course-title,
+  .book-title,
+  .card-title,
+  .book-card-title,
+  .book-cover-title {
+    font-size: clamp(8px, 2.4vw, 11px) !important;
+    line-height: 1.25 !important;
+    height: auto !important;
+    min-height: 18px !important;
+    max-height: 28px !important;
+    margin: 0 0 2px 0 !important;
+    -webkit-line-clamp: 2 !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .course-description,
+  .course-instructor,
+  .instructor-name,
+  .author-name,
+  .book-card-author,
+  .book-cover-author {
+    font-size: clamp(7px, 2vw, 9px) !important;
+    margin: 1px 0 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .instructor-avatar,
+  .author-avatar {
+    width: clamp(12px, 3.5vw, 16px) !important;
+    height: clamp(12px, 3.5vw, 16px) !important;
+  }
+
+  .instructor-row,
+  .author-row {
+    gap: 2px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .course-meta,
+  .course-rating,
+  .rating-students-row,
+  .book-card-meta {
+    font-size: clamp(7px, 2vw, 9px) !important;
+    margin-bottom: 2px !important;
+    gap: 1px !important;
+  }
+
+  .rating-stars {
+    font-size: clamp(7px, 1.8vw, 9px) !important;
+    gap: 1px !important;
+  }
+
+  .course-footer,
+  .price-discount-row {
+    margin-top: auto !important;
+    padding-top: 8px !important;
+    gap: 6px !important;
+    margin-bottom: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+
+  .course-price,
+  .current-price {
+    font-size: clamp(13px, 3.2vw, 15px) !important;
+    font-weight: 800 !important;
+  }
+
+  .old-price {
+    font-size: clamp(10px, 2.5vw, 11.5px) !important;
+  }
+
+  .discount-badge {
+    font-size: clamp(9px, 2.2vw, 10px) !important;
+    padding: 2px 5px !important;
+    border-radius: 4px !important;
+  }
+
+  .card-actions-row,
+  .book-card-actions {
+    gap: 6px !important;
+    margin-top: auto !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .view-details-btn,
+  .btn-card-details,
+  .btn-sm-action {
+    width: 100% !important;
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    height: clamp(28px, 7vw, 32px) !important;
+    padding: 4px 8px !important;
+    font-size: clamp(10.5px, 2.8vw, 12px) !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .btn-card-icon {
+    width: clamp(28px, 7vw, 32px) !important;
+    height: clamp(28px, 7vw, 32px) !important;
+    border-radius: 6px !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .btn-card-icon svg {
+    width: clamp(12px, 3vw, 14px) !important;
+    height: clamp(12px, 3vw, 14px) !important;
+  }
+
+  /* =========================================================
+     MOBILE BOOK CARDS POLISH (<768px)
+     ========================================================= */
+  .books-grid .course-card,
+  .books-grid .book-card {
+    border-radius: 12px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid var(--border-color, #e2e8f0) !important;
+    background: var(--card-bg, #ffffff) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .books-grid .course-card .course-image,
+  .books-grid .book-card .course-image {
+    height: 105px !important;
+    width: 100% !important;
+    position: relative !important;
+    background-size: cover !important;
+    background-position: center !important;
+  }
+
+  .books-grid .course-card .course-fav-btn {
+    position: absolute !important;
+    top: 6px !important;
+    left: 6px !important;
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 50% !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(4px) !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 5 !important;
+  }
+
+  .books-grid .course-card .course-fav-btn svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .books-grid .course-card .course-content,
+  .books-grid .book-card .course-content {
+    padding: 8px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    justify-content: space-between !important;
+  }
+
+  .books-grid .course-card .course-category-tag {
+    position: static !important;
+    font-size: 9.5px !important;
+    padding: 2px 6px !important;
+    border-radius: 5px !important;
+    font-weight: 700 !important;
+    margin-bottom: 3px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+    display: inline-block !important;
+    background: rgba(124, 58, 237, 0.1) !important;
+    color: var(--primary-color, #7c3aed) !important;
+    width: fit-content !important;
+    line-height: 1.2 !important;
+  }
+
+  .books-grid .course-card .course-content h3,
+  .books-grid .course-card h3,
+  .books-grid .book-card .book-title {
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    line-height: 1.3 !important;
+    margin: 1px 0 2px 0 !important;
+    color: var(--text-primary, #0f172a) !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    height: auto !important;
+    min-height: 31px !important;
+    max-height: 31px !important;
+  }
+
+  .books-grid .course-card .course-content p.book-author,
+  .books-grid .course-card .course-content p:not(.book-short-desc) {
+    font-size: 10.5px !important;
+    color: var(--text-secondary, #64748b) !important;
+    margin: 0 0 2px 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1.2 !important;
+  }
+
+  .books-grid .book-short-desc {
+    font-size: 10px !important;
+    color: var(--text-secondary, #64748b) !important;
+    margin: 0 0 5px 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1.2 !important;
+    display: block !important;
+  }
+
+  .books-grid .book-card-footer {
+    margin-top: auto !important;
+    padding-top: 6px !important;
+    border-top: 1px dashed var(--border-color, #e2e8f0) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  .books-grid .book-price-box {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 4px !important;
+  }
+
+  .books-grid .book-curr-price {
+    font-size: 13.5px !important;
+    font-weight: 800 !important;
+    color: var(--primary-color, #7c3aed) !important;
+  }
+
+  .books-grid .book-orig-price {
+    font-size: 10.5px !important;
+    text-decoration: line-through !important;
+    color: #94a3b8 !important;
+  }
+
+  .books-grid .book-actions-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 5px !important;
+    width: 100% !important;
+  }
+
+  .books-grid .book-btn-details {
+    flex: 1 !important;
+    height: 28px !important;
+    padding: 0 6px !important;
+    background: transparent !important;
+    color: var(--primary-color, #7c3aed) !important;
+    border: 1px solid var(--border-color, #cbd5e1) !important;
+    border-radius: 6px !important;
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+  }
+
+  .books-grid .book-btn-cart {
+    width: 28px !important;
+    min-width: 28px !important;
+    height: 28px !important;
+    padding: 0 !important;
+    background: var(--primary-color, #7c3aed) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: 0 1px 4px rgba(124, 58, 237, 0.2) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .books-grid .book-btn-cart .btn-cart-text {
+    display: none !important;
+  }
+
+  .books-grid .book-btn-cart svg {
+    width: 13px !important;
+    height: 13px !important;
+    margin: 0 !important;
+  }
+
+  /* Compact density optimization for "My Books" (كتبي) cards on mobile (<768px) */
+  .my-books-grid-container .book-card-item,
+  #myBooksPage .book-card-item {
+    border-radius: 10px !important;
+    overflow: hidden !important;
+  }
+
+  .my-books-grid-container .book-cover-wrapper,
+  #myBooksPage .book-cover-wrapper {
+    height: clamp(65px, 18vw, 85px) !important;
+  }
+
+  .my-books-grid-container .book-cover-placeholder,
+  #myBooksPage .book-cover-placeholder {
+    padding: 6px 8px !important;
+  }
+
+  .my-books-grid-container .book-card-info,
+  #myBooksPage .book-card-info {
+    padding: 6px 8px !important;
+    gap: 3px !important;
+  }
+
+  .my-books-grid-container .book-card-title,
+  #myBooksPage .book-card-title {
+    font-size: clamp(10px, 2.6vw, 12px) !important;
+    line-height: 1.2 !important;
+    min-height: auto !important;
+    max-height: none !important;
+    margin: 0 !important;
+  }
+
+  .my-books-grid-container .book-card-author,
+  #myBooksPage .book-card-author {
+    font-size: clamp(8px, 2.1vw, 9.5px) !important;
+    margin: 1px 0 0 0 !important;
+  }
+
+  .my-books-grid-container .book-fav-btn,
+  #myBooksPage .book-fav-btn {
+    padding: 1px !important;
+  }
+
+  .my-books-grid-container .book-fav-btn svg,
+  #myBooksPage .book-fav-btn svg {
+    width: clamp(13px, 3.5vw, 16px) !important;
+    height: clamp(13px, 3.5vw, 16px) !important;
+  }
+
+  .my-books-grid-container .book-card-category,
+  #myBooksPage .book-card-category {
+    font-size: clamp(7.5px, 2vw, 9px) !important;
+    padding: 1px 5px !important;
+    border-radius: 3px !important;
+    margin-top: 1px !important;
+  }
+
+  .my-books-grid-container .book-card-meta,
+  #myBooksPage .book-card-meta {
+    font-size: clamp(8px, 2vw, 9.5px) !important;
+    margin-top: 1px !important;
+    gap: 2px !important;
+  }
+
+  .my-books-grid-container .book-card-progress,
+  #myBooksPage .book-card-progress {
+    margin-top: 2px !important;
+    gap: 4px !important;
+  }
+
+  .my-books-grid-container .progress-bar-track,
+  #myBooksPage .progress-bar-track {
+    height: 4px !important;
+    border-radius: 2px !important;
+  }
+
+  .my-books-grid-container .progress-percentage,
+  #myBooksPage .progress-percentage {
+    font-size: clamp(8px, 2vw, 9.5px) !important;
+  }
+
+  .my-books-grid-container .book-card-actions,
+  #myBooksPage .book-card-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 4px !important;
+    margin-top: 4px !important;
+    padding-top: 2px !important;
+  }
+
+  .my-books-grid-container .book-card-actions button,
+  #myBooksPage .book-card-actions button {
+    width: 100% !important;
+    flex: 1 1 100% !important;
+    box-sizing: border-box !important;
+    height: clamp(25px, 6.5vw, 29px) !important;
+    padding: 2px 6px !important;
+    font-size: clamp(9.5px, 2.5vw, 11px) !important;
+    font-weight: 700 !important;
+    border-radius: 5px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+  }
+
+  .my-books-grid-container .book-card-actions button svg,
+  #myBooksPage .book-card-actions button svg {
+    width: clamp(10px, 2.6vw, 12px) !important;
+    height: clamp(10px, 2.6vw, 12px) !important;
+  }
+}
+
+/* =========================================================
+   MODERN E-COMMERCE BOOK CARD ACTION & PRICE STYLING
+   ========================================================= */
+
+.book-card-footer {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color, #e2e8f0);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px;
+  width: 100%;
+}
+
+.book-price-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  line-height: 1.25;
+}
+
+.book-orig-price {
+  font-size: 11px;
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.book-curr-price {
+  font-size: 16px;
+  font-weight: 800;
+  color: #2563eb;
+}
+
+.book-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.book-btn-details {
+  background: transparent;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-btn-details:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #1e293b;
+}
+
+.book-btn-cart {
+  background: #2563eb;
+  color: #ffffff;
+  border: 1px solid #2563eb;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.15);
+}
+
+.book-btn-cart:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+}
+
+/* Dark mode compatibility */
+body.dark-mode .book-card-footer {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .book-orig-price {
+  color: #64748b;
+}
+
+body.dark-mode .book-curr-price {
+  color: #60a5fa;
+}
+
+body.dark-mode .book-btn-details {
+  color: #cbd5e1;
+  border-color: #475569;
+}
+
+body.dark-mode .book-btn-details:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #94a3b8;
+  color: #ffffff;
+}
+
+body.dark-mode .book-btn-cart {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+body.dark-mode .book-btn-cart:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .book-btn-details,
+  .book-btn-cart {
+    height: 28px;
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+  .book-curr-price {
+    font-size: 14px;
+  }
+}
+
+/* Mobile adjustments (< 768px) */
+@media (max-width: 767px) {
+  .book-card-footer {
+    margin-top: auto !important;
+    padding-top: 6px !important;
+    border-top: 1px dashed var(--border-color, #e2e8f0) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+  .book-price-box {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    gap: 4px !important;
+    line-height: 1.2 !important;
+  }
+  .book-orig-price {
+    font-size: 10.5px !important;
+    color: #94a3b8 !important;
+    text-decoration: line-through !important;
+    font-weight: 500 !important;
+  }
+  .book-curr-price {
+    font-size: 13.5px !important;
+    font-weight: 800 !important;
+  }
+  .book-actions-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 5px !important;
+    width: 100% !important;
+    margin-top: 0 !important;
+  }
+  .book-btn-details {
+    order: initial !important;
+    flex: 1 !important;
+    width: auto !important;
+    height: 28px !important;
+    padding: 0 6px !important;
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    background: transparent !important;
+    color: var(--primary-color, #7c3aed) !important;
+    border: 1px solid var(--border-color, #cbd5e1) !important;
+  }
+  .book-btn-cart {
+    order: initial !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    flex: none !important;
+    height: 28px !important;
+    padding: 0 !important;
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    background: var(--primary-color, #7c3aed) !important;
+    color: #ffffff !important;
+    border: none !important;
+  }
+  .book-btn-cart .btn-cart-text {
+    display: none !important;
+  }
+  .book-btn-cart svg {
+    width: 13px !important;
+    height: 13px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE FILTER/SORT TOOLBAR (TABLET & MOBILE)
+   ========================================================= */
+
+/* Tablet (768px - 1199px): proportional scaling on single line */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .courses-filter-tabs,
+  .books-filter-tabs {
+    gap: 6px !important;
+    overflow-x: visible !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .courses-filter-tabs .tab-pill,
+  .books-filter-tabs .tab-pill {
+    padding: 6px 14px !important;
+    font-size: 13px !important;
+    border-radius: 18px !important;
+    white-space: nowrap !important;
+  }
+
+  .section-header-flex .view-all-link {
+    font-size: 13px !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* Mobile (< 768px): smooth responsive adaptation with wrapping fallback */
+@media (max-width: 767px) {
+  .section-header-flex {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px 6px !important;
+    width: 100% !important;
+    margin-bottom: 12px !important;
+  }
+
+  .courses-filter-tabs,
+  .books-filter-tabs {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 5px 4px !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin-bottom: 0 !important;
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+  }
+
+  .courses-filter-tabs .tab-pill,
+  .books-filter-tabs .tab-pill {
+    padding: clamp(4px, 1.2vw, 6px) clamp(7px, 2vw, 12px) !important;
+    font-size: clamp(10px, 2.7vw, 12.5px) !important;
+    border-radius: clamp(12px, 3.5vw, 16px) !important;
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+    line-height: 1.25 !important;
+  }
+
+  .section-header-flex .view-all-link {
+    font-size: clamp(11px, 2.8vw, 13px) !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE COURSE DETAILS PAGE (TABLET & MOBILE)
+   ========================================================= */
+
+/* Main Container Constraints */
+.official-course-details-wrapper,
+#courseDetailsContent,
+#courseDetailsPage,
+#courseDetailsAnchor {
+  width: 100% !important;
+  max-width: 1200px !important;
+  box-sizing: border-box !important;
+}
+
+/* Tablet & Mobile Layout Adjustment (< 992px) */
+@media (max-width: 991px) {
+  .official-course-details-wrapper {
+    padding: clamp(12px, 3vw, 20px) clamp(10px, 2.5vw, 16px) !important;
+  }
+
+  /* Stack Main Grid Vertically */
+  .course-details-main-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+    width: 100% !important;
+  }
+
+  .course-details-primary-col,
+  .course-details-sidebar-col {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .course-details-sidebar-col {
+    position: static !important;
+    top: auto !important;
+  }
+
+  /* 3-Column Player Layout to 1 Column */
+  .course-player-3col-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .player-accordion-panel,
+  .player-main-panel,
+  .player-promo-panel {
+    width: 100% !important;
+  }
+}
+
+/* Mobile & Small Tablet (< 768px) */
+@media (max-width: 767px) {
+  /* Breadcrumb & Navigation */
+  .course-details-breadcrumb-bar {
+    flex-wrap: wrap !important;
+    gap: 4px 6px !important;
+    font-size: clamp(11px, 2.8vw, 13px) !important;
+    margin-bottom: 12px !important;
+    line-height: 1.4 !important;
+  }
+
+  .course-details-breadcrumb-bar span,
+  .course-details-breadcrumb-bar a {
+    word-break: break-word !important;
+  }
+
+  /* Hero Banner Card */
+  .course-hero-banner-card {
+    border-radius: 14px !important;
+  }
+
+  .course-preview-media {
+    height: clamp(180px, 45vw, 260px) !important;
+  }
+
+  .play-preview-btn {
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    gap: 6px !important;
+  }
+
+  .play-preview-btn span {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 11px !important;
+  }
+
+  .course-hero-banner-card > div:last-child {
+    padding: 16px 12px !important;
+  }
+
+  /* Badges & Titles */
+  .course-hero-banner-card span[style*="border-radius: 20px"],
+  .course-badges-row span {
+    font-size: clamp(10px, 2.5vw, 11.5px) !important;
+    padding: 3px 8px !important;
+  }
+
+  .course-details-main-title,
+  .course-details-title,
+  .course-hero-banner-card h1 {
+    font-size: clamp(17px, 4.5vw, 22px) !important;
+    line-height: 1.35 !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* Instructor, Rating, Students Meta Row */
+  .course-hero-meta-row,
+  .course-hero-banner-card div[style*="border-top"] {
+    gap: 10px 14px !important;
+    font-size: 12px !important;
+    padding-top: 12px !important;
+  }
+
+  /* Statistics Cards Grid */
+  .course-stats-grid,
+  .course-details-primary-col > div[style*="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr))"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .course-stat-card,
+  .course-stats-grid > div {
+    padding: 12px 8px !important;
+    border-radius: 12px !important;
+  }
+
+  .course-stat-card div:first-child {
+    font-size: 20px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .course-stat-card div:nth-child(2) {
+    font-size: 15px !important;
+  }
+
+  .course-stat-card div:nth-child(3) {
+    font-size: 11px !important;
+  }
+
+  /* Card Containers Padding & Typography */
+  .course-description-box,
+  .course-curriculum-box,
+  .course-qa-box,
+  .course-reviews-box,
+  .course-related-box,
+  .course-purchase-card,
+  .course-details-primary-col > div[style*="padding: 28px"],
+  .course-details-sidebar-col > div[style*="padding: 24px"] {
+    padding: 16px 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .course-details-primary-col h2 {
+    font-size: clamp(16px, 4.2vw, 18px) !important;
+    margin-bottom: 12px !important;
+  }
+
+  .course-details-primary-col p {
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Curriculum / Lessons Accordions */
+  .lessons-accordion {
+    gap: 8px !important;
+  }
+
+  .lessons-accordion > div > div:first-child {
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+  }
+
+  .lessons-accordion > div > div:last-child {
+    padding: 8px 10px !important;
+    gap: 6px !important;
+  }
+
+  .lessons-accordion > div > div:last-child > div {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  /* Rating Summary Box */
+  .course-rating-summary-box,
+  .course-details-primary-col div[style*="grid-template-columns: 180px 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 14px 12px !important;
+    text-align: center !important;
+  }
+
+  .course-rating-summary-box > div:first-child {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  /* Sidebar Purchase Box Elements */
+  .course-purchase-card span[style*="font-size: 32px"],
+  .course-details-sidebar-col span[style*="font-size: 32px"] {
+    font-size: clamp(24px, 6vw, 30px) !important;
+  }
+
+  .course-purchase-card button.btn,
+  .course-details-sidebar-col button.btn {
+    padding: 11px !important;
+    font-size: clamp(13px, 3.2vw, 15px) !important;
+  }
+
+  /* Wishlist & Share buttons */
+  .wishlist-action-btn,
+  .course-details-sidebar-col button[title*="مشاركة"] {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+
+  /* Related Courses Grid */
+  .courses-container[id*="relatedCoursesContainer"] {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)) !important;
+    gap: 12px !important;
+  }
+
+  /* ==================================================
+     Mobile Optimization (<768px): Book Details & Reading Details Pages
+     Compact scale down (~20-30%)
+     ================================================== */
+  /* 1. Standalone Book Details Page (.official-book-details-wrapper) */
+  .official-book-details-wrapper {
+    padding: 12px 10px !important;
+  }
+
+  .book-details-breadcrumb-bar {
+    font-size: clamp(11px, 2.8vw, 12px) !important;
+    margin-bottom: 10px !important;
+    gap: 4px !important;
+  }
+
+  .official-book-details-wrapper button.btn-secondary {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+  }
+
+  .official-book-details-wrapper div[style*="margin-bottom: 24px"] {
+    margin-bottom: 12px !important;
+  }
+
+  .book-details-main-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .book-details-primary-col {
+    gap: 16px !important;
+  }
+
+  /* Hero Banner Box */
+  .book-details-primary-col > div[style*="padding: 28px"] {
+    padding: 14px 12px !important;
+    border-radius: 14px !important;
+    gap: 14px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .book-details-primary-col div[style*="width: 200px; height: 280px"] {
+    width: 120px !important;
+    height: 168px !important;
+    border-radius: 10px !important;
+    margin: 0 auto !important;
+  }
+
+  .book-details-primary-col div[style*="flex: 1; min-width: 260px"] {
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .book-details-primary-col div[style*="display: flex; flex-wrap: wrap; gap: 8px"] {
+    justify-content: center !important;
+    gap: 6px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .book-details-primary-col div[style*="display: flex; flex-wrap: wrap; gap: 8px"] span {
+    font-size: 10px !important;
+    padding: 3px 8px !important;
+  }
+
+  .book-details-primary-col h1 {
+    font-size: clamp(16px, 4.2vw, 19px) !important;
+    margin: 0 0 6px 0 !important;
+    line-height: 1.3 !important;
+  }
+
+  .book-details-primary-col div[style*="font-size: 15px"] {
+    font-size: 12px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .book-details-primary-col p {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .book-details-primary-col div[style*="border-top: 1px solid"] {
+    justify-content: center !important;
+    gap: 12px !important;
+    font-size: 12px !important;
+    padding-top: 10px !important;
+  }
+
+  /* Specifications Grid (4 specs) */
+  .book-details-primary-col div[style*="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr))"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .book-details-primary-col div[style*="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr))"] > div {
+    padding: 10px 8px !important;
+    border-radius: 10px !important;
+  }
+
+  .book-details-primary-col div[style*="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr))"] div[style*="font-size: 24px"] {
+    font-size: 18px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .book-details-primary-col div[style*="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr))"] div[style*="font-size: 18px"] {
+    font-size: 14px !important;
+  }
+
+  .book-details-primary-col div[style*="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr))"] div[style*="font-size: 12px"] {
+    font-size: 10px !important;
+  }
+
+  /* Description & Reviews Cards */
+  .book-details-primary-col div[style*="border-radius: 18px"] {
+    padding: 14px 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .book-details-primary-col h2 {
+    font-size: clamp(14px, 3.8vw, 16px) !important;
+    margin-bottom: 10px !important;
+  }
+
+  .book-details-primary-col div[style*="padding: 16px; border-radius: 12px"] {
+    padding: 10px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Sidebar Purchase Box */
+  .book-details-sidebar-col {
+    position: static !important;
+  }
+
+  .book-details-sidebar-col > div[style*="padding: 24px"] {
+    padding: 14px 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .book-details-sidebar-col div[style*="margin-bottom: 20px"] {
+    margin-bottom: 12px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .book-details-sidebar-col span[style*="font-size: 32px"] {
+    font-size: clamp(22px, 5.5vw, 26px) !important;
+  }
+
+  .book-details-sidebar-col span[style*="font-size: 18px"] {
+    font-size: 14px !important;
+  }
+
+  .book-details-sidebar-col div[style*="font-size: 12px; color: #059669"] {
+    font-size: 11px !important;
+  }
+
+  .book-details-sidebar-col button.btn-primary {
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+    border-radius: 10px !important;
+  }
+
+  .book-details-sidebar-col button[onclick*="toggleFavorite"] {
+    padding: 8px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+  }
+
+  .book-details-sidebar-col h4 {
+    font-size: 12px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .book-details-sidebar-col div[style*="display: flex; flex-direction: column; gap: 10px"] {
+    gap: 6px !important;
+    font-size: 11px !important;
+  }
+
+  /* 2. Reading Details 3-Column Section (.book-details-3col-section) */
+  .book-details-3col-section {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    margin-top: 8px !important;
+  }
+
+  .book-index-panel {
+    padding: 12px !important;
+    border-radius: 14px !important;
+    gap: 10px !important;
+  }
+
+  .title-with-icon h4 {
+    font-size: 13px !important;
+  }
+
+  .title-with-icon svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  .book-chapters-accordion {
+    gap: 6px !important;
+  }
+
+  .chapter-group {
+    border-radius: 8px !important;
+  }
+
+  .chapter-group-header {
+    padding: 8px 10px !important;
+    font-size: 11px !important;
+  }
+
+  .chapter-item {
+    padding: 6px 8px !important;
+    font-size: 11px !important;
+    gap: 6px !important;
+  }
+
+  .chapter-item .ch-num {
+    width: 14px !important;
+  }
+
+  .download-book-btn {
+    padding: 8px !important;
+    font-size: 11px !important;
+    border-radius: 8px !important;
+    margin-top: 6px !important;
+  }
+
+  .book-details-inner-card {
+    padding: 12px !important;
+    border-radius: 14px !important;
+    gap: 12px !important;
+  }
+
+  .book-details-layout {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    text-align: center !important;
+  }
+
+  .book-details-cover-box {
+    width: 110px !important;
+    margin: 0 auto !important;
+  }
+
+  .book-cover-placeholder.lg {
+    padding: 10px !important;
+    border-radius: 8px !important;
+    min-height: 140px !important;
+  }
+
+  .book-cover-placeholder .book-cover-title {
+    font-size: 13px !important;
+  }
+
+  .book-cover-placeholder .book-cover-author {
+    font-size: 9px !important;
+  }
+
+  .book-details-info-box {
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .book-breadcrumb {
+    font-size: 11px !important;
+  }
+
+  .book-main-title {
+    font-size: clamp(16px, 4.2vw, 19px) !important;
+  }
+
+  .book-author-row,
+  .book-rating-row {
+    font-size: 11px !important;
+    gap: 6px !important;
+  }
+
+  .book-description {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    margin: 2px 0 6px 0 !important;
+  }
+
+  .book-specs-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  .spec-card {
+    padding: 6px 8px !important;
+    border-radius: 8px !important;
+  }
+
+  .spec-label {
+    font-size: 10px !important;
+  }
+
+  .spec-value {
+    font-size: 11px !important;
+  }
+
+  .book-reading-progress-section {
+    padding: 8px 10px !important;
+    border-radius: 8px !important;
+    gap: 6px !important;
+  }
+
+  .progress-status-line {
+    font-size: 11px !important;
+  }
+
+  .book-actions-row {
+    gap: 6px !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .btn-primary-purple.lg-btn,
+  .btn-secondary-outline.lg-btn {
+    padding: 8px 12px !important;
+    font-size: 11px !important;
+    border-radius: 8px !important;
+    flex: 1 1 auto !important;
+    justify-content: center !important;
+  }
+
+  .btn-primary-purple.lg-btn svg,
+  .btn-secondary-outline.lg-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .book-stats-side-panel {
+    gap: 10px !important;
+  }
+
+  .side-card {
+    padding: 12px !important;
+    border-radius: 12px !important;
+    gap: 8px !important;
+  }
+
+  .side-card-title {
+    font-size: 13px !important;
+  }
+
+  .donut-and-list {
+    gap: 12px !important;
+    align-items: center !important;
+  }
+
+  .circular-progress-wrapper {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .donut-center-text .pct-num {
+    font-size: 12px !important;
+  }
+
+  .donut-center-text .pct-label {
+    font-size: 8px !important;
+  }
+
+  .progress-stats-list {
+    font-size: 10px !important;
+    gap: 4px !important;
+  }
+
+  .side-two-cards-row {
+    gap: 8px !important;
+  }
+
+  .mini-stat-card {
+    padding: 8px 10px !important;
+    gap: 6px !important;
+    border-radius: 8px !important;
+  }
+
+  .mini-icon-box {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 6px !important;
+  }
+
+  .mini-icon-box svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .mini-info .label {
+    font-size: 10px !important;
+  }
+
+  .mini-info .count {
+    font-size: 11px !important;
+  }
+
+  .last-read-yellow-card {
+    padding: 10px !important;
+    border-radius: 10px !important;
+  }
+
+  .yellow-card-title {
+    font-size: 12px !important;
+  }
+
+  .yellow-card-subtitle {
+    font-size: 11px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .btn-yellow-jump {
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+    border-radius: 6px !important;
+  }
+}
+
+/* Small Mobile Breakpoint (< 480px) */
+@media (max-width: 479px) {
+  .official-course-details-wrapper {
+    padding: 10px 8px !important;
+  }
+
+  /* Features checklist in description */
+  .course-features-checklist,
+  .course-details-primary-col div[style*="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"] {
+    grid-template-columns: 1fr !important;
+    padding: 10px !important;
+    gap: 6px !important;
+  }
+
+  /* Touch-friendly buttons and stack wishlist/share */
+  .course-details-sidebar-col button {
+    min-height: 42px !important;
+  }
+
+  .course-purchase-actions > div[style*="display: flex; gap: 8px;"],
+  .course-details-sidebar-col div[style*="display: flex; gap: 8px;"] {
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+
+  .wishlist-action-btn,
+  .course-details-sidebar-col button[title*="مشاركة"] {
+    width: 100% !important;
+  }
+
+  /* Video player preview box */
+  .video-preview-box {
+    border-radius: 10px !important;
+  }
+
+  .video-bottom-controls-bar {
+    padding: 6px 8px !important;
+    gap: 6px !important;
+    font-size: 11px !important;
+  }
+}
+
+/* Extra Small Screens (< 360px) */
+@media (max-width: 359px) {
+  .course-stats-grid,
+  .course-details-primary-col > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .course-details-main-title,
+  .course-details-title {
+    font-size: 16px !important;
+  }
+}
+
+
+
