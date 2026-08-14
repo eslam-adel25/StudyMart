@@ -2,7 +2,7 @@ import {
   showCustomAlert,
   showSuccessToast,
   showErrorToast,
-  showLoadingDialog
+  showLoadingDialog,
 } from "../utils/helpers.js";
 import {
   getStoredUsers,
@@ -10,7 +10,7 @@ import {
   saveUserToStorage,
   getCurrentUser,
   setCurrentUser,
-  removeCurrentUser
+  removeCurrentUser,
 } from "./authStorage.js";
 import {
   isPlatformOwnerCredentials,
@@ -19,10 +19,16 @@ import {
   isOwner,
   isTeacher,
   hasPermission,
-  PERMISSIONS
+  PERMISSIONS,
 } from "./permissionService.js";
-import { syncSidebarOverlayAndScroll, updateSidebarActiveNavigation } from "./sidebarService.js";
-import { isAccountBlocked, showSuspendedAccountModal } from "./accountStatusService.js";
+import {
+  syncSidebarOverlayAndScroll,
+  updateSidebarActiveNavigation,
+} from "./sidebarService.js";
+import {
+  isAccountBlocked,
+  showSuspendedAccountModal,
+} from "./accountStatusService.js";
 
 export const DEFAULT_AVATAR = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzY0NzQ4YiI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgNGMxLjkzIDAgMy41IDEuNTcgMy41IDMuNVMxMy45MyAxMyAxMiAxM3MtMy41LTEuNTctMy41LTMuNVMxMC4wNyA2IDEyIDZ6bTAgMTRjLTIuMDMgMC0zLjgtMS4wNC00LjgzLTIuNjIuMDMtMS42IDMuMjItMi40OCA0LjgzLTIuNDggMS42IDAgNC44Ljg4IDQuODMgMi40OEMxNS44IDE4Ljk2IDE0LjAzIDIwIDEyIDIweiIvPjwvc3ZnPg==`;
 
@@ -41,15 +47,30 @@ export function updateUserState() {
 
   const userRawImage = window.appState?.userData?.image || DEFAULT_AVATAR;
   let userImage = userRawImage;
-  if (userImage && typeof userImage === "string" && userImage.startsWith("data:image/svg+xml;utf8,<svg")) {
+  if (
+    userImage &&
+    typeof userImage === "string" &&
+    userImage.startsWith("data:image/svg+xml;utf8,<svg")
+  ) {
     try {
-      userImage = "data:image/svg+xml;base64," + btoa(userImage.replace("data:image/svg+xml;utf8,", ""));
+      userImage =
+        "data:image/svg+xml;base64," +
+        btoa(userImage.replace("data:image/svg+xml;utf8,", ""));
     } catch (e) {
       userImage = DEFAULT_AVATAR;
     }
   }
-  const safeUserImage = (userImage && typeof userImage === "string") ? userImage.replace(/"/g, "&quot;") : DEFAULT_AVATAR;
-  const userName = window.appState?.userData?.name || (userRole === "owner" ? "مالك المنصة" : (userRole === "teacher" ? "د. أحمد خليل" : "طالب"));
+  const safeUserImage =
+    userImage && typeof userImage === "string"
+      ? userImage.replace(/"/g, "&quot;")
+      : DEFAULT_AVATAR;
+  const userName =
+    window.appState?.userData?.name ||
+    (userRole === "owner"
+      ? "مالك المنصة"
+      : userRole === "teacher"
+        ? "د. أحمد خليل"
+        : "طالب");
   const userEmail = window.appState?.userData?.email || "";
 
   if (isLoggedIn) {
@@ -64,12 +85,18 @@ export function updateUserState() {
     if (dashboardLink) {
       if (userRole === "teacher" || userRole === "owner") {
         dashboardLink.classList.remove("hidden");
-        if (dashboardLink.parentElement) dashboardLink.parentElement.classList.remove("hidden");
-        dashboardLink.textContent = userRole === "owner" ? "لوحة المالك" : "لوحة المعلم";
-        dashboardLink.setAttribute("href", userRole === "owner" ? "#teacher/payouts" : "#teacher/dashboard");
+        if (dashboardLink.parentElement)
+          dashboardLink.parentElement.classList.remove("hidden");
+        dashboardLink.textContent =
+          userRole === "owner" ? "لوحة المالك" : "لوحة المعلم";
+        dashboardLink.setAttribute(
+          "href",
+          userRole === "owner" ? "#teacher/payouts" : "#teacher/dashboard",
+        );
       } else {
         dashboardLink.classList.add("hidden");
-        if (dashboardLink.parentElement) dashboardLink.parentElement.classList.add("hidden");
+        if (dashboardLink.parentElement)
+          dashboardLink.parentElement.classList.add("hidden");
       }
     }
   } else {
@@ -85,7 +112,8 @@ export function updateUserState() {
     }
     if (dashboardLink) {
       dashboardLink.classList.add("hidden");
-      if (dashboardLink.parentElement) dashboardLink.parentElement.classList.add("hidden");
+      if (dashboardLink.parentElement)
+        dashboardLink.parentElement.classList.add("hidden");
     }
   }
 
@@ -148,7 +176,9 @@ export function updateUserState() {
               </button>
             </div>
 
-            ${userRole === "owner" ? `
+            ${
+              userRole === "owner"
+                ? `
             <!-- OWNER SECTION: DEDICATED COLLAPSIBLE PLATFORM OWNER MENU -->
             <div class="owner-menu-section">
               <span style="font-size: 11px; font-weight: 700; color: #ef4444; letter-spacing: 0.5px; text-transform: uppercase; padding: 0 4px; display: block; margin-bottom: 6px;">إدارة المنصة (Platform Owner)</span>
@@ -176,7 +206,9 @@ export function updateUserState() {
                 </button>
               </div>
             </div>
-            ` : ""}
+            `
+                : ""
+            }
 
             <!-- SECTION 2: إدارة المحتوى -->
             <div>
@@ -333,7 +365,9 @@ export function updateUserState() {
   }
 
   // Update target elements across entire document
-  const avatarElements = document.querySelectorAll("#navProfileImg, #profileImage, #teacherCardImg, #editProfileAvatarImg, .profile-avatar-img, .student-avatar-img");
+  const avatarElements = document.querySelectorAll(
+    "#navProfileImg, #profileImage, #teacherCardImg, #editProfileAvatarImg, .profile-avatar-img, .student-avatar-img",
+  );
   avatarElements.forEach((img) => {
     if (img) {
       img.src = userImage || DEFAULT_AVATAR;
@@ -344,12 +378,16 @@ export function updateUserState() {
     }
   });
 
-  const nameElements = document.querySelectorAll("#profileName, #teacherCardName, #navProfileName");
+  const nameElements = document.querySelectorAll(
+    "#profileName, #teacherCardName, #navProfileName",
+  );
   nameElements.forEach((el) => {
     if (el) el.textContent = userName;
   });
 
-  const emailElements = document.querySelectorAll("#profileEmail, #teacherCardEmail");
+  const emailElements = document.querySelectorAll(
+    "#profileEmail, #teacherCardEmail",
+  );
   emailElements.forEach((el) => {
     if (el) el.textContent = userEmail;
   });
@@ -357,7 +395,7 @@ export function updateUserState() {
   updateSidebarActiveNavigation();
 }
 
-window.toggleStatsAccordionInDOM = function() {
+window.toggleStatsAccordionInDOM = function () {
   const body = document.getElementById("statsAccBody");
   const chev = document.getElementById("statsAccChevron");
   if (body) {
@@ -398,12 +436,15 @@ export function setupAuth() {
       window.appState.userData = null;
       window.appState.userRole = "student";
       updateUserState();
-      showSuspendedAccountModal("تم إيقاف حسابك من قبل إدارة المنصة. لا يمكنك الاستمرار في استخدام المنصة حالياً.");
+      showSuspendedAccountModal(
+        "تم إيقاف حسابك من قبل إدارة المنصة. لا يمكنك الاستمرار في استخدام المنصة حالياً.",
+      );
       setupRegisterInputListeners();
       return;
     }
     window.appState.isLoggedIn = true;
-    window.appState.userRole = currentUser.accountType || currentUser.role || "student";
+    window.appState.userRole =
+      currentUser.accountType || currentUser.role || "student";
     window.appState.userData = {
       name: currentUser.fullName || currentUser.name || "مستخدم",
       email: currentUser.email || "",
@@ -412,7 +453,7 @@ export function setupAuth() {
       gender: currentUser.gender || "",
       birthDate: currentUser.birthDate || "",
       accountType: currentUser.accountType || "student",
-      courses: window.appState.userData?.courses || []
+      courses: window.appState.userData?.courses || [],
     };
   }
   updateUserState();
@@ -427,7 +468,7 @@ export function setupRegisterInputListeners() {
     "regPhone",
     "regEmail",
     "regPassword",
-    "regConfirmPassword"
+    "regConfirmPassword",
   ];
   ids.forEach((id) => {
     const el = document.getElementById(id);
@@ -443,7 +484,9 @@ export const registeredEmails = ["student@gmail.com", "teacher@gmail.com"];
 let tempSelectedEmail = "";
 
 export const GOOGLE_CLIENT_ID =
-  (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.VITE_GOOGLE_CLIENT_ID) ||
+  (typeof import.meta !== "undefined" &&
+    import.meta.env &&
+    import.meta.env.VITE_GOOGLE_CLIENT_ID) ||
   "785176204167-qhliiiu5uomft3rqhucvb8q5nq9c7ian.apps.googleusercontent.com";
 
 export function sanitizeInput(str) {
@@ -467,7 +510,7 @@ export function handleGoogleSignIn() {
   if (!clientId) {
     showErrorToast({
       title: "خطأ في الإعدادات",
-      message: "لم يتم العثور على Google Client ID."
+      message: "لم يتم العثور على Google Client ID.",
     });
     return;
   }
@@ -477,7 +520,7 @@ export function handleGoogleSignIn() {
     const loadingToast = showLoadingDialog({
       title: "جاري التحميل...",
       message: "جاري تهيئة خدمة المصادقة من Google.",
-      progress: 50
+      progress: 50,
     });
 
     const script = document.createElement("script");
@@ -492,7 +535,8 @@ export function handleGoogleSignIn() {
       loadingToast.close();
       showErrorToast({
         title: "خطأ في التحميل",
-        message: "تعذر تحميل مكتبة Google Sign-In. يرجى التحقق من اتصال الإنترنت."
+        message:
+          "تعذر تحميل مكتبة Google Sign-In. يرجى التحقق من اتصال الإنترنت.",
       });
     };
     document.head.appendChild(script);
@@ -520,7 +564,7 @@ function triggerGoogleOAuthPopup(clientId) {
           }
           showErrorToast({
             title: "فشل الدخول عبر Google",
-            message: `حدث خطأ في المصادقة: ${response.error_description || response.error}`
+            message: `حدث خطأ في المصادقة: ${response.error_description || response.error}`,
           });
           return;
         }
@@ -528,7 +572,7 @@ function triggerGoogleOAuthPopup(clientId) {
         if (!response.access_token) {
           showErrorToast({
             title: "خطأ في المصادقة",
-            message: "لم يتم استلام رمز الوصول من Google."
+            message: "لم يتم استلام رمز الوصول من Google.",
           });
           return;
         }
@@ -536,15 +580,18 @@ function triggerGoogleOAuthPopup(clientId) {
         const loader = showLoadingDialog({
           title: "جاري المصادقة...",
           message: "جاري التحقق من حساب Google الخاص بك...",
-          progress: 50
+          progress: 50,
         });
 
         try {
-          const userInfoRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-            headers: {
-              Authorization: `Bearer ${response.access_token}`
-            }
-          });
+          const userInfoRes = await fetch(
+            "https://www.googleapis.com/oauth2/v3/userinfo",
+            {
+              headers: {
+                Authorization: `Bearer ${response.access_token}`,
+              },
+            },
+          );
 
           loader.setProgress(90);
 
@@ -552,7 +599,7 @@ function triggerGoogleOAuthPopup(clientId) {
             loader.close();
             showErrorToast({
               title: "خطأ في جلب الحساب",
-              message: "تعذر الحصول على معلومات الحساب من Google."
+              message: "تعذر الحصول على معلومات الحساب من Google.",
             });
             return;
           }
@@ -567,7 +614,7 @@ function triggerGoogleOAuthPopup(clientId) {
           console.error("Google userinfo fetch error:", err);
           showErrorToast({
             title: "خطأ في الاتصال",
-            message: "حدث خطأ أثناء الحصول على بيانات الحساب من Google."
+            message: "حدث خطأ أثناء الحصول على بيانات الحساب من Google.",
           });
         }
       },
@@ -576,7 +623,8 @@ function triggerGoogleOAuthPopup(clientId) {
           err &&
           (err.type === "popup_closed" ||
             err.type === "popup_closed_by_user" ||
-            (typeof err.message === "string" && err.message.toLowerCase().includes("closed")))
+            (typeof err.message === "string" &&
+              err.message.toLowerCase().includes("closed")))
         ) {
           // User intentionally closed the popup window
           return;
@@ -584,9 +632,9 @@ function triggerGoogleOAuthPopup(clientId) {
         console.error("Google Token Client Error:", err);
         showErrorToast({
           title: "خطأ المصادقة",
-          message: "حدث خطأ أثناء فتح نافذة اختيار حساب Google."
+          message: "حدث خطأ أثناء فتح نافذة اختيار حساب Google.",
         });
-      }
+      },
     });
 
     tokenClient.requestAccessToken({ prompt: "select_account" });
@@ -594,26 +642,224 @@ function triggerGoogleOAuthPopup(clientId) {
     console.error("Error launching Google OAuth:", err);
     showErrorToast({
       title: "خطأ المصادقة",
-      message: "لم نتمكن من فتح نافذة Google Account Chooser."
+      message: "لم نتمكن من فتح نافذة Google Account Chooser.",
+    });
+  }
+}
+
+/**
+ * Google email selection for REGISTRATION FORM ONLY.
+ * Initiates the Google account picker but only extracts email for prefilling the registration form.
+ * Does NOT log in the user or create an account.
+ */
+export function handleGoogleEmailSelectionForRegistration() {
+  const clientId = GOOGLE_CLIENT_ID;
+
+  if (!clientId) {
+    showErrorToast({
+      title: "خطأ في الإعدادات",
+      message: "لم يتم العثور على Google Client ID.",
+    });
+    return;
+  }
+
+  // Ensure GIS library is available
+  if (typeof window === "undefined" || !window.google?.accounts?.oauth2) {
+    const loadingToast = showLoadingDialog({
+      title: "جاري التحميل...",
+      message: "جاري تهيئة خدمة المصادقة من Google.",
+      progress: 50,
+    });
+
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      loadingToast.close();
+      triggerGoogleOAuthPopupForRegistration(clientId);
+    };
+    script.onerror = () => {
+      loadingToast.close();
+      showErrorToast({
+        title: "خطأ في التحميل",
+        message:
+          "تعذر تحميل مكتبة Google Sign-In. يرجى التحقق من اتصال الإنترنت.",
+      });
+    };
+    document.head.appendChild(script);
+    return;
+  }
+
+  triggerGoogleOAuthPopupForRegistration(clientId);
+}
+
+/**
+ * Triggers Google OAuth popup for registration form only.
+ * Callback processes email for registration prefill (NOT login).
+ */
+function triggerGoogleOAuthPopupForRegistration(clientId) {
+  try {
+    const tokenClient = window.google.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: "email profile openid",
+      prompt: "select_account",
+      callback: async (response) => {
+        if (response.error) {
+          if (
+            response.error === "access_denied" ||
+            response.error === "popup_closed_by_user" ||
+            response.error === "popup_closed"
+          ) {
+            // User closed popup gracefully - do nothing
+            return;
+          }
+          showErrorToast({
+            title: "خطأ في اختيار البريد",
+            message: `حدث خطأ: ${response.error_description || response.error}`,
+          });
+          return;
+        }
+
+        if (!response.access_token) {
+          showErrorToast({
+            title: "خطأ في المصادقة",
+            message: "لم يتم استلام رمز الوصول من Google.",
+          });
+          return;
+        }
+
+        const loader = showLoadingDialog({
+          title: "جاري جلب البريد...",
+          message: "جاري الحصول على بريدك من Google...",
+          progress: 50,
+        });
+
+        try {
+          const userInfoRes = await fetch(
+            "https://www.googleapis.com/oauth2/v3/userinfo",
+            {
+              headers: {
+                Authorization: `Bearer ${response.access_token}`,
+              },
+            },
+          );
+
+          loader.setProgress(90);
+
+          if (!userInfoRes.ok) {
+            loader.close();
+            showErrorToast({
+              title: "خطأ في جلب البريد",
+              message: "تعذر الحصول على بريدك من Google.",
+            });
+            return;
+          }
+
+          const googleProfile = await userInfoRes.json();
+          loader.setProgress(100);
+          setTimeout(() => loader.close(), 200);
+
+          // ONLY extract email, do NOT log in
+          processGoogleEmailForRegistration(googleProfile);
+        } catch (err) {
+          loader.close();
+          console.error("Google userinfo fetch error:", err);
+          showErrorToast({
+            title: "خطأ في الاتصال",
+            message: "حدث خطأ أثناء الحصول على البريد من Google.",
+          });
+        }
+      },
+      error_callback: (err) => {
+        if (
+          err &&
+          (err.type === "popup_closed" ||
+            err.type === "popup_closed_by_user" ||
+            (typeof err.message === "string" &&
+              err.message.toLowerCase().includes("closed")))
+        ) {
+          // User closed popup - do nothing
+          return;
+        }
+        console.error("Google Token Client Error:", err);
+        showErrorToast({
+          title: "خطأ",
+          message: "حدث خطأ أثناء فتح نافذة اختيار حساب Google.",
+        });
+      },
+    });
+
+    tokenClient.requestAccessToken({ prompt: "select_account" });
+  } catch (err) {
+    console.error("Error launching Google OAuth:", err);
+    showErrorToast({
+      title: "خطأ",
+      message: "لم نتمكن من فتح نافذة Google Account Chooser.",
+    });
+  }
+}
+
+/**
+ * Process Google email for REGISTRATION FORM ONLY.
+ * Extracts email and populates the registration form field.
+ * Does NOT create account, does NOT log in, does NOT redirect.
+ */
+export function processGoogleEmailForRegistration(googleProfile) {
+  const email = (googleProfile.email || "").trim().toLowerCase();
+
+  if (!email) {
+    showErrorToast({
+      title: "خطأ في البيانات",
+      message: "لم يتم العثور على بريد إلكتروني مرتبط بحساب Google هذا.",
+    });
+    return;
+  }
+
+  // Simply populate the email field in the registration form
+  const emailInput = document.getElementById("regEmail");
+  if (emailInput) {
+    // Keep the email field as read-only after Google selection
+    emailInput.value = email;
+    emailInput.setAttribute("readonly", "readonly");
+    emailInput.classList.add("prefilled-readonly");
+
+    // Trigger validation to check form state
+    validateRegistrationForm();
+
+    showSuccessToast({
+      title: "تم!",
+      message: "تم استخدام بريدك من Google. أكمل الحقول المتبقية.",
+    });
+  } else {
+    showErrorToast({
+      title: "خطأ",
+      message: "لم يتم العثور على حقل البريد في النموذج.",
     });
   }
 }
 
 export function processGoogleAuthSuccess(googleProfile) {
   const email = (googleProfile.email || "").trim().toLowerCase();
-  const name = googleProfile.name || googleProfile.given_name || email.split("@")[0] || "مستخدم Google";
+  const name =
+    googleProfile.name ||
+    googleProfile.given_name ||
+    email.split("@")[0] ||
+    "مستخدم Google";
   const avatar = googleProfile.picture || DEFAULT_AVATAR;
 
   if (!email) {
     showErrorToast({
       title: "خطأ في البيانات",
-      message: "لم يتم العثور على بريد إلكتروني مرتبط بحساب Google هذا."
+      message: "لم يتم العثور على بريد إلكتروني مرتبط بحساب Google هذا.",
     });
     return;
   }
 
   if (isAccountBlocked(email)) {
-    showSuspendedAccountModal("تم إيقاف أو تعليق حسابك من قبل إدارة المنصة. تعذر تسجيل الدخول عبر Google.");
+    showSuspendedAccountModal(
+      "تم إيقاف أو تعليق حسابك من قبل إدارة المنصة. تعذر تسجيل الدخول عبر Google.",
+    );
     return;
   }
 
@@ -642,7 +888,7 @@ export function processGoogleAuthSuccess(googleProfile) {
       role: role,
       googleId: googleProfile.sub || null,
       authProvider: "google",
-      registrationDate: new Date().toISOString()
+      registrationDate: new Date().toISOString(),
     };
 
     saveUserToStorage(existingUser);
@@ -659,7 +905,7 @@ export function processGoogleAuthSuccess(googleProfile) {
     birthDate: existingUser.birthDate || "",
     accountType: role,
     role: role,
-    courses: []
+    courses: [],
   };
 
   setCurrentUser(existingUser);
@@ -670,7 +916,7 @@ export function processGoogleAuthSuccess(googleProfile) {
     window.location.hash = "#teacher/dashboard";
     showSuccessToast({
       title: "أهلاً بك!",
-      message: `تم تسجيل الدخول بنجاح عبر Google: ${name}`
+      message: `تم تسجيل الدخول بنجاح عبر Google: ${name}`,
     });
     if (window.showDashboard) {
       window.showDashboard();
@@ -679,7 +925,7 @@ export function processGoogleAuthSuccess(googleProfile) {
     window.location.hash = "#home";
     showSuccessToast({
       title: "أهلاً بك!",
-      message: `تم تسجيل الدخول بنجاح عبر Google: ${name}`
+      message: `تم تسجيل الدخول بنجاح عبر Google: ${name}`,
     });
     if (typeof window.showHomeSection === "function") {
       window.showHomeSection("home");
@@ -696,7 +942,7 @@ export function redirectToLoginWithEmail() {
     loginEmail.value = tempSelectedEmail;
     loginEmail.readOnly = true;
     loginEmail.classList.add("prefilled-readonly");
-    
+
     // Add info note if not present
     let note = document.getElementById("loginEmailNote");
     if (!note) {
@@ -737,7 +983,8 @@ export function validateRegistrationForm() {
   const gender = document.getElementById("regGender")?.value || "";
   const birthDateStr = document.getElementById("regBirthDate")?.value || "";
   const password = document.getElementById("regPassword")?.value || "";
-  const confirmPassword = document.getElementById("regConfirmPassword")?.value || "";
+  const confirmPassword =
+    document.getElementById("regConfirmPassword")?.value || "";
   const emailInput = document.getElementById("regEmail");
   const email = (emailInput?.value || "").trim();
   const role = document.getElementById("selectedRole")?.value || "student";
@@ -762,7 +1009,9 @@ export function validateRegistrationForm() {
   const emailValid = Boolean(email && email.includes("@"));
 
   // Phone validation
-  const isPhoneValid = phone.length >= 8 && /^[\d+\s\u0660-\u0669\u06f0-\u06f9-]{8,20}$/.test(phone);
+  const isPhoneValid =
+    phone.length >= 8 &&
+    /^[\d+\s\u0660-\u0669\u06f0-\u06f9-]{8,20}$/.test(phone);
 
   // Birth Date validation
   let isDateValid = false;
@@ -823,7 +1072,9 @@ export function handleRegisterSubmit(event) {
 
   const emailInput = document.getElementById("regEmail");
   const email = (emailInput?.value || "").trim().toLowerCase();
-  const fullName = sanitizeInput(document.getElementById("regFullName")?.value || "");
+  const fullName = sanitizeInput(
+    document.getElementById("regFullName")?.value || "",
+  );
   const phone = sanitizeInput(document.getElementById("regPhone")?.value || "");
   const gender = document.getElementById("regGender")?.value || "";
   const birthDateStr = document.getElementById("regBirthDate")?.value || "";
@@ -833,7 +1084,9 @@ export function handleRegisterSubmit(event) {
 
   // Requirement 5: Check if email already exists inside localStorage or registered list
   const existingInStorage = findUserByEmail(email);
-  const isPreRegistered = registeredEmails.map(e => e.toLowerCase()).includes(email);
+  const isPreRegistered = registeredEmails
+    .map((e) => e.toLowerCase())
+    .includes(email);
 
   if (existingInStorage || isPreRegistered) {
     showCustomAlert("هذا البريد الإلكتروني مسجل بالفعل");
@@ -852,7 +1105,7 @@ export function handleRegisterSubmit(event) {
     birthDate: birthDateStr,
     accountType: role,
     password: password,
-    registrationDate: new Date().toISOString()
+    registrationDate: new Date().toISOString(),
   };
 
   saveUserToStorage(newUser);
@@ -869,7 +1122,7 @@ export function handleRegisterSubmit(event) {
     gender: gender,
     birthDate: birthDateStr,
     accountType: role,
-    courses: []
+    courses: [],
   };
 
   // Requirement 3: Close modal, update navbar, show success notification
@@ -949,7 +1202,9 @@ export function handleLogin(event) {
   if (event) event.preventDefault();
   const loginEmailInput = document.getElementById("loginEmail");
   const loginPasswordInput = document.getElementById("loginPassword");
-  const email = loginEmailInput ? loginEmailInput.value.trim().toLowerCase() : "";
+  const email = loginEmailInput
+    ? loginEmailInput.value.trim().toLowerCase()
+    : "";
   const password = loginPasswordInput ? loginPasswordInput.value : "";
 
   if (!email || !password) {
@@ -965,7 +1220,7 @@ export function handleLogin(event) {
       avatar: DEFAULT_AVATAR,
       accountType: "owner",
       role: "owner",
-      isPlatformOwner: true
+      isPlatformOwner: true,
     };
     saveUserToStorage(ownerUser);
     setCurrentUser(ownerUser);
@@ -981,14 +1236,16 @@ export function handleLogin(event) {
       birthDate: "",
       accountType: "owner",
       role: "owner",
-      courses: []
+      courses: [],
     };
 
     updateUserState();
     closeAuth();
 
     window.location.hash = "#teacher/payouts";
-    showCustomAlert("تم تسجيل الدخول بنجاح بصفتك مالك المنصة (Platform Owner)! تمتلك كافة الصلاحيات.");
+    showCustomAlert(
+      "تم تسجيل الدخول بنجاح بصفتك مالك المنصة (Platform Owner)! تمتلك كافة الصلاحيات.",
+    );
 
     if (window.showDashboard) {
       window.showDashboard();
@@ -1000,7 +1257,10 @@ export function handleLogin(event) {
   if (isTeacherTestCredentials(email, password)) {
     if (isAccountBlocked(email) || isAccountBlocked("teacher-1")) {
       closeAuth();
-      showSuspendedAccountModal("تم إيقاف حسابك مؤقتًا من قبل إدارة المنصة. يرجى التواصل مع الدعم الفني.", "تم إيقاف حسابك");
+      showSuspendedAccountModal(
+        "تم إيقاف حسابك مؤقتًا من قبل إدارة المنصة. يرجى التواصل مع الدعم الفني.",
+        "تم إيقاف حسابك",
+      );
       return;
     }
 
@@ -1009,7 +1269,7 @@ export function handleLogin(event) {
       email: email,
       avatar: DEFAULT_AVATAR,
       accountType: "teacher",
-      role: "teacher"
+      role: "teacher",
     };
     saveUserToStorage(teacherUser);
     setCurrentUser(teacherUser);
@@ -1025,7 +1285,7 @@ export function handleLogin(event) {
       birthDate: "",
       accountType: "teacher",
       role: "teacher",
-      courses: []
+      courses: [],
     };
 
     updateUserState();
@@ -1044,7 +1304,10 @@ export function handleLogin(event) {
   if (isStudentTestCredentials(email, password)) {
     if (isAccountBlocked(email) || isAccountBlocked("std-101")) {
       closeAuth();
-      showSuspendedAccountModal("تم حظر حسابك من قبل إدارة المنصة. يرجى التواصل مع الدعم الفني لإعادة تفعيل الحساب.", "تم حظر حسابك");
+      showSuspendedAccountModal(
+        "تم حظر حسابك من قبل إدارة المنصة. يرجى التواصل مع الدعم الفني لإعادة تفعيل الحساب.",
+        "تم حظر حسابك",
+      );
       return;
     }
 
@@ -1053,7 +1316,7 @@ export function handleLogin(event) {
       email: email,
       avatar: DEFAULT_AVATAR,
       accountType: "student",
-      role: "student"
+      role: "student",
     };
     saveUserToStorage(studentUser);
     setCurrentUser(studentUser);
@@ -1069,7 +1332,7 @@ export function handleLogin(event) {
       birthDate: "",
       accountType: "student",
       role: "student",
-      courses: []
+      courses: [],
     };
 
     updateUserState();
@@ -1098,11 +1361,21 @@ export function handleLogin(event) {
 
   if (isAccountBlocked(email) || isAccountBlocked(foundUser)) {
     closeAuth();
-    const role = (foundUser.accountType || foundUser.role || "student").toLowerCase();
+    const role = (
+      foundUser.accountType ||
+      foundUser.role ||
+      "student"
+    ).toLowerCase();
     if (role === "teacher") {
-      showSuspendedAccountModal("تم إيقاف حسابك مؤقتًا من قبل إدارة المنصة. يرجى التواصل مع الدعم الفني.", "تم إيقاف حسابك");
+      showSuspendedAccountModal(
+        "تم إيقاف حسابك مؤقتًا من قبل إدارة المنصة. يرجى التواصل مع الدعم الفني.",
+        "تم إيقاف حسابك",
+      );
     } else {
-      showSuspendedAccountModal("تم حظر حسابك من قبل إدارة المنصة. يرجى التواصل مع الدعم الفني لإعادة تفعيل الحساب.", "تم حظر حسابك");
+      showSuspendedAccountModal(
+        "تم حظر حسابك من قبل إدارة المنصة. يرجى التواصل مع الدعم الفني لإعادة تفعيل الحساب.",
+        "تم حظر حسابك",
+      );
     }
     return;
   }
@@ -1120,7 +1393,7 @@ export function handleLogin(event) {
     birthDate: foundUser.birthDate || "",
     accountType: role,
     role: role,
-    courses: []
+    courses: [],
   };
   setCurrentUser(foundUser);
 
@@ -1154,7 +1427,9 @@ export function toggleProfile(event) {
   if (!sidebar) return;
 
   const willShow = !sidebar.classList.contains("show");
-  document.querySelectorAll(".cart-sidebar, .sidebar-drawer").forEach((s) => s.classList.remove("show"));
+  document
+    .querySelectorAll(".cart-sidebar, .sidebar-drawer")
+    .forEach((s) => s.classList.remove("show"));
 
   if (willShow) {
     sidebar.classList.add("show");
@@ -1169,7 +1444,8 @@ export function showUserProfile() {
     window.renderProfilePage();
   } else {
     const role = window.appState?.userRole || "student";
-    window.location.hash = role === "teacher" ? "#teacher/profile" : "#student/profile";
+    window.location.hash =
+      role === "teacher" ? "#teacher/profile" : "#student/profile";
   }
 }
 
@@ -1204,13 +1480,15 @@ export function updateProfileImage() {
 }
 
 export async function handleLogout() {
-  const confirmed = await (window.showConfirmDialog ? window.showConfirmDialog({
-    title: "تأكيد تسجيل الخروج",
-    message: "هل أنت تأكد من رغبتك في تسجيل الخروج من حسابك الشخصي؟",
-    confirmText: "تسجيل الخروج",
-    cancelText: "إلغاء",
-    danger: true
-  }) : Promise.resolve(true));
+  const confirmed = await (window.showConfirmDialog
+    ? window.showConfirmDialog({
+        title: "تأكيد تسجيل الخروج",
+        message: "هل أنت تأكد من رغبتك في تسجيل الخروج من حسابك الشخصي؟",
+        confirmText: "تسجيل الخروج",
+        cancelText: "إلغاء",
+        danger: true,
+      })
+    : Promise.resolve(true));
 
   if (!confirmed) return;
 
@@ -1223,11 +1501,13 @@ export async function handleLogout() {
   if (document.getElementById("profileSidebar")?.classList.contains("show")) {
     toggleProfile();
   }
-  
+
   if (window.showSuccessToast) {
-    window.showSuccessToast({ title: "تم تسجيل الخروج", message: "تم تسجيل الخروج من حسابك بنجاح." });
+    window.showSuccessToast({
+      title: "تم تسجيل الخروج",
+      message: "تم تسجيل الخروج من حسابك بنجاح.",
+    });
   } else {
     showCustomAlert("تم تسجيل الخروج بنجاح!");
   }
 }
-

@@ -10,27 +10,57 @@ import * as ProfileService from "./services/profileService.js";
 import * as PurchasesService from "./services/purchasesService.js";
 import * as FavoritesService from "./services/favoritesService.js";
 import * as SeoService from "./services/seoService.js";
-import { openCourseBuilder, renderCourseBuilderUI } from "./services/courseBuilderService.js";
+import {
+  openCourseBuilder,
+  renderCourseBuilderUI,
+} from "./services/courseBuilderService.js";
 import { openCourseManagementDashboard } from "./services/courseManagementService.js";
-import { openBookBuilder, renderBookBuilderUI } from "./services/bookBuilderService.js";
+import {
+  openBookBuilder,
+  renderBookBuilderUI,
+} from "./services/bookBuilderService.js";
 import { openBookManagementDashboard } from "./services/bookManagementService.js";
-import { renderQuestionBankPage, renderImportQuestionsPage, getQuestionBank } from "./services/questionBankService.js";
-import { openAdvancedQuestionEditorModal, closeQuestionEditorOverlay } from "./services/advancedQuestionEditorService.js";
+import {
+  renderQuestionBankPage,
+  renderImportQuestionsPage,
+  getQuestionBank,
+} from "./services/questionBankService.js";
+import {
+  openAdvancedQuestionEditorModal,
+  closeQuestionEditorOverlay,
+} from "./services/advancedQuestionEditorService.js";
 import * as RevenueTransactionService from "./services/revenueTransactionService.js";
 import * as EnrolledStudentsService from "./services/enrolledStudentsService.js";
 import * as StudentReviewsService from "./services/studentReviewsService.js";
 import * as MessageCenterService from "./services/messageCenterService.js";
 import * as PayoutsService from "./services/payoutsService.js";
 import { openHomepageManagement } from "./services/homepageManagementService.js";
-import { openOwnerStudentsManagement, openOwnerStudentDetailPage } from "./services/ownerStudentsService.js";
-import { openOwnerTeachersManagement, openOwnerTeacherDetailPage } from "./services/ownerTeachersService.js";
+import {
+  openOwnerStudentsManagement,
+  openOwnerStudentDetailPage,
+} from "./services/ownerStudentsService.js";
+import {
+  openOwnerTeachersManagement,
+  openOwnerTeacherDetailPage,
+} from "./services/ownerTeachersService.js";
 import { openOwnerFreeAccess } from "./services/ownerFreeAccessService.js";
 import { showCustomAlert } from "./utils/helpers.js";
-import { setupBooks, renderBooks, filterStandaloneBooks } from "./components/books.js";
+import {
+  setupBooks,
+  renderBooks,
+  filterStandaloneBooks,
+} from "./components/books.js";
 import { booksData } from "./data/books.js";
 import { isOwner, isTeacher, isStudent } from "./services/permissionService.js";
-import { initSidebarManager, updateSidebarActiveNavigation } from "./services/sidebarService.js";
-import { initNavigationHistory, handleGlobalBack, updateGlobalBackUI } from "./services/navigationHistoryService.js";
+import {
+  initSidebarManager,
+  updateSidebarActiveNavigation,
+} from "./services/sidebarService.js";
+import {
+  initNavigationHistory,
+  handleGlobalBack,
+  updateGlobalBackUI,
+} from "./services/navigationHistoryService.js";
 
 // وحدة خدمة الدفع المحملة ديناميكياً عند الحاجة
 let paymentServiceModule = null;
@@ -57,7 +87,8 @@ window.appState = {
   userData: {
     name: "Eslam Adel",
     email: "student@gmail.com",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop",
     courses: [],
   },
   userPurchasedBooks: [],
@@ -79,6 +110,8 @@ window.switchToRegister = AuthService.switchToRegister;
 window.handleLogin = AuthService.handleLogin;
 window.handleOAuth = AuthService.handleGoogleSignIn;
 window.handleGoogleSignIn = AuthService.handleGoogleSignIn;
+window.handleGoogleEmailSelectionForRegistration =
+  AuthService.handleGoogleEmailSelectionForRegistration;
 window.togglePasswordVisibility = AuthService.togglePasswordVisibility;
 window.handleForgotPassword = AuthService.handleForgotPassword;
 window.redirectToLoginWithEmail = AuthService.redirectToLoginWithEmail;
@@ -89,8 +122,10 @@ window.handleRegisterSubmit = AuthService.handleRegisterSubmit;
 window.toggleProfile = AuthService.toggleProfile;
 window.showUserProfile = ProfileService.renderProfilePage;
 window.renderProfilePage = ProfileService.renderProfilePage;
-window.triggerEditProfileImageUpload = ProfileService.triggerEditProfileImageUpload;
-window.handleEditProfileImageChange = ProfileService.handleEditProfileImageChange;
+window.triggerEditProfileImageUpload =
+  ProfileService.triggerEditProfileImageUpload;
+window.handleEditProfileImageChange =
+  ProfileService.handleEditProfileImageChange;
 window.cancelEditProfile = ProfileService.cancelEditProfile;
 window.saveEditProfile = ProfileService.saveEditProfile;
 window.handleChangePassword = ProfileService.handleChangePassword;
@@ -114,7 +149,8 @@ window.openBookPreview = BookService.openBookPreview;
 window.closeMyBooksModal = DashboardService.closeMyBooksModal;
 window.openBook = DashboardService.openBook;
 window.saveBook = DashboardService.saveBook;
-window.closeStudentPurchasesChoice = DashboardService.closeStudentPurchasesChoice;
+window.closeStudentPurchasesChoice =
+  DashboardService.closeStudentPurchasesChoice;
 window.openMyCourses = CourseService.openMyCourses;
 window.renderMyCoursesPage = CourseService.renderMyCoursesPage;
 window.openAddCourse = DashboardService.openAddCourse;
@@ -153,7 +189,8 @@ window.continueCourse = CourseService.continueCourse;
 window.filterMyCoursesTab = CourseService.filterMyCoursesTab;
 window.searchMyCourses = CourseService.searchMyCourses;
 window.resetMyCoursesSearch = CourseService.resetMyCoursesSearch;
-window.handleMyCoursesSearchKeydown = CourseService.handleMyCoursesSearchKeydown;
+window.handleMyCoursesSearchKeydown =
+  CourseService.handleMyCoursesSearchKeydown;
 window.sortMyCourses = CourseService.sortMyCourses;
 window.playCurrentCourse = CourseService.playCurrentCourse;
 window.scrollToCourseDetails = CourseService.scrollToCourseDetails;
@@ -205,8 +242,10 @@ window.updateUserState = AuthService.updateUserState;
 window.setupAuth = AuthService.setupAuth;
 window.showCustomAlert = showCustomAlert;
 window.filterCourses = CourseService.filterCourses;
-window.filterStandaloneCourses = CourseService.filterStandaloneCourses || window.filterStandaloneCourses;
-window.filterStandaloneBooks = filterStandaloneBooks || window.filterStandaloneBooks;
+window.filterStandaloneCourses =
+  CourseService.filterStandaloneCourses || window.filterStandaloneCourses;
+window.filterStandaloneBooks =
+  filterStandaloneBooks || window.filterStandaloneBooks;
 window.filterByCategory = LayoutService.filterByCategory;
 window.filterByLevel = LayoutService.filterByLevel;
 window.handleHeroSearch = LayoutService.handleHeroSearch;
@@ -226,14 +265,20 @@ window.renderBooks = renderBooks;
 window.booksData = booksData;
 
 // Enrolled Students Module Window Bindings
-window.openEnrolledStudentsPage = EnrolledStudentsService.openEnrolledStudentsPage;
+window.openEnrolledStudentsPage =
+  EnrolledStudentsService.openEnrolledStudentsPage;
 window.openStudentDetailPage = EnrolledStudentsService.openStudentDetailPage;
 window.handleStudentSearch = EnrolledStudentsService.handleStudentSearch;
-window.handleStudentCourseFilter = EnrolledStudentsService.handleStudentCourseFilter;
-window.handleStudentBookFilter = EnrolledStudentsService.handleStudentBookFilter;
-window.handleStudentCountryFilter = EnrolledStudentsService.handleStudentCountryFilter;
-window.handleStudentProgressFilter = EnrolledStudentsService.handleStudentProgressFilter;
-window.handleStudentStatusFilter = EnrolledStudentsService.handleStudentStatusFilter;
+window.handleStudentCourseFilter =
+  EnrolledStudentsService.handleStudentCourseFilter;
+window.handleStudentBookFilter =
+  EnrolledStudentsService.handleStudentBookFilter;
+window.handleStudentCountryFilter =
+  EnrolledStudentsService.handleStudentCountryFilter;
+window.handleStudentProgressFilter =
+  EnrolledStudentsService.handleStudentProgressFilter;
+window.handleStudentStatusFilter =
+  EnrolledStudentsService.handleStudentStatusFilter;
 window.handleStudentSort = EnrolledStudentsService.handleStudentSort;
 window.changeStudentPage = EnrolledStudentsService.changeStudentPage;
 window.promptAddNote = EnrolledStudentsService.promptAddNote;
@@ -243,17 +288,23 @@ window.handleToggleBlock = EnrolledStudentsService.handleToggleBlock;
 window.exportStudentsCSV = EnrolledStudentsService.exportStudentsCSV;
 window.exportStudentsExcel = EnrolledStudentsService.exportStudentsExcel;
 window.printStudentReport = EnrolledStudentsService.printStudentReport;
-window.toggleStudentActionMenu = EnrolledStudentsService.toggleStudentActionMenu;
-window.closeAllStudentActionMenus = EnrolledStudentsService.closeAllStudentActionMenus;
-window.handleStudentMenuAction = EnrolledStudentsService.handleStudentMenuAction;
-window.toggleStudentMessageMenu = EnrolledStudentsService.toggleStudentMessageMenu;
-window.handleStudentMessageAction = EnrolledStudentsService.handleStudentMessageAction;
+window.toggleStudentActionMenu =
+  EnrolledStudentsService.toggleStudentActionMenu;
+window.closeAllStudentActionMenus =
+  EnrolledStudentsService.closeAllStudentActionMenus;
+window.handleStudentMenuAction =
+  EnrolledStudentsService.handleStudentMenuAction;
+window.toggleStudentMessageMenu =
+  EnrolledStudentsService.toggleStudentMessageMenu;
+window.handleStudentMessageAction =
+  EnrolledStudentsService.handleStudentMessageAction;
 
 // Student Reviews Module Window Bindings
 window.openStudentReviewsPage = StudentReviewsService.openStudentReviewsPage;
 window.openReviewDetailPage = StudentReviewsService.openReviewDetailPage;
 window.handleReviewSearch = StudentReviewsService.handleReviewSearch;
-window.handleReviewCourseFilter = StudentReviewsService.handleReviewCourseFilter;
+window.handleReviewCourseFilter =
+  StudentReviewsService.handleReviewCourseFilter;
 window.handleReviewBookFilter = StudentReviewsService.handleReviewBookFilter;
 window.handleReviewStarsFilter = StudentReviewsService.handleReviewStarsFilter;
 window.handleReviewReplyFilter = StudentReviewsService.handleReviewReplyFilter;
@@ -265,7 +316,8 @@ window.handleDeleteReview = StudentReviewsService.handleDeleteReview;
 window.exportReviewsCSV = StudentReviewsService.exportReviewsCSV;
 window.exportReviewsExcel = StudentReviewsService.exportReviewsExcel;
 window.toggleReviewActionMenu = StudentReviewsService.toggleReviewActionMenu;
-window.closeAllReviewActionMenus = StudentReviewsService.closeAllReviewActionMenus;
+window.closeAllReviewActionMenus =
+  StudentReviewsService.closeAllReviewActionMenus;
 window.handleReviewMenuAction = StudentReviewsService.handleReviewMenuAction;
 window.printReviewDocument = StudentReviewsService.printReviewDocument;
 
@@ -286,7 +338,12 @@ function handleRoleRouteProtection() {
   const search = window.location.search || "";
 
   // Normalize route if hash is missing but path is provided
-  if ((!hash || hash === "#" || hash === "#/") && path && path !== "/" && path !== "/index.html") {
+  if (
+    (!hash || hash === "#" || hash === "#/") &&
+    path &&
+    path !== "/" &&
+    path !== "/index.html"
+  ) {
     hash = "#" + path.replace(/^\//, "") + search;
   }
 
@@ -297,13 +354,23 @@ function handleRoleRouteProtection() {
   const userRole = window.appState?.userRole || "student";
 
   // 1. Standalone Books Page
-  if (hash === "#books" || hash === "#/books" || hash === "#standaloneBooksPage") {
+  if (
+    hash === "#books" ||
+    hash === "#/books" ||
+    hash === "#standaloneBooksPage"
+  ) {
     LayoutService.showBooksPage();
     return;
   }
 
   // 2. Standalone Courses Page
-  if (hash === "#courses" || hash === "#/courses" || hash === "#coursesSection" || hash === "#coursesList" || hash === "#standaloneCoursesPage") {
+  if (
+    hash === "#courses" ||
+    hash === "#/courses" ||
+    hash === "#coursesSection" ||
+    hash === "#coursesList" ||
+    hash === "#standaloneCoursesPage"
+  ) {
     LayoutService.showCoursesPage();
     return;
   }
@@ -321,7 +388,11 @@ function handleRoleRouteProtection() {
   }
 
   // 3. Contact Section
-  if (hash === "#contactFooter" || hash === "#contact" || hash === "#/contact") {
+  if (
+    hash === "#contactFooter" ||
+    hash === "#contact" ||
+    hash === "#/contact"
+  ) {
     LayoutService.scrollToSection("contact");
     return;
   }
@@ -365,7 +436,10 @@ function handleRoleRouteProtection() {
 
   // Helper check for teacher dashboard sub-routes
   function isTeacherDashboardSubRoute(h) {
-    const after = h.replace(/^#\/?teacher\/?/, "").split("?")[0].trim();
+    const after = h
+      .replace(/^#\/?teacher\/?/, "")
+      .split("?")[0]
+      .trim();
     if (!after) return true;
     return [
       "dashboard",
@@ -385,7 +459,7 @@ function handleRoleRouteProtection() {
       "book-builder",
       "question-bank",
       "questions",
-      "homepage-management"
+      "homepage-management",
     ].some((sub) => after.startsWith(sub));
   }
 
@@ -422,7 +496,7 @@ function handleRoleRouteProtection() {
           "book-builder",
           "question-bank",
           "questions",
-          "homepage-management"
+          "homepage-management",
         ].includes(after.split("/")[0])
       ) {
         teacherKey = after;
@@ -436,7 +510,11 @@ function handleRoleRouteProtection() {
   }
 
   // 7. My Books Page (Student)
-  if (hash.includes("my-books") || hash.includes("mybooks") || hash.includes("student/books")) {
+  if (
+    hash.includes("my-books") ||
+    hash.includes("mybooks") ||
+    hash.includes("student/books")
+  ) {
     if (!isLoggedIn) {
       showCustomAlert("يرجى تسجيل الدخول للوصول إلى هذه الصفحة");
       AuthService.showLogin();
@@ -476,7 +554,11 @@ function handleRoleRouteProtection() {
   }
 
   // 9. My Courses Page (Student)
-  if (hash.includes("my-courses") || hash.includes("mycourses") || hash.includes("student/courses")) {
+  if (
+    hash.includes("my-courses") ||
+    hash.includes("mycourses") ||
+    hash.includes("student/courses")
+  ) {
     if (!isLoggedIn) {
       showCustomAlert("يرجى تسجيل الدخول للوصول إلى هذه الصفحة");
       AuthService.showLogin();
@@ -504,14 +586,19 @@ function handleRoleRouteProtection() {
   }
 
   // 12. Homepage Management (Owner)
-  if (hash.includes("homepage-management") || hash.includes("owner/homepage-management")) {
+  if (
+    hash.includes("homepage-management") ||
+    hash.includes("owner/homepage-management")
+  ) {
     if (!isLoggedIn) {
       showCustomAlert("يرجى تسجيل الدخول للوصول إلى إدارة الصفحة الرئيسية");
       AuthService.showLogin();
       return;
     }
     if (!isOwner(userRole)) {
-      showCustomAlert("عذراً، صفحة إدارة الصفحة الرئيسية مخصصة فقط لمالك المنصة (Platform Owner).");
+      showCustomAlert(
+        "عذراً، صفحة إدارة الصفحة الرئيسية مخصصة فقط لمالك المنصة (Platform Owner).",
+      );
       window.location.hash = "#teacher/dashboard";
       return;
     }
@@ -520,14 +607,19 @@ function handleRoleRouteProtection() {
   }
 
   // Owner Student Details
-  if (hash.includes("owner/student-details") || hash.includes("owner/students/details")) {
+  if (
+    hash.includes("owner/student-details") ||
+    hash.includes("owner/students/details")
+  ) {
     if (!isLoggedIn) {
       showCustomAlert("يرجى تسجيل الدخول للوصول إلى تفاصيل الطالب");
       AuthService.showLogin();
       return;
     }
     if (!isOwner(userRole)) {
-      showCustomAlert("عذراً، هذه الصفحة مخصصة فقط لمالك المنصة (Platform Owner).");
+      showCustomAlert(
+        "عذراً، هذه الصفحة مخصصة فقط لمالك المنصة (Platform Owner).",
+      );
       window.location.hash = "#teacher/dashboard";
       return;
     }
@@ -549,7 +641,9 @@ function handleRoleRouteProtection() {
       return;
     }
     if (!isOwner(userRole)) {
-      showCustomAlert("عذراً، هذه الصفحة مخصصة فقط لمالك المنصة (Platform Owner).");
+      showCustomAlert(
+        "عذراً، هذه الصفحة مخصصة فقط لمالك المنصة (Platform Owner).",
+      );
       window.location.hash = "#teacher/dashboard";
       return;
     }
@@ -558,14 +652,19 @@ function handleRoleRouteProtection() {
   }
 
   // Owner Teacher Details
-  if (hash.includes("owner/teacher-details") || hash.includes("owner/teachers/details")) {
+  if (
+    hash.includes("owner/teacher-details") ||
+    hash.includes("owner/teachers/details")
+  ) {
     if (!isLoggedIn) {
       showCustomAlert("يرجى تسجيل الدخول للوصول إلى تفاصيل المعلم");
       AuthService.showLogin();
       return;
     }
     if (!isOwner(userRole)) {
-      showCustomAlert("عذراً، هذه الصفحة مخصصة فقط لمالك المنصة (Platform Owner).");
+      showCustomAlert(
+        "عذراً، هذه الصفحة مخصصة فقط لمالك المنصة (Platform Owner).",
+      );
       window.location.hash = "#teacher/dashboard";
       return;
     }
@@ -587,7 +686,9 @@ function handleRoleRouteProtection() {
       return;
     }
     if (!isOwner(userRole)) {
-      showCustomAlert("عذراً، هذه الصفحة مخصصة فقط لمالك المنصة (Platform Owner).");
+      showCustomAlert(
+        "عذراً، هذه الصفحة مخصصة فقط لمالك المنصة (Platform Owner).",
+      );
       window.location.hash = "#teacher/dashboard";
       return;
     }
@@ -603,7 +704,9 @@ function handleRoleRouteProtection() {
       return;
     }
     if (!isOwner(userRole)) {
-      showCustomAlert("عذراً، هذه الصفحة مخصصة فقط لمالك المنصة (Platform Owner).");
+      showCustomAlert(
+        "عذراً، هذه الصفحة مخصصة فقط لمالك المنصة (Platform Owner).",
+      );
       window.location.hash = "#teacher/dashboard";
       return;
     }
@@ -637,7 +740,15 @@ function handleRoleRouteProtection() {
   }
 
   // 14. Teacher Dashboard Routes
-  if (hash.includes("teacher") || hash.includes("course-builder") || hash.includes("book-builder") || hash.includes("books/manage") || hash.includes("books/new") || hash.includes("books/edit") || hash.includes("question")) {
+  if (
+    hash.includes("teacher") ||
+    hash.includes("course-builder") ||
+    hash.includes("book-builder") ||
+    hash.includes("books/manage") ||
+    hash.includes("books/new") ||
+    hash.includes("books/edit") ||
+    hash.includes("question")
+  ) {
     if (!isLoggedIn) {
       showCustomAlert("يرجى تسجيل الدخول للوصول إلى لوحة المعلم");
       AuthService.showLogin();
@@ -656,7 +767,10 @@ function handleRoleRouteProtection() {
     } else if (hash.includes("questions/import")) {
       closeQuestionEditorOverlay();
       renderImportQuestionsPage();
-    } else if (hash.includes("questions/new") || hash.includes("questions/edit")) {
+    } else if (
+      hash.includes("questions/new") ||
+      hash.includes("questions/edit")
+    ) {
       const urlParams = new URLSearchParams(hash.split("?")[1] || "");
       const qId = urlParams.get("id");
       if (qId) {
@@ -666,11 +780,18 @@ function handleRoleRouteProtection() {
       } else {
         openAdvancedQuestionEditorModal(null);
       }
-    } else if (hash.includes("course-builder") || hash.includes("courses/new")) {
+    } else if (
+      hash.includes("course-builder") ||
+      hash.includes("courses/new")
+    ) {
       const urlParams = new URLSearchParams(hash.split("?")[1] || "");
       const courseId = urlParams.get("id");
       openCourseBuilder(courseId);
-    } else if (hash.includes("book-builder") || hash.includes("books/new") || hash.includes("books/edit")) {
+    } else if (
+      hash.includes("book-builder") ||
+      hash.includes("books/new") ||
+      hash.includes("books/edit")
+    ) {
       const urlParams = new URLSearchParams(hash.split("?")[1] || "");
       const bookId = urlParams.get("id");
       openBookBuilder(bookId);
@@ -679,15 +800,21 @@ function handleRoleRouteProtection() {
       if (parts.length > 1 && parts[1].trim() && !parts[1].startsWith("?")) {
         const studentId = parts[1].split("?")[0].trim();
         const detailPage = document.getElementById("studentDetailPage");
-        const isAlreadyOpen = detailPage && !detailPage.classList.contains("hidden");
-        EnrolledStudentsService.openStudentDetailPage(studentId, { preserveScroll: isAlreadyOpen });
+        const isAlreadyOpen =
+          detailPage && !detailPage.classList.contains("hidden");
+        EnrolledStudentsService.openStudentDetailPage(studentId, {
+          preserveScroll: isAlreadyOpen,
+        });
       } else {
         const urlParams = new URLSearchParams(hash.split("?")[1] || "");
         const studentId = urlParams.get("id");
         if (studentId) {
           const detailPage = document.getElementById("studentDetailPage");
-          const isAlreadyOpen = detailPage && !detailPage.classList.contains("hidden");
-          EnrolledStudentsService.openStudentDetailPage(studentId, { preserveScroll: isAlreadyOpen });
+          const isAlreadyOpen =
+            detailPage && !detailPage.classList.contains("hidden");
+          EnrolledStudentsService.openStudentDetailPage(studentId, {
+            preserveScroll: isAlreadyOpen,
+          });
         } else {
           EnrolledStudentsService.openEnrolledStudentsPage();
         }
@@ -711,7 +838,7 @@ function handleRoleRouteProtection() {
       const parts = cleanHash.split("messages/");
       if (parts.length > 1 && parts[1].trim()) {
         const routePath = parts[1].split("?")[0];
-        const pathTokens = routePath.split("/").filter(t => t.trim());
+        const pathTokens = routePath.split("/").filter((t) => t.trim());
         const convId = pathTokens[0] || null;
         const msgId = pathTokens.length > 1 ? pathTokens[1] : null;
         MessageCenterService.openMessageCenterPage(convId, msgId);
@@ -771,7 +898,13 @@ function handleRoleRouteProtection() {
   }
 
   // 16. Home Route (Only matched when hash is explicitly #home, #/home, #, or empty string)
-  if (hash === "#home" || hash === "#/home" || hash === "" || hash === "#" || hash === "#/") {
+  if (
+    hash === "#home" ||
+    hash === "#/home" ||
+    hash === "" ||
+    hash === "#" ||
+    hash === "#/"
+  ) {
     LayoutService.showHomePage();
     return;
   }
@@ -816,4 +949,3 @@ const initializeApp = async () => {
 void initializeApp().catch((error) => {
   console.error("فشل في تهيئة التطبيق", error);
 });
-
