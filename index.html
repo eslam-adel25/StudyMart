@@ -226,7 +226,7 @@
           >
             <img
               id="navProfileImg"
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop"
+              src=""
               alt="User Avatar"
               class="profile-avatar-img"
             />
@@ -7196,7 +7196,11 @@
                         type="tel"
                         id="regPhone"
                         placeholder="مثال: 01012345678"
-                        oninput="validateRegistrationForm()"
+                        inputmode="numeric"
+                        oninput="
+                          sanitizePhoneInput(this);
+                          validateRegistrationForm();
+                        "
                         required
                       />
                     </div>

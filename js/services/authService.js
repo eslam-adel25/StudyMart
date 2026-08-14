@@ -977,6 +977,17 @@ export function selectRoleCard(role) {
   validateRegistrationForm();
 }
 
+/**
+ * Sanitizes phone input to accept only digits (0-9).
+ * Removes all non-numeric characters including letters, special characters, and spaces.
+ * This function is called via oninput event on the phone field to prevent invalid input.
+ */
+export function sanitizePhoneInput(input) {
+  if (!input) return;
+  // Keep only digits (0-9)
+  input.value = input.value.replace(/\D/g, "");
+}
+
 export function validateRegistrationForm() {
   const fullName = (document.getElementById("regFullName")?.value || "").trim();
   const phone = (document.getElementById("regPhone")?.value || "").trim();
@@ -1423,6 +1434,13 @@ export function toggleProfile(event) {
     if (event.preventDefault) event.preventDefault();
     if (event.stopPropagation) event.stopPropagation();
   }
+
+  // Check if user is authenticated before opening profile menu
+  const isLoggedIn = Boolean(window.appState?.isLoggedIn);
+  if (!isLoggedIn) {
+    return; // Do not open profile navigation for unauthenticated users
+  }
+
   const sidebar = document.getElementById("profileSidebar");
   if (!sidebar) return;
 

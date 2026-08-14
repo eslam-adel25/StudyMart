@@ -87,8 +87,7 @@ window.appState = {
   userData: {
     name: "Eslam Adel",
     email: "student@gmail.com",
-    image:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop",
+    image: "",
     courses: [],
   },
   userPurchasedBooks: [],
@@ -118,6 +117,7 @@ window.redirectToLoginWithEmail = AuthService.redirectToLoginWithEmail;
 window.resetRegisterFlow = AuthService.resetRegisterFlow;
 window.selectRoleCard = AuthService.selectRoleCard;
 window.validateRegistrationForm = AuthService.validateRegistrationForm;
+window.sanitizePhoneInput = AuthService.sanitizePhoneInput;
 window.handleRegisterSubmit = AuthService.handleRegisterSubmit;
 window.toggleProfile = AuthService.toggleProfile;
 window.showUserProfile = ProfileService.renderProfilePage;
