@@ -15,7 +15,7 @@ import {
   BarChart3,
   LogOut,
   ChevronDown,
-  ChevronLeft
+  ChevronLeft,
 } from "lucide-react";
 
 export const TeacherSidebar = ({
@@ -23,7 +23,7 @@ export const TeacherSidebar = ({
   avatarUrl = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop",
   activeItem = "profile",
   onNavigate,
-  onLogout
+  onLogout,
 }) => {
   // حالة التحكم في القائمة الأكورديون للإحصائيات
   const [statsExpanded, setStatsExpanded] = useState(false);
@@ -48,7 +48,10 @@ export const TeacherSidebar = ({
         window.openAddBook();
       }
     } else if (key === "manage-courses" || key === "purchased-courses") {
-      if (typeof window !== "undefined" && window.openCourseManagementDashboard) {
+      if (
+        typeof window !== "undefined" &&
+        window.openCourseManagementDashboard
+      ) {
         window.openCourseManagementDashboard();
       } else if (typeof window !== "undefined" && window.openMyCourses) {
         window.openMyCourses();
@@ -83,15 +86,15 @@ export const TeacherSidebar = ({
   return (
     <aside
       dir="rtl"
-      className="w-full max-w-[320px] bg-[#0b1329] text-slate-200 rounded-[24px] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-800/80 flex flex-col gap-5 font-['Tajawal',sans-serif] select-none transition-all duration-300"
+      className="w-full max-w-80 bg-[#0b1329] text-slate-200 rounded-3xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-800/80 flex flex-col gap-5 font-['Tajawal',sans-serif] select-none transition-all duration-300"
     >
       {/* الهيدر العلوي الشعار وبطاقة المعلم */}
       <div className="flex flex-col gap-4">
         {/* شعار المنصة */}
         <div className="flex items-center justify-between px-2 pt-1 pb-2 border-b border-slate-800/80">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-[0_0_15px_rgba(124,58,237,0.4)]">
-              <GraduationCap className="w-6 h-6 stroke-[2]" />
+            <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-[0_0_15px_rgba(124,58,237,0.4)]">
+              <GraduationCap className="w-6 h-6 stroke-2" />
             </div>
             <div>
               <span className="text-xl font-black tracking-tight text-white block leading-tight">
@@ -267,7 +270,7 @@ export const TeacherSidebar = ({
             <button
               type="button"
               onClick={() => setStatsExpanded(!statsExpanded)}
-              className={`h-[48px] px-3.5 rounded-xl flex items-center justify-between w-full transition-all duration-200 cursor-pointer text-right border-none outline-none ${
+              className={`h-12 px-3.5 rounded-xl flex items-center justify-between w-full transition-all duration-200 cursor-pointer text-right border-none outline-none ${
                 statsExpanded || selectedItem.startsWith("stats-")
                   ? "bg-purple-950/40 text-purple-300 font-semibold border border-purple-500/20"
                   : "hover:bg-slate-800/60 text-slate-300 font-medium"
@@ -287,7 +290,9 @@ export const TeacherSidebar = ({
             {/* تفاصيل قائمة الإحصائيات */}
             <div
               className={`overflow-hidden transition-all duration-300 flex flex-col gap-1 pr-4 pl-1 ${
-                statsExpanded ? "max-h-[200px] opacity-100 mt-1" : "max-h-0 opacity-0"
+                statsExpanded
+                  ? "max-h-50 opacity-100 mt-1"
+                  : "max-h-0 opacity-0"
               }`}
             >
               <button
@@ -342,7 +347,7 @@ export const TeacherSidebar = ({
               window.handleLogout();
             }
           }}
-          className="group h-[50px] px-3.5 rounded-xl flex items-center justify-between w-full transition-all duration-200 cursor-pointer text-right border border-red-500/10 hover:border-red-500/30 bg-red-950/20 hover:bg-red-950/40 text-red-400 hover:text-red-300 font-semibold"
+          className="group h-12.5 px-3.5 rounded-xl flex items-center justify-between w-full transition-all duration-200 cursor-pointer text-right border border-red-500/10 hover:border-red-500/30 bg-red-950/20 hover:bg-red-950/40 text-red-400 hover:text-red-300 font-semibold"
         >
           <div className="flex items-center gap-3">
             <LogOut className="w-5 h-5 shrink-0 stroke-[1.8] text-red-400 group-hover:text-red-300" />
@@ -363,20 +368,20 @@ const SidebarItem = ({
   badge,
   highlight,
   disabled,
-  onClick
+  onClick,
 }) => {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`group h-[48px] px-3.5 rounded-xl flex items-center justify-between w-full transition-all duration-200 cursor-pointer text-right border-none outline-none ${
+      className={`group h-12 px-3.5 rounded-xl flex items-center justify-between w-full transition-all duration-200 cursor-pointer text-right border-none outline-none ${
         active
           ? "bg-purple-600 text-white font-bold shadow-[0_4px_15px_rgba(124,58,237,0.3)]"
           : highlight
-          ? "bg-purple-950/40 text-purple-300 hover:bg-purple-900/50 font-semibold border border-purple-500/30"
-          : disabled
-          ? "opacity-60 cursor-not-allowed text-slate-400 hover:bg-slate-800/30"
-          : "hover:bg-slate-800/60 text-slate-300 hover:text-white font-medium"
+            ? "bg-purple-950/40 text-purple-300 hover:bg-purple-900/50 font-semibold border border-purple-500/30"
+            : disabled
+              ? "opacity-60 cursor-not-allowed text-slate-400 hover:bg-slate-800/30"
+              : "hover:bg-slate-800/60 text-slate-300 hover:text-white font-medium"
       }`}
     >
       <div className="flex items-center gap-3 overflow-hidden">
@@ -385,8 +390,8 @@ const SidebarItem = ({
             active
               ? "text-white"
               : highlight
-              ? "text-purple-400"
-              : "text-slate-400 group-hover:text-purple-400"
+                ? "text-purple-400"
+                : "text-slate-400 group-hover:text-purple-400"
           }`}
         />
         <span className="text-[14px] truncate">{title}</span>

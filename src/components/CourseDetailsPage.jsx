@@ -19,7 +19,7 @@ import {
   ShieldCheck,
   Video,
   HelpCircle,
-  ArrowLeft
+  ArrowLeft,
 } from "lucide-react";
 
 export const CourseDetailsPage = () => {
@@ -34,7 +34,7 @@ export const CourseDetailsPage = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [expandedModules, setExpandedModules] = useState({
     m1: true,
-    m2: true
+    m2: true,
   });
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [cartNotification, setCartNotification] = useState(null);
@@ -45,13 +45,19 @@ export const CourseDetailsPage = () => {
 
   if (!course) {
     return (
-      <div className="w-full min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center p-6 text-center font-['Tajawal',sans-serif]" dir="rtl">
+      <div
+        className="w-full min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center p-6 text-center font-['Tajawal',sans-serif]"
+        dir="rtl"
+      >
         <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 mb-4 text-2xl">
           ⚠️
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">لم يتم العثور على الدورة المطلوب عرضها</h2>
+        <h2 className="text-2xl font-bold text-white mb-2">
+          لم يتم العثور على الدورة المطلوب عرضها
+        </h2>
         <p className="text-slate-400 text-sm max-w-md mb-6">
-          الدورة برقم ({courseId}) غير موجودة أو تم نقلها. يرجى العودة إلى دليل الدورات.
+          الدورة برقم ({courseId}) غير موجودة أو تم نقلها. يرجى العودة إلى دليل
+          الدورات.
         </p>
         <button
           type="button"
@@ -71,7 +77,11 @@ export const CourseDetailsPage = () => {
 
   const handleAddToCart = () => {
     setIsInCart(!isInCart);
-    setCartNotification(!isInCart ? "تمت إضافة الدورة إلى سلة التسوق بنجاح!" : "تمت إزالة الدورة من السلة");
+    setCartNotification(
+      !isInCart
+        ? "تمت إضافة الدورة إلى سلة التسوق بنجاح!"
+        : "تمت إزالة الدورة من السلة",
+    );
     setTimeout(() => setCartNotification(null), 3000);
   };
 
@@ -88,7 +98,7 @@ export const CourseDetailsPage = () => {
       question: newQuestionText,
       answer: "شكراً لسؤالك! سيقوم المدرب بالرد على استفسارك قريباً جداً.",
       author: "أنت (الطالب)",
-      date: "الآن"
+      date: "الآن",
     };
 
     setQaItems([newQA, ...qaItems]);
@@ -98,7 +108,10 @@ export const CourseDetailsPage = () => {
   const relatedCourses = mockCourses.filter((c) => c.id !== course.id);
 
   return (
-    <div className="w-full min-h-screen bg-slate-950 text-slate-100 font-['Tajawal',sans-serif] pb-20" dir="rtl">
+    <div
+      className="w-full min-h-screen bg-slate-950 text-slate-100 font-['Tajawal',sans-serif] pb-20"
+      dir="rtl"
+    >
       {/* Toast Notification */}
       {cartNotification && (
         <div className="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-emerald-600 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-2 text-sm font-bold border border-emerald-400/40 animate-bounce">
@@ -122,15 +135,16 @@ export const CourseDetailsPage = () => {
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <span>الدورات</span>
             <span>/</span>
-            <span className="text-purple-400 font-semibold">{course.category}</span>
+            <span className="text-purple-400 font-semibold">
+              {course.category}
+            </span>
           </div>
         </div>
       </div>
 
       {/* Hero Banner Section */}
-      <section className="bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-950 border-b border-slate-800/80 pt-8 pb-10 px-4 sm:px-6 lg:px-8">
+      <section className="bg-linear-to-b from-slate-900 via-slate-900/90 to-slate-950 border-b border-slate-800/80 pt-8 pb-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
           {/* Main Info Header Column */}
           <div className="lg:col-span-7 flex flex-col gap-4">
             <div className="flex flex-wrap items-center gap-2">
@@ -162,7 +176,9 @@ export const CourseDetailsPage = () => {
               <div className="flex items-center gap-1.5 text-amber-400 font-bold bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-xl">
                 <Star className="w-4 h-4 fill-amber-400 stroke-amber-400" />
                 <span>{course.rating}</span>
-                <span className="text-slate-400 font-normal">({course.reviewsCount} تقييم)</span>
+                <span className="text-slate-400 font-normal">
+                  ({course.reviewsCount} تقييم)
+                </span>
               </div>
 
               <div className="flex items-center gap-1.5 text-slate-300 font-medium">
@@ -184,11 +200,15 @@ export const CourseDetailsPage = () => {
                 className="w-12 h-12 rounded-full object-cover border-2 border-purple-500/60 shadow-lg"
               />
               <div className="flex flex-col">
-                <span className="text-xs text-slate-400">مدرس الدورة المعلم:</span>
+                <span className="text-xs text-slate-400">
+                  مدرس الدورة المعلم:
+                </span>
                 <span className="text-sm font-bold text-white hover:text-purple-300 transition-colors cursor-pointer">
                   {course.instructor.name}
                 </span>
-                <span className="text-xs text-slate-400">{course.instructor.title}</span>
+                <span className="text-xs text-slate-400">
+                  {course.instructor.title}
+                </span>
               </div>
             </div>
           </div>
@@ -211,21 +231,33 @@ export const CourseDetailsPage = () => {
                   >
                     <Play className="w-6 h-6 fill-white ml-0.5" />
                   </button>
-                  <span className="text-xs font-bold text-white drop-shadow-md">معاينة فيديو الدورة الترويجي</span>
+                  <span className="text-xs font-bold text-white drop-shadow-md">
+                    معاينة فيديو الدورة الترويجي
+                  </span>
                 </div>
               </div>
 
               {/* Pricing Row */}
               <div className="flex items-baseline justify-between border-b border-slate-800 pb-4">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-extrabold text-amber-400">${course.price}</span>
+                  <span className="text-3xl font-extrabold text-amber-400">
+                    ${course.price}
+                  </span>
                   {course.originalPrice && (
-                    <span className="text-base text-slate-500 line-through">${course.originalPrice}</span>
+                    <span className="text-base text-slate-500 line-through">
+                      ${course.originalPrice}
+                    </span>
                   )}
                 </div>
                 {course.originalPrice && (
                   <span className="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold rounded-lg">
-                    خصم {Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100)}%
+                    خصم{" "}
+                    {Math.round(
+                      ((course.originalPrice - course.price) /
+                        course.originalPrice) *
+                        100,
+                    )}
+                    %
                   </span>
                 )}
               </div>
@@ -242,7 +274,11 @@ export const CourseDetailsPage = () => {
                   }`}
                 >
                   <ShoppingCart className="w-5 h-5" />
-                  <span>{isInCart ? "في سلة التسوق (انقر للإلغاء)" : "إضافة إلى السلة الان"}</span>
+                  <span>
+                    {isInCart
+                      ? "في سلة التسوق (انقر للإلغاء)"
+                      : "إضافة إلى السلة الان"}
+                  </span>
                 </button>
 
                 <button
@@ -254,8 +290,12 @@ export const CourseDetailsPage = () => {
                       : "bg-slate-800/80 hover:bg-slate-800 text-slate-300 border-slate-700"
                   }`}
                 >
-                  <Heart className={`w-4 h-4 ${isWishlisted ? "fill-rose-500 text-rose-500" : ""}`} />
-                  <span>{isWishlisted ? "المفضلة (مُضافة)" : "إضافة إلى المفضلة"}</span>
+                  <Heart
+                    className={`w-4 h-4 ${isWishlisted ? "fill-rose-500 text-rose-500" : ""}`}
+                  />
+                  <span>
+                    {isWishlisted ? "المفضلة (مُضافة)" : "إضافة إلى المفضلة"}
+                  </span>
                 </button>
               </div>
 
@@ -267,7 +307,9 @@ export const CourseDetailsPage = () => {
                 </div>
                 <div className="flex items-center gap-2.5">
                   <BookOpen className="w-4 h-4 text-indigo-400 shrink-0" />
-                  <span>{course.lessonsCount} درسًا تعليميًا مقسمًا بعناية</span>
+                  <span>
+                    {course.lessonsCount} درسًا تعليميًا مقسمًا بعناية
+                  </span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <Award className="w-4 h-4 text-amber-400 shrink-0" />
@@ -280,7 +322,6 @@ export const CourseDetailsPage = () => {
               </div>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -308,7 +349,8 @@ export const CourseDetailsPage = () => {
                 : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
             }`}
           >
-            المنهج والدروس ({course.curriculum.reduce((acc, m) => acc + m.lessons.length, 0)})
+            المنهج والدروس (
+            {course.curriculum.reduce((acc, m) => acc + m.lessons.length, 0)})
           </button>
 
           <button
@@ -341,7 +383,6 @@ export const CourseDetailsPage = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8 flex flex-col gap-8">
-            
             {/* OVERVIEW TAB */}
             {activeTab === "overview" && (
               <div className="flex flex-col gap-8">
@@ -353,9 +394,14 @@ export const CourseDetailsPage = () => {
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {course.whatYouWillLearn.map((item, idx) => (
-                      <div key={idx} className="flex items-start gap-2.5 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                      <div
+                        key={idx}
+                        className="flex items-start gap-2.5 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80"
+                      >
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                        <span className="text-xs sm:text-sm text-slate-200 leading-relaxed">{item}</span>
+                        <span className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                          {item}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -363,7 +409,9 @@ export const CourseDetailsPage = () => {
 
                 {/* Detailed Description Card */}
                 <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
-                  <h3 className="text-lg font-bold text-white mb-3">تفاصيل الدورة التدريبية</h3>
+                  <h3 className="text-lg font-bold text-white mb-3">
+                    تفاصيل الدورة التدريبية
+                  </h3>
                   <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
                     {course.fullDescription}
                   </p>
@@ -371,10 +419,15 @@ export const CourseDetailsPage = () => {
 
                 {/* Requirements Card */}
                 <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
-                  <h3 className="text-lg font-bold text-white mb-3">متطلبات الدورة</h3>
+                  <h3 className="text-lg font-bold text-white mb-3">
+                    متطلبات الدورة
+                  </h3>
                   <ul className="flex flex-col gap-2">
                     {course.requirements.map((req, idx) => (
-                      <li key={idx} className="flex items-center gap-2 text-xs sm:text-sm text-slate-300">
+                      <li
+                        key={idx}
+                        className="flex items-center gap-2 text-xs sm:text-sm text-slate-300"
+                      >
                         <div className="w-1.5 h-1.5 rounded-full bg-purple-400" />
                         <span>{req}</span>
                       </li>
@@ -388,9 +441,12 @@ export const CourseDetailsPage = () => {
             {activeTab === "curriculum" && (
               <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col gap-4">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-                  <h3 className="text-lg font-bold text-white">منهج الدورة التدريبية</h3>
+                  <h3 className="text-lg font-bold text-white">
+                    منهج الدورة التدريبية
+                  </h3>
                   <span className="text-xs text-slate-400 font-medium">
-                    {course.curriculum.length} وحدات • {course.lessonsCount} درساً • الإجمالي {course.duration}
+                    {course.curriculum.length} وحدات • {course.lessonsCount}{" "}
+                    درساً • الإجمالي {course.duration}
                   </span>
                 </div>
 
@@ -398,7 +454,10 @@ export const CourseDetailsPage = () => {
                   {course.curriculum.map((module) => {
                     const isExpanded = expandedModules[module.id];
                     return (
-                      <div key={module.id} className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-950/60">
+                      <div
+                        key={module.id}
+                        className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-950/60"
+                      >
                         <button
                           type="button"
                           onClick={() => toggleModule(module.id)}
@@ -410,18 +469,27 @@ export const CourseDetailsPage = () => {
                             ) : (
                               <ChevronDown className="w-4 h-4 text-slate-400" />
                             )}
-                            <span className="text-sm font-bold text-white">{module.title}</span>
+                            <span className="text-sm font-bold text-white">
+                              {module.title}
+                            </span>
                           </div>
-                          <span className="text-xs text-slate-400 font-medium">{module.lessonsCount} دروس ({module.totalDuration})</span>
+                          <span className="text-xs text-slate-400 font-medium">
+                            {module.lessonsCount} دروس ({module.totalDuration})
+                          </span>
                         </button>
 
                         {isExpanded && (
                           <div className="flex flex-col border-t border-slate-800 divide-y divide-slate-800/60">
                             {module.lessons.map((lesson) => (
-                              <div key={lesson.id} className="p-3.5 px-5 flex items-center justify-between hover:bg-slate-900/40 transition-colors text-xs">
+                              <div
+                                key={lesson.id}
+                                className="p-3.5 px-5 flex items-center justify-between hover:bg-slate-900/40 transition-colors text-xs"
+                              >
                                 <div className="flex items-center gap-3">
                                   <Video className="w-4 h-4 text-purple-400 shrink-0" />
-                                  <span className="font-semibold text-slate-200">{lesson.title}</span>
+                                  <span className="font-semibold text-slate-200">
+                                    {lesson.title}
+                                  </span>
                                   {lesson.isFreePreview && (
                                     <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold rounded-md">
                                       معاينة مجانية
@@ -451,8 +519,13 @@ export const CourseDetailsPage = () => {
                 </h3>
 
                 {/* Add Question Form */}
-                <form onSubmit={handleAddQuestion} className="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3">
-                  <label className="text-xs font-bold text-slate-300">اطرح سؤالاً على مدرب الدورة:</label>
+                <form
+                  onSubmit={handleAddQuestion}
+                  className="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3"
+                >
+                  <label className="text-xs font-bold text-slate-300">
+                    اطرح سؤالاً على مدرب الدورة:
+                  </label>
                   <textarea
                     rows={2}
                     value={newQuestionText}
@@ -473,17 +546,28 @@ export const CourseDetailsPage = () => {
                 {/* Q&A List */}
                 <div className="flex flex-col gap-4">
                   {qaItems.length === 0 ? (
-                    <p className="text-xs text-slate-400 text-center py-6">لا توجد أسئلة سابقة بعد. كن أول من يطرح سؤالاً!</p>
+                    <p className="text-xs text-slate-400 text-center py-6">
+                      لا توجد أسئلة سابقة بعد. كن أول من يطرح سؤالاً!
+                    </p>
                   ) : (
                     qaItems.map((qa) => (
-                      <div key={qa.id} className="bg-slate-950/60 p-4 rounded-2xl border border-slate-800 flex flex-col gap-2">
+                      <div
+                        key={qa.id}
+                        className="bg-slate-950/60 p-4 rounded-2xl border border-slate-800 flex flex-col gap-2"
+                      >
                         <div className="flex items-center justify-between text-xs text-slate-400">
-                          <span className="font-bold text-purple-300">{qa.author}</span>
+                          <span className="font-bold text-purple-300">
+                            {qa.author}
+                          </span>
                           <span>{qa.date}</span>
                         </div>
-                        <p className="text-xs sm:text-sm font-bold text-white">س: {qa.question}</p>
+                        <p className="text-xs sm:text-sm font-bold text-white">
+                          س: {qa.question}
+                        </p>
                         <div className="bg-purple-950/30 border border-purple-500/20 p-3 rounded-xl mt-1 text-xs text-slate-300">
-                          <span className="font-bold text-amber-300 block mb-1">إجابة المدرب:</span>
+                          <span className="font-bold text-amber-300 block mb-1">
+                            إجابة المدرب:
+                          </span>
                           <p>{qa.answer}</p>
                         </div>
                       </div>
@@ -498,24 +582,37 @@ export const CourseDetailsPage = () => {
               <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col gap-6">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-6">
                   <div className="flex items-center gap-4">
-                    <div className="text-4xl font-extrabold text-white">{course.rating}</div>
+                    <div className="text-4xl font-extrabold text-white">
+                      {course.rating}
+                    </div>
                     <div className="flex flex-col">
                       <div className="flex items-center text-amber-400">
                         {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-amber-400 stroke-amber-400" />
+                          <Star
+                            key={i}
+                            className="w-4 h-4 fill-amber-400 stroke-amber-400"
+                          />
                         ))}
                       </div>
-                      <span className="text-xs text-slate-400 mt-1">متوسط تقييم الدورة بناءً على {course.reviewsCount} تقييماً</span>
+                      <span className="text-xs text-slate-400 mt-1">
+                        متوسط تقييم الدورة بناءً على {course.reviewsCount}{" "}
+                        تقييماً
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex flex-col gap-4">
                   {course.reviewsList.length === 0 ? (
-                    <p className="text-xs text-slate-400 text-center py-6">لا توجد تقييمات مكتوبة حتى الآن لهذه الدورة.</p>
+                    <p className="text-xs text-slate-400 text-center py-6">
+                      لا توجد تقييمات مكتوبة حتى الآن لهذه الدورة.
+                    </p>
                   ) : (
                     course.reviewsList.map((review) => (
-                      <div key={review.id} className="bg-slate-950/60 p-4 rounded-2xl border border-slate-800 flex flex-col gap-2">
+                      <div
+                        key={review.id}
+                        className="bg-slate-950/60 p-4 rounded-2xl border border-slate-800 flex flex-col gap-2"
+                      >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2.5">
                             <img
@@ -524,17 +621,26 @@ export const CourseDetailsPage = () => {
                               className="w-8 h-8 rounded-full object-cover border border-purple-500/40"
                             />
                             <div className="flex flex-col">
-                              <span className="text-xs font-bold text-white">{review.userName}</span>
-                              <span className="text-[10px] text-slate-500">{review.date}</span>
+                              <span className="text-xs font-bold text-white">
+                                {review.userName}
+                              </span>
+                              <span className="text-[10px] text-slate-500">
+                                {review.date}
+                              </span>
                             </div>
                           </div>
                           <div className="flex items-center text-amber-400">
                             {[...Array(review.rating)].map((_, i) => (
-                              <Star key={i} className="w-3.5 h-3.5 fill-amber-400 stroke-amber-400" />
+                              <Star
+                                key={i}
+                                className="w-3.5 h-3.5 fill-amber-400 stroke-amber-400"
+                              />
                             ))}
                           </div>
                         </div>
-                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mt-1">{review.comment}</p>
+                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mt-1">
+                          {review.comment}
+                        </p>
                       </div>
                     ))
                   )}
@@ -552,10 +658,16 @@ export const CourseDetailsPage = () => {
                   className="w-16 h-16 rounded-full object-cover border-2 border-purple-500 shadow-xl"
                 />
                 <div className="flex flex-col gap-1.5 flex-1">
-                  <h4 className="text-base font-bold text-white">{course.instructor.name}</h4>
-                  <p className="text-xs text-purple-300 font-medium">{course.instructor.title}</p>
-                  <p className="text-xs text-slate-300 leading-relaxed mt-1">{course.instructor.bio}</p>
-                  
+                  <h4 className="text-base font-bold text-white">
+                    {course.instructor.name}
+                  </h4>
+                  <p className="text-xs text-purple-300 font-medium">
+                    {course.instructor.title}
+                  </p>
+                  <p className="text-xs text-slate-300 leading-relaxed mt-1">
+                    {course.instructor.bio}
+                  </p>
+
                   <div className="flex items-center gap-4 text-xs text-slate-400 mt-2 pt-2 border-t border-slate-800/80">
                     <span>⭐ {course.instructor.rating} تقييم المدرب</span>
                     <span>👨‍🎓 {course.instructor.studentsCount} طالب</span>
@@ -564,26 +676,36 @@ export const CourseDetailsPage = () => {
                 </div>
               </div>
             </div>
-
           </div>
 
           {/* Related Courses Column */}
           <div className="lg:col-span-4 flex flex-col gap-6">
             <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl flex flex-col gap-4">
-              <h3 className="text-base font-bold text-white border-b border-slate-800 pb-3">دورات ذات صلة</h3>
+              <h3 className="text-base font-bold text-white border-b border-slate-800 pb-3">
+                دورات ذات صلة
+              </h3>
 
               <div className="flex flex-col gap-4">
                 {relatedCourses.map((rel) => (
-                  <div key={rel.id} className="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex flex-col gap-2">
+                  <div
+                    key={rel.id}
+                    className="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex flex-col gap-2"
+                  >
                     <img
                       src={rel.image}
                       alt={rel.title}
                       className="w-full h-28 object-cover rounded-xl"
                     />
-                    <h4 className="text-xs font-bold text-white line-clamp-1">{rel.title}</h4>
+                    <h4 className="text-xs font-bold text-white line-clamp-1">
+                      {rel.title}
+                    </h4>
                     <div className="flex items-center justify-between text-[11px]">
-                      <span className="text-amber-400 font-extrabold">${rel.price}</span>
-                      <span className="text-slate-400">{rel.instructor.name}</span>
+                      <span className="text-amber-400 font-extrabold">
+                        ${rel.price}
+                      </span>
+                      <span className="text-slate-400">
+                        {rel.instructor.name}
+                      </span>
                     </div>
 
                     <button
@@ -607,7 +729,9 @@ export const CourseDetailsPage = () => {
         <div className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-3xl w-full p-4 flex flex-col gap-3 shadow-2xl">
             <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-              <h3 className="text-sm font-bold text-white">معاينة فيديو الدورة الترويجي</h3>
+              <h3 className="text-sm font-bold text-white">
+                معاينة فيديو الدورة الترويجي
+              </h3>
               <button
                 type="button"
                 onClick={() => setShowVideoModal(false)}

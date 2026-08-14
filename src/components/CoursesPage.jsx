@@ -8,7 +8,7 @@ import {
   Users,
   BookOpen,
   ArrowLeft,
-  Sparkles
+  Sparkles,
 } from "lucide-react";
 
 export const CoursesPage = () => {
@@ -16,7 +16,12 @@ export const CoursesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("الكل");
 
-  const categories = ["الكل", "التسويق الرقمي", "برمجة وتطوير الويب", "التصميم والجرافيك"];
+  const categories = [
+    "الكل",
+    "التسويق الرقمي",
+    "برمجة وتطوير الويب",
+    "التصميم والجرافيك",
+  ];
 
   const filteredCourses = mockCourses.filter((course) => {
     const matchesSearch =
@@ -33,21 +38,28 @@ export const CoursesPage = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-slate-950 text-slate-100 font-['Tajawal',sans-serif] pb-16" dir="rtl">
+    <div
+      className="w-full min-h-screen bg-slate-950 text-slate-100 font-['Tajawal',sans-serif] pb-16"
+      dir="rtl"
+    >
       {/* Hero Header Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-purple-950/40 via-slate-900 to-slate-950 pt-10 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-800/80">
+      <section className="relative overflow-hidden bg-linear-to-b from-purple-950/40 via-slate-900 to-slate-950 pt-10 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-800/80">
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-semibold mb-4">
             <Sparkles className="w-3.5 h-3.5 text-purple-400" />
             <span>منصة StudyMart التعليمية للأعمال والمهن المستقبلية</span>
           </div>
-          
+
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
-            استكشف أفضل <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-300 to-amber-300">الدورات التدريبية المعتمدة</span>
+            استكشف أفضل{" "}
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 via-indigo-300 to-amber-300">
+              الدورات التدريبية المعتمدة
+            </span>
           </h1>
-          
+
           <p className="max-w-2xl mx-auto text-slate-400 text-sm sm:text-base leading-relaxed mb-8">
-            تعلم مهارات سوق العمل مع نخبة من أفضل المدرسين والخبراء المعتمدين في الوطن العربي واحصل على شهادات إتمام موثقة.
+            تعلم مهارات سوق العمل مع نخبة من أفضل المدرسين والخبراء المعتمدين في
+            الوطن العربي واحصل على شهادات إتمام موثقة.
           </p>
 
           {/* Search & Filter Bar */}
@@ -88,16 +100,24 @@ export const CoursesPage = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-xl font-extrabold text-white">جميع الدورات المتاحة</h2>
-            <p className="text-xs text-slate-400 mt-0.5">تم إيجاد {filteredCourses.length} دورة تدريبية</p>
+            <h2 className="text-xl font-extrabold text-white">
+              جميع الدورات المتاحة
+            </h2>
+            <p className="text-xs text-slate-400 mt-0.5">
+              تم إيجاد {filteredCourses.length} دورة تدريبية
+            </p>
           </div>
         </div>
 
         {filteredCourses.length === 0 ? (
           <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-12 text-center my-8">
             <BookOpen className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-slate-200">لم يتم العثور على نتائج</h3>
-            <p className="text-xs text-slate-400 mt-1">جرب البحث بكلمة مفتاحية مختلفة أو تغيير القسم المختصر.</p>
+            <h3 className="text-lg font-bold text-slate-200">
+              لم يتم العثور على نتائج
+            </h3>
+            <p className="text-xs text-slate-400 mt-1">
+              جرب البحث بكلمة مفتاحية مختلفة أو تغيير القسم المختصر.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 lg:gap-6 courses-container">
@@ -114,8 +134,8 @@ export const CoursesPage = () => {
                     alt={course.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80" />
-                  
+                  <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-transparent to-transparent opacity-80" />
+
                   {/* Badge */}
                   {course.badge && (
                     <span className="absolute top-3 right-3 px-2.5 py-1 bg-amber-500/90 text-slate-950 font-black text-[11px] rounded-lg shadow-md backdrop-blur-xs">
@@ -136,9 +156,13 @@ export const CoursesPage = () => {
                       <div className="flex items-center gap-1 text-amber-400 font-bold">
                         <Star className="w-3.5 h-3.5 fill-amber-400 stroke-amber-400" />
                         <span>{course.rating}</span>
-                        <span className="text-slate-500 font-normal">({course.reviewsCount})</span>
+                        <span className="text-slate-500 font-normal">
+                          ({course.reviewsCount})
+                        </span>
                       </div>
-                      <span className="text-slate-400 font-medium">{course.level}</span>
+                      <span className="text-slate-400 font-medium">
+                        {course.level}
+                      </span>
                     </div>
 
                     {/* Title */}
@@ -158,7 +182,9 @@ export const CoursesPage = () => {
                         alt={course.instructor.name}
                         className="w-7 h-7 rounded-full object-cover border border-purple-500/40"
                       />
-                      <span className="text-xs font-semibold text-slate-300">{course.instructor.name}</span>
+                      <span className="text-xs font-semibold text-slate-300">
+                        {course.instructor.name}
+                      </span>
                     </div>
                   </div>
 
@@ -166,9 +192,13 @@ export const CoursesPage = () => {
                   <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between">
                     <div className="flex flex-col">
                       <div className="flex items-center gap-2">
-                        <span className="text-base font-extrabold text-amber-400">${course.price}</span>
+                        <span className="text-base font-extrabold text-amber-400">
+                          ${course.price}
+                        </span>
                         {course.originalPrice && (
-                          <span className="text-xs text-slate-500 line-through">${course.originalPrice}</span>
+                          <span className="text-xs text-slate-500 line-through">
+                            ${course.originalPrice}
+                          </span>
                         )}
                       </div>
                       <div className="flex items-center gap-3 text-[11px] text-slate-400 mt-0.5">

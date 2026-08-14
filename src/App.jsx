@@ -1,25 +1,43 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
 import CoursesPage from "./components/CoursesPage";
 import CourseDetailsPage from "./components/CourseDetailsPage";
 import TeacherSidebar from "./components/TeacherSidebar";
 import StudentSidebar from "./components/StudentSidebar";
-import { GraduationCap, LayoutDashboard, UserCheck, BookOpen } from "lucide-react";
+import {
+  GraduationCap,
+  LayoutDashboard,
+  UserCheck,
+  BookOpen,
+} from "lucide-react";
 
 function NavigationHeader() {
   const location = useLocation();
 
   return (
-    <header className="bg-slate-900/90 border-b border-slate-800 sticky top-0 z-40 backdrop-blur-md px-4 sm:px-6 lg:px-8" dir="rtl">
+    <header
+      className="bg-slate-900/90 border-b border-slate-800 sticky top-0 z-40 backdrop-blur-md px-4 sm:px-6 lg:px-8"
+      dir="rtl"
+    >
       <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-purple-600/30 group-hover:scale-105 transition-transform">
-            <GraduationCap className="w-6 h-6 stroke-[2]" />
+          <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-purple-600/30 group-hover:scale-105 transition-transform">
+            <GraduationCap className="w-6 h-6 stroke-2" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-black text-white tracking-tight">StudyMart</span>
-            <span className="text-[10px] text-purple-400 font-bold uppercase tracking-wider">منصة الدورات والكتب</span>
+            <span className="text-xl font-black text-white tracking-tight">
+              StudyMart
+            </span>
+            <span className="text-[10px] text-purple-400 font-bold uppercase tracking-wider">
+              منصة الدورات والكتب
+            </span>
           </div>
         </Link>
 
@@ -28,7 +46,8 @@ function NavigationHeader() {
           <Link
             to="/"
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
-              location.pathname === "/" || location.pathname.startsWith("/course")
+              location.pathname === "/" ||
+              location.pathname.startsWith("/course")
                 ? "bg-purple-600 text-white shadow-md shadow-purple-600/30"
                 : "text-slate-400 hover:text-slate-200 hover:bg-slate-800"
             }`}
@@ -81,7 +100,7 @@ export default function App() {
               path="/teacher"
               element={
                 <div className="p-6 flex justify-center" dir="rtl">
-                  <div className="w-full max-w-[340px]">
+                  <div className="w-full max-w-85">
                     <TeacherSidebar />
                   </div>
                 </div>
@@ -91,7 +110,7 @@ export default function App() {
               path="/student"
               element={
                 <div className="p-6 flex justify-center" dir="rtl">
-                  <div className="w-full max-w-[340px]">
+                  <div className="w-full max-w-85">
                     <StudentSidebar />
                   </div>
                 </div>
