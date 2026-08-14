@@ -1,7 +1,10 @@
 import { booksData } from "../data/books.js";
 import { showCustomAlert } from "../utils/helpers.js";
 import { isFavorite, toggleFavorite } from "../services/favoritesService.js";
-import { getFeaturedConfig, applyFeaturedMetadata } from "../.featured-config.js";
+import {
+  getFeaturedConfig,
+  applyFeaturedMetadata,
+} from "../featured-config.js";
 
 const bookSectionId = "books";
 const booksGridId = "booksGrid";
@@ -10,7 +13,9 @@ let activeBookTab = "bestseller";
 
 export function handleBookTabClick(btn, tab) {
   if (btn && btn.parentElement) {
-    btn.parentElement.querySelectorAll(".tab-pill").forEach((el) => el.classList.remove("active"));
+    btn.parentElement
+      .querySelectorAll(".tab-pill")
+      .forEach((el) => el.classList.remove("active"));
     btn.classList.add("active");
   } else if (typeof btn === "string") {
     tab = btn;
@@ -68,7 +73,10 @@ export function renderBooksSection() {
       </div>
     `;
 
-    const container = document.querySelector(".site-footer") || document.querySelector(".courses") || document.body;
+    const container =
+      document.querySelector(".site-footer") ||
+      document.querySelector(".courses") ||
+      document.body;
     if (container && container.parentNode) {
       container.parentNode.insertBefore(section, container.nextSibling);
     } else {
@@ -113,18 +121,24 @@ export function createBookCard(book) {
 
   const hasDiscount = originalPrice !== null && originalPrice > currentPrice;
 
-  const priceHtml = hasDiscount ? `
+  const priceHtml = hasDiscount
+    ? `
     <div class="book-price-box">
       <span class="book-orig-price">$${originalPrice}</span>
       <span class="book-curr-price">$${currentPrice}</span>
     </div>
-  ` : `
+  `
+    : `
     <div class="book-price-box">
       <span class="book-curr-price">${book.isFree || currentPrice === 0 ? "مجاني" : "$" + currentPrice}</span>
     </div>
   `;
 
-  const detailLine = book.shortDescription || (book.pages ? `${book.pages} صفحة` : "") || (book.subCategory || "");
+  const detailLine =
+    book.shortDescription ||
+    (book.pages ? `${book.pages} صفحة` : "") ||
+    book.subCategory ||
+    "";
 
   const card = document.createElement("div");
   card.className = "course-card book-card";
@@ -196,9 +210,14 @@ export function renderBooks(specifiedTab) {
   if (activeBookTab === "bestseller") {
     list = candidateData.filter((b) => b.isBestSeller);
     if (list.length < 4) {
-      const sorted = [...candidateData].sort((a, b) => (Number(b.purchases || b.downloads) || 0) - (Number(a.purchases || a.downloads) || 0));
+      const sorted = [...candidateData].sort(
+        (a, b) =>
+          (Number(b.purchases || b.downloads) || 0) -
+          (Number(a.purchases || a.downloads) || 0),
+      );
       sorted.forEach((b) => {
-        if (!list.some((item) => String(item.id) === String(b.id))) list.push(b);
+        if (!list.some((item) => String(item.id) === String(b.id)))
+          list.push(b);
       });
     }
   } else if (activeBookTab === "featured") {
@@ -209,37 +228,48 @@ export function renderBooks(specifiedTab) {
       if (found) featuredList.push(found);
     });
     candidateData.forEach((b) => {
-      if (b.isFeatured && !featuredList.some((item) => String(item.id) === String(b.id))) {
+      if (
+        b.isFeatured &&
+        !featuredList.some((item) => String(item.id) === String(b.id))
+      ) {
         featuredList.push(b);
       }
     });
     list = featuredList;
     if (list.length < 4) {
       candidateData.forEach((b) => {
-        if (!list.some((item) => String(item.id) === String(b.id))) list.push(b);
+        if (!list.some((item) => String(item.id) === String(b.id)))
+          list.push(b);
       });
     }
   } else if (activeBookTab === "toprated") {
     list = candidateData.filter((b) => b.isTopRated);
     if (list.length < 4) {
-      const sorted = [...candidateData].sort((a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0));
+      const sorted = [...candidateData].sort(
+        (a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0),
+      );
       sorted.forEach((b) => {
-        if (!list.some((item) => String(item.id) === String(b.id))) list.push(b);
+        if (!list.some((item) => String(item.id) === String(b.id)))
+          list.push(b);
       });
     }
   } else if (activeBookTab === "new") {
     list = candidateData.filter((b) => b.isNew);
     if (list.length < 4) {
-      const sorted = [...candidateData].sort((a, b) => Number(b.id) - Number(a.id));
+      const sorted = [...candidateData].sort(
+        (a, b) => Number(b.id) - Number(a.id),
+      );
       sorted.forEach((b) => {
-        if (!list.some((item) => String(item.id) === String(b.id))) list.push(b);
+        if (!list.some((item) => String(item.id) === String(b.id)))
+          list.push(b);
       });
     }
   } else if (activeBookTab === "offers") {
     list = candidateData.filter((b) => b.isOffer);
     if (list.length < 4) {
       candidateData.forEach((b) => {
-        if (!list.some((item) => String(item.id) === String(b.id))) list.push(b);
+        if (!list.some((item) => String(item.id) === String(b.id)))
+          list.push(b);
       });
     }
   } else {
@@ -273,7 +303,11 @@ export function addBookToCart(bookId, cartState) {
   const book = booksData.find((entry) => entry.id === bookId);
   if (!book) return;
 
-  if (cartState && cartState.items && cartState.items.some((item) => item.id === bookId)) {
+  if (
+    cartState &&
+    cartState.items &&
+    cartState.items.some((item) => item.id === bookId)
+  ) {
     showCustomAlert("هذا الكتاب موجود بالفعل في السلة");
     return;
   }
@@ -305,12 +339,16 @@ export function filterStandaloneBooks() {
   const cat = categorySelect ? categorySelect.value : "all";
 
   const filtered = booksData.filter((book) => {
-    const matchesSearch = typeof window.matchBook === "function" ? window.matchBook(book, query) : true;
+    const matchesSearch =
+      typeof window.matchBook === "function"
+        ? window.matchBook(book, query)
+        : true;
 
     const matchesCategory =
       cat === "all" ||
       book.category === cat ||
-      (cat === "ذكاء اصطناعي" && (book.title.includes("ذكاء") || book.category.includes("ذكاء")));
+      (cat === "ذكاء اصطناعي" &&
+        (book.title.includes("ذكاء") || book.category.includes("ذكاء")));
 
     return matchesSearch && matchesCategory;
   });

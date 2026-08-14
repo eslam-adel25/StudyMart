@@ -2,7 +2,10 @@ import { coursesData } from "../data/courses.js";
 import { teachersData, getTeacherById } from "../data/teachers.js";
 import { reviewsData } from "../data/reviewsData.js";
 import { isFavorite, toggleFavorite } from "./favoritesService.js";
-import { getFeaturedConfig, applyFeaturedMetadata } from "../.featured-config.js";
+import {
+  getFeaturedConfig,
+  applyFeaturedMetadata,
+} from "../featured-config.js";
 import { createCourseCard } from "../components/courseCard.js";
 import {
   formatCourseCategory,
@@ -21,7 +24,13 @@ import { isStudent } from "./permissionService.js";
 import { getSearchQuery } from "../components/search.js";
 import { getFilterValues } from "../components/filter.js";
 import { hideAllMainSections, showHomeSection } from "./layoutService.js";
-import { getCourseQuestions, addCourseQuestion, answerCourseQuestion, deleteCourseQuestion, editCourseQuestion } from "../data/courseQuestionsData.js";
+import {
+  getCourseQuestions,
+  addCourseQuestion,
+  answerCourseQuestion,
+  deleteCourseQuestion,
+  editCourseQuestion,
+} from "../data/courseQuestionsData.js";
 
 const coursesListId = "coursesList";
 
@@ -31,12 +40,15 @@ export const courseListState = {
   searchQuery: "",
   category: "",
   level: "",
-  courseId: null
+  courseId: null,
 };
 
 export function saveCourseListState(courseId = null) {
-  const coursesSection = document.getElementById("coursesSection") || document.querySelector(".courses");
-  const isCoursesVisible = coursesSection && !coursesSection.classList.contains("hidden");
+  const coursesSection =
+    document.getElementById("coursesSection") ||
+    document.querySelector(".courses");
+  const isCoursesVisible =
+    coursesSection && !coursesSection.classList.contains("hidden");
 
   let currentScroll = window.scrollY || document.documentElement.scrollTop || 0;
 
@@ -56,7 +68,10 @@ export function saveCourseListState(courseId = null) {
   courseListState.saved = true;
 
   try {
-    sessionStorage.setItem("lms_course_list_state", JSON.stringify(courseListState));
+    sessionStorage.setItem(
+      "lms_course_list_state",
+      JSON.stringify(courseListState),
+    );
   } catch (e) {
     console.warn("Could not save course list state to sessionStorage", e);
   }
@@ -127,7 +142,9 @@ let activeCourseTab = "bestseller";
 
 export function handleCourseTabClick(btn, tab) {
   if (btn && btn.parentElement) {
-    btn.parentElement.querySelectorAll(".tab-pill").forEach((el) => el.classList.remove("active"));
+    btn.parentElement
+      .querySelectorAll(".tab-pill")
+      .forEach((el) => el.classList.remove("active"));
     btn.classList.add("active");
   } else if (typeof btn === "string") {
     tab = btn;
@@ -175,9 +192,12 @@ export function filterCourses(specifiedTab) {
   if (activeCourseTab === "bestseller") {
     list = candidateData.filter((c) => c.isBestSeller);
     if (list.length < 4) {
-      const sorted = [...candidateData].sort((a, b) => (Number(b.students) || 0) - (Number(a.students) || 0));
+      const sorted = [...candidateData].sort(
+        (a, b) => (Number(b.students) || 0) - (Number(a.students) || 0),
+      );
       sorted.forEach((c) => {
-        if (!list.some((item) => String(item.id) === String(c.id))) list.push(c);
+        if (!list.some((item) => String(item.id) === String(c.id)))
+          list.push(c);
       });
     }
   } else if (activeCourseTab === "featured") {
@@ -188,37 +208,48 @@ export function filterCourses(specifiedTab) {
       if (found) featuredList.push(found);
     });
     candidateData.forEach((c) => {
-      if (c.isFeatured && !featuredList.some((item) => String(item.id) === String(c.id))) {
+      if (
+        c.isFeatured &&
+        !featuredList.some((item) => String(item.id) === String(c.id))
+      ) {
         featuredList.push(c);
       }
     });
     list = featuredList;
     if (list.length < 4) {
       candidateData.forEach((c) => {
-        if (!list.some((item) => String(item.id) === String(c.id))) list.push(c);
+        if (!list.some((item) => String(item.id) === String(c.id)))
+          list.push(c);
       });
     }
   } else if (activeCourseTab === "toprated") {
     list = candidateData.filter((c) => c.isTopRated);
     if (list.length < 4) {
-      const sorted = [...candidateData].sort((a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0));
+      const sorted = [...candidateData].sort(
+        (a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0),
+      );
       sorted.forEach((c) => {
-        if (!list.some((item) => String(item.id) === String(c.id))) list.push(c);
+        if (!list.some((item) => String(item.id) === String(c.id)))
+          list.push(c);
       });
     }
   } else if (activeCourseTab === "new") {
     list = candidateData.filter((c) => c.isNew);
     if (list.length < 4) {
-      const sorted = [...candidateData].sort((a, b) => Number(b.id) - Number(a.id));
+      const sorted = [...candidateData].sort(
+        (a, b) => Number(b.id) - Number(a.id),
+      );
       sorted.forEach((c) => {
-        if (!list.some((item) => String(item.id) === String(c.id))) list.push(c);
+        if (!list.some((item) => String(item.id) === String(c.id)))
+          list.push(c);
       });
     }
   } else if (activeCourseTab === "offers") {
     list = candidateData.filter((c) => c.isOffer);
     if (list.length < 4) {
       candidateData.forEach((c) => {
-        if (!list.some((item) => String(item.id) === String(c.id))) list.push(c);
+        if (!list.some((item) => String(item.id) === String(c.id)))
+          list.push(c);
       });
     }
   } else {
@@ -241,8 +272,7 @@ function renderCourseList(courses) {
   coursesList.innerHTML = "";
 
   if (!courses || courses.length === 0) {
-    coursesList.innerHTML =
-      '<p class="no-results">لم نجد دورات</p>';
+    coursesList.innerHTML = '<p class="no-results">لم نجد دورات</p>';
     return;
   }
 
@@ -265,19 +295,29 @@ export function filterStandaloneCourses() {
   const lvl = levelSelect ? levelSelect.value : "";
 
   const filtered = coursesData.filter((course) => {
-    const matchesSearch = typeof window.matchCourse === "function" ? window.matchCourse(course, query) : true;
+    const matchesSearch =
+      typeof window.matchCourse === "function"
+        ? window.matchCourse(course, query)
+        : true;
 
     const formattedCat = formatCourseCategory(course.category);
     const matchesCategory =
       !cat ||
       course.category === cat ||
       formattedCat === cat ||
-      (cat === "ai" && (course.title.includes("ذكاء") || course.category === "ai")) ||
-      (cat === "cybersecurity" && (course.title.includes("أمان") || course.title.includes("حماية") || course.category === "cybersecurity")) ||
-      (cat === "marketing" && (course.title.includes("تسويق") || course.category === "marketing")) ||
-      (cat === "business" && (course.title.includes("أعمال") || course.category === "business"));
+      (cat === "ai" &&
+        (course.title.includes("ذكاء") || course.category === "ai")) ||
+      (cat === "cybersecurity" &&
+        (course.title.includes("أمان") ||
+          course.title.includes("حماية") ||
+          course.category === "cybersecurity")) ||
+      (cat === "marketing" &&
+        (course.title.includes("تسويق") || course.category === "marketing")) ||
+      (cat === "business" &&
+        (course.title.includes("أعمال") || course.category === "business"));
 
-    const matchesLevel = !lvl || course.level === lvl || formatCourseLevel(course.level) === lvl;
+    const matchesLevel =
+      !lvl || course.level === lvl || formatCourseLevel(course.level) === lvl;
 
     return matchesSearch && matchesCategory && matchesLevel;
   });
@@ -327,8 +367,13 @@ function saveUserPurchases() {
 export function addToCart(courseId) {
   const targetId = Number(courseId) || courseId;
   const teacherCourses = loadLocalStorage("lms_teacher_courses_v1", []);
-  const course = coursesData.find((c) => String(c.id) === String(courseId) || c.id === targetId) ||
-                 teacherCourses.find((c) => String(c.id) === String(courseId) || c.id === targetId);
+  const course =
+    coursesData.find(
+      (c) => String(c.id) === String(courseId) || c.id === targetId,
+    ) ||
+    teacherCourses.find(
+      (c) => String(c.id) === String(courseId) || c.id === targetId,
+    );
 
   if (!course) {
     showCustomAlert("تعذر العثور على معلومات الدورة");
@@ -343,7 +388,9 @@ export function addToCart(courseId) {
   }
 
   const existingItem = window.appState.cart.find(
-    (item) => (String(item.id) === String(course.id) || item.id === targetId) && (item.type === "course" || !item.type),
+    (item) =>
+      (String(item.id) === String(course.id) || item.id === targetId) &&
+      (item.type === "course" || !item.type),
   );
 
   if (existingItem) {
@@ -357,7 +404,7 @@ export function addToCart(courseId) {
     price: course.price || 99,
     type: "course",
     image: course.image || "",
-    category: course.category || ""
+    category: course.category || "",
   });
 
   saveCart();
@@ -422,16 +469,33 @@ export function searchMyCourses(query) {
   const rawQ = (query || "").trim();
   const q = rawQ.toLowerCase();
 
-  const continueCard = document.querySelector("#myCoursesPage .continue-learning-card");
+  const continueCard = document.querySelector(
+    "#myCoursesPage .continue-learning-card",
+  );
   const cards = document.querySelectorAll("#myCoursesPage .my-course-card");
   let totalMatches = 0;
 
   if (continueCard) {
-    const title = (continueCard.getAttribute("data-title") || continueCard.querySelector(".continue-course-title")?.textContent || "").toLowerCase();
-    const instructor = (continueCard.getAttribute("data-instructor") || continueCard.querySelector(".instructor-name")?.textContent || "").toLowerCase();
-    const category = (continueCard.getAttribute("data-category") || "").toLowerCase();
+    const title = (
+      continueCard.getAttribute("data-title") ||
+      continueCard.querySelector(".continue-course-title")?.textContent ||
+      ""
+    ).toLowerCase();
+    const instructor = (
+      continueCard.getAttribute("data-instructor") ||
+      continueCard.querySelector(".instructor-name")?.textContent ||
+      ""
+    ).toLowerCase();
+    const category = (
+      continueCard.getAttribute("data-category") || ""
+    ).toLowerCase();
 
-    if (!q || title.includes(q) || instructor.includes(q) || category.includes(q)) {
+    if (
+      !q ||
+      title.includes(q) ||
+      instructor.includes(q) ||
+      category.includes(q)
+    ) {
       continueCard.style.display = "";
       totalMatches++;
     } else {
@@ -440,12 +504,26 @@ export function searchMyCourses(query) {
   }
 
   cards.forEach((card) => {
-    const title = (card.getAttribute("data-title") || card.querySelector(".card-title")?.textContent || "").toLowerCase();
-    const instructor = (card.getAttribute("data-instructor") || card.querySelector(".instructor-name")?.textContent || "").toLowerCase();
+    const title = (
+      card.getAttribute("data-title") ||
+      card.querySelector(".card-title")?.textContent ||
+      ""
+    ).toLowerCase();
+    const instructor = (
+      card.getAttribute("data-instructor") ||
+      card.querySelector(".instructor-name")?.textContent ||
+      ""
+    ).toLowerCase();
     const category = (card.getAttribute("data-category") || "").toLowerCase();
     const fullText = (card.textContent || "").toLowerCase();
 
-    if (!q || title.includes(q) || instructor.includes(q) || category.includes(q) || fullText.includes(q)) {
+    if (
+      !q ||
+      title.includes(q) ||
+      instructor.includes(q) ||
+      category.includes(q) ||
+      fullText.includes(q)
+    ) {
       card.style.display = "flex";
       totalMatches++;
     } else {
@@ -455,19 +533,35 @@ export function searchMyCourses(query) {
 
   // Empty state handling
   let emptyState = document.getElementById("myCoursesEmptySearch");
-  const gridContainer = document.querySelector("#myCoursesPage .all-courses-grid");
+  const gridContainer = document.querySelector(
+    "#myCoursesPage .all-courses-grid",
+  );
 
   if (totalMatches === 0 && rawQ !== "") {
     if (!emptyState && gridContainer) {
       emptyState = document.createElement("div");
       emptyState.id = "myCoursesEmptySearch";
       emptyState.className = "empty-search-state";
-      emptyState.style.cssText = "grid-column: 1 / -1; text-align: center; padding: 48px 24px; background: var(--card-bg, #ffffff); border-radius: 16px; border: 1px dashed var(--border-color, #e2e8f0); margin: 20px 0;";
-      gridContainer.parentNode.insertBefore(emptyState, gridContainer.nextSibling);
+      emptyState.style.cssText =
+        "grid-column: 1 / -1; text-align: center; padding: 48px 24px; background: var(--card-bg, #ffffff); border-radius: 16px; border: 1px dashed var(--border-color, #e2e8f0); margin: 20px 0;";
+      gridContainer.parentNode.insertBefore(
+        emptyState,
+        gridContainer.nextSibling,
+      );
     }
     if (emptyState) {
       emptyState.style.display = "block";
-      const escaped = rawQ.replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+      const escaped = rawQ.replace(
+        /[&<>"']/g,
+        (m) =>
+          ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;",
+          })[m],
+      );
       emptyState.innerHTML = `
         <div style="font-size: 48px; margin-bottom: 12px; opacity: 0.8;">🔍</div>
         <h4 style="font-size: 18px; font-weight: 800; margin-bottom: 8px; color: var(--text-color, #1e293b);">لم يتم العثور على دورات مطابقة</h4>
@@ -506,8 +600,16 @@ export function sortMyCourses(sortValue) {
   const cards = Array.from(grid.querySelectorAll(".my-course-card"));
 
   cards.sort((a, b) => {
-    const titleA = (a.getAttribute("data-title") || a.querySelector(".card-title")?.textContent || "").trim();
-    const titleB = (b.getAttribute("data-title") || b.querySelector(".card-title")?.textContent || "").trim();
+    const titleA = (
+      a.getAttribute("data-title") ||
+      a.querySelector(".card-title")?.textContent ||
+      ""
+    ).trim();
+    const titleB = (
+      b.getAttribute("data-title") ||
+      b.querySelector(".card-title")?.textContent ||
+      ""
+    ).trim();
     const progA = parseInt(a.getAttribute("data-progress") || "0", 10);
     const progB = parseInt(b.getAttribute("data-progress") || "0", 10);
     const dateA = a.getAttribute("data-date") || "";
@@ -553,15 +655,24 @@ export function playCurrentCourse(courseIdentifier) {
 export function scrollToCourseDetails(courseIdentifier) {
   if (courseIdentifier) {
     const teacherCourses = loadLocalStorage("lms_teacher_courses_v1", []);
-    const course = coursesData.find((c) =>
-      String(c.id) === String(courseIdentifier) ||
-      c.title === courseIdentifier ||
-      (c.title && c.title.toLowerCase().includes(String(courseIdentifier).toLowerCase())) ||
-      (String(courseIdentifier).toLowerCase().includes(c.title ? c.title.toLowerCase() : ""))
-    ) || teacherCourses.find((c) =>
-      String(c.id) === String(courseIdentifier) ||
-      c.title === courseIdentifier
-    );
+    const course =
+      coursesData.find(
+        (c) =>
+          String(c.id) === String(courseIdentifier) ||
+          c.title === courseIdentifier ||
+          (c.title &&
+            c.title
+              .toLowerCase()
+              .includes(String(courseIdentifier).toLowerCase())) ||
+          String(courseIdentifier)
+            .toLowerCase()
+            .includes(c.title ? c.title.toLowerCase() : ""),
+      ) ||
+      teacherCourses.find(
+        (c) =>
+          String(c.id) === String(courseIdentifier) ||
+          c.title === courseIdentifier,
+      );
 
     if (course) {
       showCourseDetails(course.id);
@@ -580,7 +691,7 @@ const SAMPLE_VIDEOS = [
   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
 ];
 
 export function generateDefaultCurriculum(course) {
@@ -602,8 +713,8 @@ export function generateDefaultCurriculum(course) {
           description: `نظرة شاملة ومفصلة حول خطة التعلم والمخرجات الرئيسية لدورة ${title}.`,
           resources: [
             { name: "خطة الكورس الشاملة.pdf", type: "pdf", size: "1.4 MB" },
-            { name: "ملفات البداية المصدرية.zip", type: "zip", size: "3.2 MB" }
-          ]
+            { name: "ملفات البداية المصدرية.zip", type: "zip", size: "3.2 MB" },
+          ],
         },
         {
           id: `les-${cId}-102`,
@@ -612,10 +723,15 @@ export function generateDefaultCurriculum(course) {
           durationSeconds: 615,
           videoUrl: SAMPLE_VIDEOS[1],
           isFreePreview: false,
-          description: "خطوات التثبيت والإعداد الشامل للأدوات والبرامج الأساسية لبدء التمارين العملية.",
+          description:
+            "خطوات التثبيت والإعداد الشامل للأدوات والبرامج الأساسية لبدء التمارين العملية.",
           resources: [
-            { name: "روابط التثبيت والأوامر البرمجية.docx", type: "doc", size: "450 KB" }
-          ]
+            {
+              name: "روابط التثبيت والأوامر البرمجية.docx",
+              type: "doc",
+              size: "450 KB",
+            },
+          ],
         },
         {
           id: `les-${cId}-12`,
@@ -624,11 +740,12 @@ export function generateDefaultCurriculum(course) {
           durationSeconds: 720,
           videoUrl: SAMPLE_VIDEOS[1],
           isFreePreview: false,
-          description: "خطوات وطريقة تسليم المشروع العملي الأول وتلقي التقييم والدرجة.",
+          description:
+            "خطوات وطريقة تسليم المشروع العملي الأول وتلقي التقييم والدرجة.",
           resources: [
-            { name: "دليل تسليم المشروع.pdf", type: "pdf", size: "850 KB" }
-          ]
-        }
+            { name: "دليل تسليم المشروع.pdf", type: "pdf", size: "850 KB" },
+          ],
+        },
       ],
       quiz: {
         id: `quiz-${cId}-1`,
@@ -643,9 +760,9 @@ export function generateDefaultCurriculum(course) {
               "الفهم العملي والتطبيق على مشاريع حقيقية",
               "الحفظ النظري للمفاهيم دون تطبيق",
               "تخطي الدروس التفاعلية",
-              "عدم استخدام الأدوات البرمجية"
+              "عدم استخدام الأدوات البرمجية",
             ],
-            correctAnswer: 0
+            correctAnswer: 0,
           },
           {
             id: `q-${cId}-102`,
@@ -654,19 +771,20 @@ export function generateDefaultCurriculum(course) {
               "باستخدام أدوات تصحيح الأخطاء والتتبع السريع",
               "بإغلاق الحاسوب فور ظهور الأخطاء",
               "بحذف المكونات مباشرة",
-              "بتغيير لغة البرمجة"
+              "بتغيير لغة البرمجة",
             ],
-            correctAnswer: 0
-          }
-        ]
+            correctAnswer: 0,
+          },
+        ],
       },
       assignment: {
         id: `asg-${cId}-1`,
         title: "تطبيق عملي 1: إنشاء المشروع الأولي",
-        description: "قم بتنفيذ خطوات إعداد البيئة وتطبيق التمرين الأول ثم ارفع الكود المصدري بصيغة ZIP.",
+        description:
+          "قم بتنفيذ خطوات إعداد البيئة وتطبيق التمرين الأول ثم ارفع الكود المصدري بصيغة ZIP.",
         deadline: "2026-08-30",
-        maxGrade: 100
-      }
+        maxGrade: 100,
+      },
     },
     {
       id: `sec-${cId}-2`,
@@ -680,10 +798,15 @@ export function generateDefaultCurriculum(course) {
           durationSeconds: 870,
           videoUrl: SAMPLE_VIDEOS[2],
           isFreePreview: false,
-          description: "شرح معمّق لآلية تمرير البيانات وإدارة الحالة للحصول على أداء سريع وسلس.",
+          description:
+            "شرح معمّق لآلية تمرير البيانات وإدارة الحالة للحصول على أداء سريع وسلس.",
           resources: [
-            { name: "المشروع التفاعلي المتقدم.zip", type: "zip", size: "5.8 MB" }
-          ]
+            {
+              name: "المشروع التفاعلي المتقدم.zip",
+              type: "zip",
+              size: "5.8 MB",
+            },
+          ],
         },
         {
           id: `les-${cId}-202`,
@@ -692,10 +815,11 @@ export function generateDefaultCurriculum(course) {
           durationSeconds: 1125,
           videoUrl: SAMPLE_VIDEOS[3],
           isFreePreview: false,
-          description: "ربط التطبيق بالخدمات الخارجية ومعالجة الأخطاء والاحتفاظ بالبيانات محلياً.",
+          description:
+            "ربط التطبيق بالخدمات الخارجية ومعالجة الأخطاء والاحتفاظ بالبيانات محلياً.",
           resources: [
-            { name: "عروض التقديم والشرائح.pptx", type: "ppt", size: "2.5 MB" }
-          ]
+            { name: "عروض التقديم والشرائح.pptx", type: "ppt", size: "2.5 MB" },
+          ],
         },
         {
           id: `les-${cId}-39`,
@@ -704,11 +828,16 @@ export function generateDefaultCurriculum(course) {
           durationSeconds: 980,
           videoUrl: SAMPLE_VIDEOS[2],
           isFreePreview: false,
-          description: "شرح مفصل لاستخدام Context API وإنشاء Custom Hooks لإدارة حالة التطبيق بكفاءة عاليية.",
+          description:
+            "شرح مفصل لاستخدام Context API وإنشاء Custom Hooks لإدارة حالة التطبيق بكفاءة عاليية.",
           resources: [
-            { name: "أمثلة Context API و Custom Hooks.zip", type: "zip", size: "4.2 MB" }
-          ]
-        }
+            {
+              name: "أمثلة Context API و Custom Hooks.zip",
+              type: "zip",
+              size: "4.2 MB",
+            },
+          ],
+        },
       ],
       quiz: {
         id: `quiz-${cId}-2`,
@@ -723,12 +852,12 @@ export function generateDefaultCurriculum(course) {
               "استخدام التجزئة والتحميل الكسول وتحديث الحالة بكفاءة",
               "تحميل كافة البيانات دفعة واحدة في الصفحة الرئيسية",
               "تعطيل ذاكرة التخزين المؤقت",
-              "حذف عناصر التحكم"
+              "حذف عناصر التحكم",
             ],
-            correctAnswer: 0
-          }
-        ]
-      }
+            correctAnswer: 0,
+          },
+        ],
+      },
     },
     {
       id: `sec-${cId}-3`,
@@ -742,20 +871,22 @@ export function generateDefaultCurriculum(course) {
           durationSeconds: 1500,
           videoUrl: SAMPLE_VIDEOS[4],
           isFreePreview: false,
-          description: "مشروع تطبيقي كامل يجمع بين كافة المهارات التي تعلمتها طوال الكورس.",
+          description:
+            "مشروع تطبيقي كامل يجمع بين كافة المهارات التي تعلمتها طوال الكورس.",
           resources: [
-            { name: "الكود المصدري النهائي.zip", type: "code", size: "8.4 MB" }
-          ]
-        }
+            { name: "الكود المصدري النهائي.zip", type: "code", size: "8.4 MB" },
+          ],
+        },
       ],
       assignment: {
         id: `asg-${cId}-3`,
         title: "المشروع النهائي: تسليم ملفات التقييم والشهادة",
-        description: "قم برفع المشروع التكاملي النهائي للحصول على درجة التقييم والشهادة الرسمية.",
+        description:
+          "قم برفع المشروع التكاملي النهائي للحصول على درجة التقييم والشهادة الرسمية.",
         deadline: "2026-09-15",
-        maxGrade: 100
-      }
-    }
+        maxGrade: 100,
+      },
+    },
   ];
 }
 
@@ -775,7 +906,7 @@ export function getCourseProgress(courseId) {
       lastActiveLessonId: null,
       lessonTimestamps: {},
       quizScores: {},
-      assignmentSubmissions: {}
+      assignmentSubmissions: {},
     });
     appState.courseProgress[courseId] = saved;
   }
@@ -815,12 +946,17 @@ export function isCoursePurchased(courseId) {
   if (appState.userData) {
     const courses = appState.userData.courses || [];
     const purchased = appState.userData.purchasedCourses || [];
-    if (courses.some((id) => String(id) === target) || purchased.some((id) => String(id) === target)) {
+    if (
+      courses.some((id) => String(id) === target) ||
+      purchased.some((id) => String(id) === target)
+    ) {
       return true;
     }
   }
   try {
-    const localCourses = JSON.parse(localStorage.getItem("userCourses") || "[]");
+    const localCourses = JSON.parse(
+      localStorage.getItem("userCourses") || "[]",
+    );
     if (localCourses.some((id) => String(id) === target)) return true;
   } catch (e) {}
 
@@ -830,7 +966,11 @@ export function isCoursePurchased(courseId) {
 export function notifyCourseSystemUpdated() {
   const currentCourseId = window.activePlayerState?.courseId;
   const courseDetailsPage = document.getElementById("courseDetailsPage");
-  if (courseDetailsPage && !courseDetailsPage.classList.contains("hidden") && currentCourseId) {
+  if (
+    courseDetailsPage &&
+    !courseDetailsPage.classList.contains("hidden") &&
+    currentCourseId
+  ) {
     showCourseDetails(currentCourseId);
   }
   if (window.activePlayerState && window.activePlayerState.courseId) {
@@ -858,19 +998,31 @@ export function getEnrolledCoursesCount() {
   }
 
   if (appState.userData) {
-    if (Array.isArray(appState.userData.courses) && appState.userData.courses.length > 0) {
+    if (
+      Array.isArray(appState.userData.courses) &&
+      appState.userData.courses.length > 0
+    ) {
       return appState.userData.courses.length;
     }
-    if (Array.isArray(appState.userData.purchasedCourses) && appState.userData.purchasedCourses.length > 0) {
+    if (
+      Array.isArray(appState.userData.purchasedCourses) &&
+      appState.userData.purchasedCourses.length > 0
+    ) {
       return appState.userData.purchasedCourses.length;
     }
   }
 
   if (currentUser) {
-    if (Array.isArray(currentUser.purchasedCourses) && currentUser.purchasedCourses.length > 0) {
+    if (
+      Array.isArray(currentUser.purchasedCourses) &&
+      currentUser.purchasedCourses.length > 0
+    ) {
       return currentUser.purchasedCourses.length;
     }
-    if (Array.isArray(currentUser.userCourses) && currentUser.userCourses.length > 0) {
+    if (
+      Array.isArray(currentUser.userCourses) &&
+      currentUser.userCourses.length > 0
+    ) {
       return currentUser.userCourses.length;
     }
     if (Array.isArray(currentUser.courses) && currentUser.courses.length > 0) {
@@ -879,14 +1031,18 @@ export function getEnrolledCoursesCount() {
   }
 
   try {
-    const localCourses = JSON.parse(localStorage.getItem("userCourses") || "[]");
+    const localCourses = JSON.parse(
+      localStorage.getItem("userCourses") || "[]",
+    );
     if (Array.isArray(localCourses) && localCourses.length > 0) {
       return localCourses.length;
     }
   } catch (e) {}
 
   const cards = document.querySelectorAll("#myCoursesPage .my-course-card");
-  const continueCard = document.querySelector("#myCoursesPage .continue-learning-card");
+  const continueCard = document.querySelector(
+    "#myCoursesPage .continue-learning-card",
+  );
   if (cards.length > 0 || continueCard) {
     return cards.length + (continueCard ? 1 : 0);
   }
@@ -895,19 +1051,27 @@ export function getEnrolledCoursesCount() {
 }
 
 export function renderMyCoursesPage() {
-  if (typeof window !== "undefined" && typeof window.closeAllSidebars === "function") {
+  if (
+    typeof window !== "undefined" &&
+    typeof window.closeAllSidebars === "function"
+  ) {
     window.closeAllSidebars();
   }
 
   const modal = document.getElementById("purchasesModal");
   if (modal) modal.classList.remove("show");
 
-  if (typeof window !== "undefined" && typeof window.hideAllMainSections === "function") {
+  if (
+    typeof window !== "undefined" &&
+    typeof window.hideAllMainSections === "function"
+  ) {
     window.hideAllMainSections();
   } else {
     const hero = document.querySelector(".hero");
     const features = document.querySelector(".features");
-    const coursesSection = document.getElementById("coursesSection") || document.querySelector(".courses");
+    const coursesSection =
+      document.getElementById("coursesSection") ||
+      document.querySelector(".courses");
     const booksSection = document.getElementById("books");
     const editProfilePage = document.getElementById("editProfilePage");
 
@@ -926,8 +1090,12 @@ export function renderMyCoursesPage() {
   const enrolledCount = getEnrolledCoursesCount();
 
   let globalEmptyState = document.getElementById("myCoursesGlobalEmptyState");
-  const sectionContainers = document.querySelectorAll("#myCoursesPage .section-container");
-  const controlsRow = document.querySelector("#myCoursesPage .my-courses-controls-row");
+  const sectionContainers = document.querySelectorAll(
+    "#myCoursesPage .section-container",
+  );
+  const controlsRow = document.querySelector(
+    "#myCoursesPage .my-courses-controls-row",
+  );
 
   if (enrolledCount === 0) {
     sectionContainers.forEach((sec) => (sec.style.display = "none"));
@@ -937,7 +1105,8 @@ export function renderMyCoursesPage() {
       globalEmptyState = document.createElement("div");
       globalEmptyState.id = "myCoursesGlobalEmptyState";
       globalEmptyState.className = "my-courses-empty-state";
-      globalEmptyState.style.cssText = "text-align: center; padding: 60px 20px; background: var(--card-bg, #ffffff); border-radius: 20px; border: 1px dashed var(--border-color, #e2e8f0); margin: 30px 20px;";
+      globalEmptyState.style.cssText =
+        "text-align: center; padding: 60px 20px; background: var(--card-bg, #ffffff); border-radius: 20px; border: 1px dashed var(--border-color, #e2e8f0); margin: 30px 20px;";
       globalEmptyState.innerHTML = `
         <div style="width: 80px; height: 80px; background: #f3e8ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: #7c3aed;">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
@@ -994,16 +1163,19 @@ export function closePurchases() {
 export function renderCoursePlayerView(courseId) {
   const targetId = Number(courseId) || courseId;
   const teacherCourses = loadLocalStorage("lms_teacher_courses_v1", []);
-  const course = coursesData.find((c) => String(c.id) === String(targetId)) ||
-                 teacherCourses.find((c) => String(c.id) === String(targetId)) ||
-                 coursesData[0];
+  const course =
+    coursesData.find((c) => String(c.id) === String(targetId)) ||
+    teacherCourses.find((c) => String(c.id) === String(targetId)) ||
+    coursesData[0];
   if (!course) return;
 
   if (!window.activePlayerState) window.activePlayerState = {};
   window.activePlayerState.courseId = course.id;
 
   const anchor = document.getElementById("courseDetailsAnchor");
-  const pageContainer = document.getElementById("courseDetailsContent") || document.getElementById("courseDetails");
+  const pageContainer =
+    document.getElementById("courseDetailsContent") ||
+    document.getElementById("courseDetails");
 
   if (anchor) {
     renderCoursePlayerUI(course, anchor);
@@ -1043,15 +1215,19 @@ export function renderCoursePlayerUI(course, containerElement) {
       title: "مقدمة الكورس",
       duration: "10:00",
       videoUrl: SAMPLE_VIDEOS[0],
-      description: course.description || "أهلاً بك في الكورس."
+      description: course.description || "أهلاً بك في الكورس.",
     };
     progress.lastActiveLessonId = activeLesson.id;
     saveCourseProgress(course.id, progress);
   }
 
-  const isCurrentCompleted = (progress.completedLessonIds || []).includes(activeLesson.id);
+  const isCurrentCompleted = (progress.completedLessonIds || []).includes(
+    activeLesson.id,
+  );
   const formattedLevel = formatCourseLevel(course.level);
-  const instructorAvatar = course.instructorImage || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop";
+  const instructorAvatar =
+    course.instructorImage ||
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop";
 
   containerElement.innerHTML = `
     <div class="course-details-breadcrumb-bar">
@@ -1061,8 +1237,8 @@ export function renderCoursePlayerUI(course, containerElement) {
     <div class="course-details-header-info">
       <h2 class="course-details-main-title">${course.title}</h2>
       <div class="course-meta-pills">
-        <span class="meta-item"><img src="${instructorAvatar}" class="mini-avatar" alt="${course.instructor || 'أحمد محمد'}" /> ${course.instructor || 'أحمد محمد'}</span>
-        <span class="meta-item text-amber">⭐ ${course.rating || '4.9'}</span>
+        <span class="meta-item"><img src="${instructorAvatar}" class="mini-avatar" alt="${course.instructor || "أحمد محمد"}" /> ${course.instructor || "أحمد محمد"}</span>
+        <span class="meta-item text-amber">⭐ ${course.rating || "4.9"}</span>
         <span class="meta-item">⏱ ${course.duration || 10} ساعات</span>
         <span class="meta-item">📊 ${formattedLevel}</span>
         <span class="meta-item">🌐 اللغة: العربية</span>
@@ -1078,7 +1254,7 @@ export function renderCoursePlayerUI(course, containerElement) {
           <span class="badge-count" style="background: #e0e7ff; color: #4338ca; font-weight: 700;">${progressPercent}% مكتمل</span>
         </div>
 
-        <input type="text" placeholder="🔍 بحث في الدروس..." class="form-input-builder" style="font-size: 12px; padding: 6px 10px; border-radius: 8px; width: 100%; border: 1px solid #cbd5e1; box-sizing: border-box;" oninput="filterCourseLessons(this.value, '${course.id}')" value="${window.activePlayerState?.lessonSearchQuery || ''}">
+        <input type="text" placeholder="🔍 بحث في الدروس..." class="form-input-builder" style="font-size: 12px; padding: 6px 10px; border-radius: 8px; width: 100%; border: 1px solid #cbd5e1; box-sizing: border-box;" oninput="filterCourseLessons(this.value, '${course.id}')" value="${window.activePlayerState?.lessonSearchQuery || ""}">
 
         <div class="lessons-accordion" id="playerLessonsAccordion_${course.id}">
           ${renderAccordionContentHTML(course, curriculum, progress, activeLesson.id)}
@@ -1116,39 +1292,51 @@ export function renderCoursePlayerUI(course, containerElement) {
         <div class="current-lesson-info-box">
           <div style="display: flex; align-items: center; justify-content: space-between;">
             <span class="lesson-sub-header">الدرس الحالي:</span>
-            <span style="font-size: 12px; color: #64748b; font-weight: 600;">⏱️ ${activeLesson.duration || '10:00'}</span>
+            <span style="font-size: 12px; color: #64748b; font-weight: 600;">⏱️ ${activeLesson.duration || "10:00"}</span>
           </div>
           <h3 class="current-lesson-title">${activeLesson.title}</h3>
-          <p class="current-lesson-desc">${activeLesson.description || course.description || ''}</p>
+          <p class="current-lesson-desc">${activeLesson.description || course.description || ""}</p>
           
           <div class="lesson-nav-buttons" style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
-            <button class="btn-secondary-outline sm" type="button" onclick="navigateToPrevLesson('${course.id}')" ${activeSectionIdx === 0 && activeLessonIdx === 0 ? 'disabled' : ''}>الدرس السابق</button>
+            <button class="btn-secondary-outline sm" type="button" onclick="navigateToPrevLesson('${course.id}')" ${activeSectionIdx === 0 && activeLessonIdx === 0 ? "disabled" : ""}>الدرس السابق</button>
             
-            <button class="${isCurrentCompleted ? 'btn-secondary-outline' : 'btn-primary-purple'} sm" type="button" onclick="toggleMarkLessonCompleted('${course.id}', '${activeLesson.id}')">
-              ${isCurrentCompleted ? '✓ تم إكمال الدرس' : 'تحديد كمكتمل'}
+            <button class="${isCurrentCompleted ? "btn-secondary-outline" : "btn-primary-purple"} sm" type="button" onclick="toggleMarkLessonCompleted('${course.id}', '${activeLesson.id}')">
+              ${isCurrentCompleted ? "✓ تم إكمال الدرس" : "تحديد كمكتمل"}
             </button>
             
             <button class="btn-primary-purple sm" type="button" onclick="navigateToNextLesson('${course.id}')">الدرس التالي</button>
           </div>
 
           <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid #e2e8f0;">
-            ${curriculum[activeSectionIdx]?.quiz ? `
+            ${
+              curriculum[activeSectionIdx]?.quiz
+                ? `
               <button type="button" class="btn btn-secondary sm" onclick="openStudentQuizModal(JSON.parse(decodeURIComponent('${encodeURIComponent(JSON.stringify(curriculum[activeSectionIdx].quiz))}')), '${course.title.replace(/'/g, "\\'")}')" style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; font-weight: 700;">
                 ❓ اختبار الوحدة (${curriculum[activeSectionIdx].quiz.title})
               </button>
-            ` : ''}
+            `
+                : ""
+            }
 
-            ${curriculum[activeSectionIdx]?.assignment ? `
+            ${
+              curriculum[activeSectionIdx]?.assignment
+                ? `
               <button type="button" class="btn btn-secondary sm" onclick="openStudentAssignmentModal(JSON.parse(decodeURIComponent('${encodeURIComponent(JSON.stringify(curriculum[activeSectionIdx].assignment))}')), '${course.title.replace(/'/g, "\\'")}')" style="background: #fdf4ff; color: #86198f; border: 1px solid #f5d0fe; font-weight: 700;">
                 📝 واجب الوحدة (${curriculum[activeSectionIdx].assignment.title})
               </button>
-            ` : ''}
+            `
+                : ""
+            }
 
-            ${progressPercent === 100 ? `
+            ${
+              progressPercent === 100
+                ? `
               <button type="button" class="btn-primary-purple sm" onclick="openCourseCertificateModal('${course.id}')" style="background: linear-gradient(135deg, #059669, #10b981); color: #fff; font-weight: 800; border: none;">
                 🏆 عرض وحفظ الشهادة
               </button>
-            ` : ''}
+            `
+                : ""
+            }
           </div>
         </div>
       </div>
@@ -1161,21 +1349,29 @@ export function renderCoursePlayerUI(course, containerElement) {
             <span class="sparkle s1">✨</span>
             <span class="sparkle s2">✦</span>
           </div>
-          <h3 class="promo-title">${purchased ? 'واصل التقدّم بمهاراتك' : 'اشترك بالدورة بالكامل'}</h3>
+          <h3 class="promo-title">${purchased ? "واصل التقدّم بمهاراتك" : "اشترك بالدورة بالكامل"}</h3>
           <p class="promo-subtitle">${purchased ? `نسبة إنجازك الحالية هي ${progressPercent}%. واصل المشاهدة للحصول على الشهادة.` : `سعر الكورس $${course.price || 299} فقط شامل الاختبارات والشهادة.`}</p>
           
-          ${purchased ? `
+          ${
+            purchased
+              ? `
             <div style="width: 100%; background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; margin: 8px 0;">
               <div style="width: ${progressPercent}%; height: 100%; background: #7c3aed; transition: width 0.3s;"></div>
             </div>
-            ${progressPercent === 100 ? `
+            ${
+              progressPercent === 100
+                ? `
               <button type="button" class="btn-primary-purple lg" onclick="openCourseCertificateModal('${course.id}')" style="background: #059669;">🏆 تحميل الشهادة</button>
-            ` : `
+            `
+                : `
               <button type="button" class="btn-primary-purple lg" onclick="navigateToNextLesson('${course.id}')">متابعة الدرس التالي</button>
-            `}
-          ` : `
+            `
+            }
+          `
+              : `
             <button type="button" class="btn-primary-purple lg" onclick="quickEnrollCourse('${course.id}')">اشترك الآن ($${course.price || 299})</button>
-          `}
+          `
+          }
         </div>
       </div>
     </div>
@@ -1192,56 +1388,75 @@ export function renderCoursePlayerUI(course, containerElement) {
   setupVideoPlayerEvents(course, activeLesson);
 }
 
-function renderAccordionContentHTML(course, curriculum, progress, activeLessonId) {
-  const query = (window.activePlayerState?.lessonSearchQuery || "").toLowerCase();
+function renderAccordionContentHTML(
+  course,
+  curriculum,
+  progress,
+  activeLessonId,
+) {
+  const query = (
+    window.activePlayerState?.lessonSearchQuery || ""
+  ).toLowerCase();
   const purchased = isCoursePurchased(course.id);
 
-  return curriculum.map((section, sIdx) => {
-    const lessons = (section.lessons || []).filter((les) => {
-      if (!query) return true;
-      return les.title.toLowerCase().includes(query) || (les.description && les.description.toLowerCase().includes(query));
-    });
+  return curriculum
+    .map((section, sIdx) => {
+      const lessons = (section.lessons || []).filter((les) => {
+        if (!query) return true;
+        return (
+          les.title.toLowerCase().includes(query) ||
+          (les.description && les.description.toLowerCase().includes(query))
+        );
+      });
 
-    const completedCount = (section.lessons || []).filter((les) => (progress.completedLessonIds || []).includes(les.id)).length;
+      const completedCount = (section.lessons || []).filter((les) =>
+        (progress.completedLessonIds || []).includes(les.id),
+      ).length;
 
-    return `
+      return `
       <div class="accordion-group" style="margin-bottom: 8px;">
         <div class="accordion-group-header" onclick="toggleLessonAccordion(this)">
           <span>${section.title}</span>
           <span class="badge-count">${completedCount}/${(section.lessons || []).length}</span>
         </div>
-        <div class="accordion-group-body" style="display: ${sIdx === 0 || lessons.some(l => l.id === activeLessonId) ? 'block' : 'none'};">
-          ${lessons.map((les, lIdx) => {
-            const isCompleted = (progress.completedLessonIds || []).includes(les.id);
-            const isActive = les.id === activeLessonId;
-            const isUnlocked = purchased || les.isFreePreview || (sIdx === 0 && lIdx === 0);
+        <div class="accordion-group-body" style="display: ${sIdx === 0 || lessons.some((l) => l.id === activeLessonId) ? "block" : "none"};">
+          ${lessons
+            .map((les, lIdx) => {
+              const isCompleted = (progress.completedLessonIds || []).includes(
+                les.id,
+              );
+              const isActive = les.id === activeLessonId;
+              const isUnlocked =
+                purchased || les.isFreePreview || (sIdx === 0 && lIdx === 0);
 
-            let statusIcon = "🔒";
-            let statusClass = "locked";
+              let statusIcon = "🔒";
+              let statusClass = "locked";
 
-            if (isCompleted) {
-              statusIcon = "✓";
-              statusClass = "completed";
-            } else if (isActive) {
-              statusIcon = "●";
-              statusClass = "active";
-            } else if (isUnlocked) {
-              statusIcon = les.isFreePreview ? "👁" : "▶";
-              statusClass = "unlocked";
-            }
+              if (isCompleted) {
+                statusIcon = "✓";
+                statusClass = "completed";
+              } else if (isActive) {
+                statusIcon = "●";
+                statusClass = "active";
+              } else if (isUnlocked) {
+                statusIcon = les.isFreePreview ? "👁" : "▶";
+                statusClass = "unlocked";
+              }
 
-            return `
-              <div class="lesson-item ${statusClass} ${isActive ? 'active' : ''}" onclick="selectCourseLesson('${course.id}', '${les.id}')" style="cursor: pointer;">
-                <span class="lesson-status-icon ${isActive ? 'active-dot' : ''}">${statusIcon}</span>
-                <span class="lesson-title">${les.title} ${les.isFreePreview && !purchased ? '<span style="font-size: 10px; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">مجاني</span>' : ''}</span>
-                <span class="lesson-duration">${les.duration || '10:00'}</span>
+              return `
+              <div class="lesson-item ${statusClass} ${isActive ? "active" : ""}" onclick="selectCourseLesson('${course.id}', '${les.id}')" style="cursor: pointer;">
+                <span class="lesson-status-icon ${isActive ? "active-dot" : ""}">${statusIcon}</span>
+                <span class="lesson-title">${les.title} ${les.isFreePreview && !purchased ? '<span style="font-size: 10px; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">مجاني</span>' : ""}</span>
+                <span class="lesson-duration">${les.duration || "10:00"}</span>
               </div>
             `;
-          }).join('')}
+            })
+            .join("")}
         </div>
       </div>
     `;
-  }).join('');
+    })
+    .join("");
 }
 
 function setupVideoPlayerEvents(course, activeLesson) {
@@ -1275,7 +1490,10 @@ function setupVideoPlayerEvents(course, activeLesson) {
       progress.lessonTimestamps[activeLesson.id] = current;
       saveCourseProgress(course.id, progress);
 
-      if (current / dur >= 0.9 && !(progress.completedLessonIds || []).includes(activeLesson.id)) {
+      if (
+        current / dur >= 0.9 &&
+        !(progress.completedLessonIds || []).includes(activeLesson.id)
+      ) {
         markLessonComplete(course.id, activeLesson.id);
       }
     };
@@ -1297,7 +1515,7 @@ function formatVideoTime(seconds) {
   if (isNaN(seconds) || seconds < 0) return "00:00";
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
-  return `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
+  return `${m < 10 ? "0" + m : m}:${s < 10 ? "0" + s : s}`;
 }
 
 export function toggleCourseVideoPlay() {
@@ -1334,7 +1552,9 @@ export function toggleCourseVideoMute() {
 }
 
 export function toggleCourseVideoFullscreen() {
-  const box = document.querySelector("#courseDetailsAnchor .video-preview-box") || document.querySelector(".video-preview-box");
+  const box =
+    document.querySelector("#courseDetailsAnchor .video-preview-box") ||
+    document.querySelector(".video-preview-box");
   if (!box) return;
   if (document.fullscreenElement) {
     document.exitFullscreen().catch(() => {});
@@ -1408,7 +1628,9 @@ export function navigateToPrevLesson(courseId) {
 
   let flatLessons = [];
   curriculum.forEach((sec) => flatLessons.push(...(sec.lessons || [])));
-  const currIdx = flatLessons.findIndex((l) => l.id === progress.lastActiveLessonId);
+  const currIdx = flatLessons.findIndex(
+    (l) => l.id === progress.lastActiveLessonId,
+  );
 
   if (currIdx > 0) {
     selectCourseLesson(course.id, flatLessons[currIdx - 1].id);
@@ -1423,7 +1645,9 @@ export function navigateToNextLesson(courseId) {
 
   let flatLessons = [];
   curriculum.forEach((sec) => flatLessons.push(...(sec.lessons || [])));
-  const currIdx = flatLessons.findIndex((l) => l.id === progress.lastActiveLessonId);
+  const currIdx = flatLessons.findIndex(
+    (l) => l.id === progress.lastActiveLessonId,
+  );
 
   if (currIdx >= 0 && currIdx < flatLessons.length - 1) {
     selectCourseLesson(course.id, flatLessons[currIdx + 1].id);
@@ -1450,7 +1674,7 @@ export function openCourseResourcesModal(courseId) {
     resourcesList = [
       { name: "خطة الكورس الشاملة.pdf", type: "pdf", size: "1.4 MB" },
       { name: "ملفات المشروع المصدري.zip", type: "zip", size: "4.2 MB" },
-      { name: "عروض التقديم والشرائح.pptx", type: "ppt", size: "2.8 MB" }
+      { name: "عروض التقديم والشرائح.pptx", type: "ppt", size: "2.8 MB" },
     ];
   }
 
@@ -1463,18 +1687,22 @@ export function openCourseResourcesModal(courseId) {
         <button type="button" class="close-modal-btn" onclick="this.closest('.floating-modal-overlay').remove()" style="background: none; border: none; font-size: 18px; cursor: pointer;">✖</button>
       </div>
       <div style="display: flex; flex-direction: column; gap: 12px; max-height: 350px; overflow-y: auto;">
-        ${resourcesList.map((res) => `
+        ${resourcesList
+          .map(
+            (res) => `
           <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;">
             <div style="display: flex; align-items: center; gap: 10px;">
               <span style="font-size: 20px;">📄</span>
               <div>
                 <div style="font-weight: 700; font-size: 13px; color: #1e293b;">${res.name}</div>
-                <div style="font-size: 11px; color: #64748b;">${res.type?.toUpperCase() || 'FILE'} • ${res.size || '1.0 MB'}</div>
+                <div style="font-size: 11px; color: #64748b;">${res.type?.toUpperCase() || "FILE"} • ${res.size || "1.0 MB"}</div>
               </div>
             </div>
             <button type="button" class="btn btn-primary sm" onclick="downloadSampleFile('${res.name.replace(/'/g, "\\'")}')" style="padding: 6px 14px; border-radius: 8px; font-weight: 700;">تحميل ⬇</button>
           </div>
-        `).join('')}
+        `,
+          )
+          .join("")}
       </div>
     </div>
   `;
@@ -1482,8 +1710,13 @@ export function openCourseResourcesModal(courseId) {
 }
 
 if (typeof window !== "undefined") {
-  window.downloadSampleFile = function(fileName) {
-    const blob = new Blob([`محتوى الملف التعليمي: ${fileName}\n\nشكراً لاستخدامك منصتنا التعليمية.`], { type: "text/plain;charset=utf-8" });
+  window.downloadSampleFile = function (fileName) {
+    const blob = new Blob(
+      [
+        `محتوى الملف التعليمي: ${fileName}\n\nشكراً لاستخدامك منصتنا التعليمية.`,
+      ],
+      { type: "text/plain;charset=utf-8" },
+    );
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = fileName;
@@ -1514,21 +1747,29 @@ export function openStudentQuizModal(quiz, courseTitle) {
       </div>
 
       <div id="quizQuestionsContainer" style="display: flex; flex-direction: column; gap: 20px;">
-        ${quiz.questions.map((q, qIdx) => `
+        ${quiz.questions
+          .map(
+            (q, qIdx) => `
           <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px;">
             <div style="font-weight: 700; font-size: 14px; color: #0f172a; margin-bottom: 12px;">
               س${qIdx + 1}: ${q.question}
             </div>
             <div style="display: flex; flex-direction: column; gap: 8px;">
-              ${(q.options || []).map((opt, optIdx) => `
+              ${(q.options || [])
+                .map(
+                  (opt, optIdx) => `
                 <label style="display: flex; align-items: center; gap: 10px; background: #ffffff; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 10px; cursor: pointer; font-size: 13px; color: #334155;">
                   <input type="radio" name="quiz_q_${qIdx}" value="${optIdx}" onchange="window._tempQuizAnswers = window._tempQuizAnswers || {}; window._tempQuizAnswers[${qIdx}] = ${optIdx};">
                   <span>${opt}</span>
                 </label>
-              `).join('')}
+              `,
+                )
+                .join("")}
             </div>
           </div>
-        `).join('')}
+        `,
+          )
+          .join("")}
       </div>
 
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
@@ -1542,7 +1783,7 @@ export function openStudentQuizModal(quiz, courseTitle) {
 }
 
 if (typeof window !== "undefined") {
-  window.submitStudentQuiz = function(quizId, passingGrade, totalQuestions) {
+  window.submitStudentQuiz = function (quizId, passingGrade, totalQuestions) {
     const answers = window._tempQuizAnswers || {};
     let score = 0;
 
@@ -1556,7 +1797,11 @@ if (typeof window !== "undefined") {
 
     document.querySelector(".floating-modal-overlay")?.remove();
 
-    showCustomAlert(passed ? `🎉 تهانينا! لقد اجتزت الاختبار بنسبة ${percent}%` : `النتيجة: ${percent}%. يرجى مراجعة الدروس وإعادة المحاولة.`);
+    showCustomAlert(
+      passed
+        ? `🎉 تهانينا! لقد اجتزت الاختبار بنسبة ${percent}%`
+        : `النتيجة: ${percent}%. يرجى مراجعة الدروس وإعادة المحاولة.`,
+    );
   };
 }
 
@@ -1570,14 +1815,14 @@ export function openStudentAssignmentModal(assignment, courseTitle) {
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 14px;">
         <div>
           <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #0f172a;">📝 ${assignment.title}</h3>
-          <span style="font-size: 12px; color: #64748b;">دورة: ${courseTitle} • الموعد النهائي: ${assignment.deadline || '2026-08-30'}</span>
+          <span style="font-size: 12px; color: #64748b;">دورة: ${courseTitle} • الموعد النهائي: ${assignment.deadline || "2026-08-30"}</span>
         </div>
         <button type="button" onclick="this.closest('.floating-modal-overlay').remove()" style="background: none; border: none; font-size: 20px; cursor: pointer;">✖</button>
       </div>
 
       <div style="background: #f8fafc; padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e2e8f0; font-size: 13px; color: #334155; line-height: 1.6;">
         <strong>تعليمات الواجب:</strong><br>
-        ${assignment.description || 'قم بإنجاز المشروع المطلوب واكتب ملخص العمل هنا أو ارفع الملف المصدري.'}
+        ${assignment.description || "قم بإنجاز المشروع المطلوب واكتب ملخص العمل هنا أو ارفع الملف المصدري."}
       </div>
 
       <div style="margin-bottom: 16px;">
@@ -1600,10 +1845,12 @@ export function openStudentAssignmentModal(assignment, courseTitle) {
 }
 
 if (typeof window !== "undefined") {
-  window.submitStudentAssignment = function(assignmentId) {
+  window.submitStudentAssignment = function (assignmentId) {
     const text = document.getElementById("assignmentStudentText")?.value;
     document.querySelector(".floating-modal-overlay")?.remove();
-    showCustomAlert("تم تسليم الواجب بنجاح! سيتم مراجعته وتقييمه من قبل المعلم.");
+    showCustomAlert(
+      "تم تسليم الواجب بنجاح! سيتم مراجعته وتقييمه من قبل المعلم.",
+    );
   };
 }
 
@@ -1615,13 +1862,22 @@ export function updateCertificateButtonsInCards() {
   // 1. Process grid cards (.my-course-card)
   const cards = myCoursesPage.querySelectorAll(".my-course-card");
   cards.forEach((card) => {
-    const cardTitle = card.getAttribute("data-title") || card.querySelector(".card-title")?.textContent?.trim();
+    const cardTitle =
+      card.getAttribute("data-title") ||
+      card.querySelector(".card-title")?.textContent?.trim();
     if (!cardTitle) return;
 
-    let course = coursesData.find((c) => c.title === cardTitle || cardTitle.includes(c.title) || c.title.includes(cardTitle));
+    let course = coursesData.find(
+      (c) =>
+        c.title === cardTitle ||
+        cardTitle.includes(c.title) ||
+        c.title.includes(cardTitle),
+    );
     if (!course) {
       const teacherCourses = loadLocalStorage("lms_teacher_courses_v1", []);
-      course = teacherCourses.find((c) => c.title === cardTitle || cardTitle.includes(c.title));
+      course = teacherCourses.find(
+        (c) => c.title === cardTitle || cardTitle.includes(c.title),
+      );
     }
 
     const attrProgress = card.getAttribute("data-progress");
@@ -1630,10 +1886,17 @@ export function updateCertificateButtonsInCards() {
 
     if (course) {
       const progressPercent = calculateCourseProgressPercent(course);
-      if (progressPercent === 100 || attrProgress === "100" || card.getAttribute("data-category") === "completed") {
+      if (
+        progressPercent === 100 ||
+        attrProgress === "100" ||
+        card.getAttribute("data-category") === "completed"
+      ) {
         isCompleted = true;
       }
-    } else if (attrProgress === "100" || card.getAttribute("data-category") === "completed") {
+    } else if (
+      attrProgress === "100" ||
+      card.getAttribute("data-category") === "completed"
+    ) {
       isCompleted = true;
       courseId = cardTitle;
     }
@@ -1648,7 +1911,8 @@ export function updateCertificateButtonsInCards() {
         certBtn = document.createElement("button");
         certBtn.type = "button";
         certBtn.className = "btn-secondary-outline sm btn-certificate-claim";
-        certBtn.style.cssText = "width: 100%; margin-top: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-color: #7c3aed; color: #7c3aed; font-weight: 700;";
+        certBtn.style.cssText =
+          "width: 100%; margin-top: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-color: #7c3aed; color: #7c3aed; font-weight: 700;";
         certBtn.innerHTML = `<span>الحصول على الشهادة 🏆</span>`;
         certBtn.onclick = function (e) {
           e.stopPropagation();
@@ -1671,8 +1935,13 @@ export function updateCertificateButtonsInCards() {
   if (continueCard) {
     const titleElem = continueCard.querySelector(".continue-course-title");
     const cardTitle = titleElem ? titleElem.textContent.trim() : "";
-    let course = coursesData.find((c) => c.title === cardTitle || cardTitle.includes(c.title) || c.title.includes(cardTitle));
-    
+    let course = coursesData.find(
+      (c) =>
+        c.title === cardTitle ||
+        cardTitle.includes(c.title) ||
+        c.title.includes(cardTitle),
+    );
+
     let isCompleted = false;
     let courseId = course ? course.id : null;
 
@@ -1689,7 +1958,8 @@ export function updateCertificateButtonsInCards() {
           certBtn = document.createElement("button");
           certBtn.type = "button";
           certBtn.className = "btn-secondary-outline btn-certificate-claim";
-          certBtn.style.cssText = "width: 100%; margin-top: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-color: #7c3aed; color: #7c3aed; font-weight: 700;";
+          certBtn.style.cssText =
+            "width: 100%; margin-top: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-color: #7c3aed; color: #7c3aed; font-weight: 700;";
           certBtn.innerHTML = `<span>الحصول على الشهادة 🏆</span>`;
           certBtn.onclick = function (e) {
             e.stopPropagation();
@@ -1706,21 +1976,29 @@ export function updateCertificateButtonsInCards() {
 
 export function openCourseCertificateModal(courseId) {
   let targetId = Number(courseId) || courseId;
-  let course = coursesData.find((c) => String(c.id) === String(targetId)) ||
-               coursesData.find((c) => c.title === courseId || c.title.includes(String(courseId)));
+  let course =
+    coursesData.find((c) => String(c.id) === String(targetId)) ||
+    coursesData.find(
+      (c) => c.title === courseId || c.title.includes(String(courseId)),
+    );
 
   if (!course) {
     const teacherCourses = loadLocalStorage("lms_teacher_courses_v1", []);
-    course = teacherCourses.find((c) => String(c.id) === String(targetId) || c.title === courseId);
+    course = teacherCourses.find(
+      (c) => String(c.id) === String(targetId) || c.title === courseId,
+    );
   }
 
   if (!course) {
     course = {
       id: courseId || 1,
-      title: typeof courseId === "string" && courseId.startsWith("دورة") ? courseId : "دورة التسويق الرقمي",
+      title:
+        typeof courseId === "string" && courseId.startsWith("دورة")
+          ? courseId
+          : "دورة التسويق الرقمي",
       instructor: "أحمد محمد",
       duration: 10,
-      level: "intermediate"
+      level: "intermediate",
     };
   }
 
@@ -1731,10 +2009,11 @@ export function openCourseCertificateModal(courseId) {
     currentUser = raw ? JSON.parse(raw) : null;
   } catch (e) {}
 
-  const studentName = appState.userData?.name ||
-                      appState.userData?.fullName ||
-                      currentUser?.name ||
-                      "إسلام عادل";
+  const studentName =
+    appState.userData?.name ||
+    appState.userData?.fullName ||
+    currentUser?.name ||
+    "إسلام عادل";
 
   // Level Arabic Mapping
   let levelText = "متوسط";
@@ -1758,7 +2037,7 @@ export function openCourseCertificateModal(courseId) {
       issuedDate: "15 مايو 2024",
       courseTitle: course.title,
       studentName: studentName,
-      instructor: course.instructor || "أحمد محمد"
+      instructor: course.instructor || "أحمد محمد",
     };
     saveLocalStorage(storageKey, certData);
   }
@@ -1770,7 +2049,8 @@ export function openCourseCertificateModal(courseId) {
   const modal = document.createElement("div");
   modal.id = "certificateModalOverlay";
   modal.className = "floating-modal-overlay";
-  modal.style.cssText = "position: fixed; inset: 0; background: rgba(10, 18, 38, 0.88); backdrop-filter: blur(10px); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto;";
+  modal.style.cssText =
+    "position: fixed; inset: 0; background: rgba(10, 18, 38, 0.88); backdrop-filter: blur(10px); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto;";
 
   modal.innerHTML = `
     <!-- SVG Definitions for Metallic Gold Gradients -->
@@ -2253,9 +2533,14 @@ function renderQASectionHTML(courseId) {
     </div>
 
     <div class="questions-list" style="display: flex; flex-direction: column; gap: 14px;">
-      ${questions.length === 0 ? `
+      ${
+        questions.length === 0
+          ? `
         <div style="text-align: center; color: #64748b; padding: 16px;">لا توجد أسئلة سابقة. كن أول من يطرح سؤالاً!</div>
-      ` : questions.map((q) => `
+      `
+          : questions
+              .map(
+                (q) => `
         <div class="question-card" style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; background: #ffffff;">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -2271,16 +2556,23 @@ function renderQASectionHTML(courseId) {
             </div>
           </div>
           <div style="font-size: 13px; color: #1e293b; line-height: 1.5; margin-bottom: 8px;">${q.question}</div>
-          ${q.answer ? `
+          ${
+            q.answer
+              ? `
             <div style="background: #f0f9ff; padding: 10px 12px; border-radius: 8px; margin-top: 8px;">
-              <div style="font-weight: 700; font-size: 12px; color: #0369a1; margin-bottom: 4px;">✍️ رد المعلم (${q.answeredBy || 'المعلم'}):</div>
+              <div style="font-weight: 700; font-size: 12px; color: #0369a1; margin-bottom: 4px;">✍️ رد المعلم (${q.answeredBy || "المعلم"}):</div>
               <div style="font-size: 12px; color: #0f172a;">${q.answer}</div>
             </div>
-          ` : `
+          `
+              : `
             <button type="button" onclick="submitQuestionReply('${q.id}', '${courseId}')" style="font-size: 12px; color: #6366f1; background: none; border: none; cursor: pointer; padding: 0; font-weight: 700;">+ رد كمعلم</button>
-          `}
+          `
+          }
         </div>
-      `).join('')}
+      `,
+              )
+              .join("")
+      }
     </div>
   `;
 }
@@ -2330,11 +2622,18 @@ export function filterCourseLessons(query, courseId) {
   window.activePlayerState.lessonSearchQuery = query;
   const course = coursesData.find((c) => String(c.id) === String(courseId));
   if (course) {
-    const accordion = document.getElementById(`playerLessonsAccordion_${course.id}`);
+    const accordion = document.getElementById(
+      `playerLessonsAccordion_${course.id}`,
+    );
     if (accordion) {
       const curriculum = getCourseCurriculum(course);
       const progress = getCourseProgress(course.id);
-      accordion.innerHTML = renderAccordionContentHTML(course, curriculum, progress, progress.lastActiveLessonId);
+      accordion.innerHTML = renderAccordionContentHTML(
+        course,
+        curriculum,
+        progress,
+        progress.lastActiveLessonId,
+      );
     }
   }
 }
@@ -2347,15 +2646,23 @@ export function quickEnrollCourse(courseId) {
     appState.userCourses.push(target);
     saveLocalStorage("userCourses", appState.userCourses);
   }
-  showCustomAlert("🎉 تم الاشتراك بالدورة بنجاح! تم فتح جميع الدروس والمحتوى لك.");
+  showCustomAlert(
+    "🎉 تم الاشتراك بالدورة بنجاح! تم فتح جميع الدروس والمحتوى لك.",
+  );
   notifyCourseSystemUpdated();
 }
 
 export function continueCourse(courseTitleOrId) {
-  let course = coursesData.find((c) => String(c.id) === String(courseTitleOrId) || c.title === courseTitleOrId);
+  let course = coursesData.find(
+    (c) =>
+      String(c.id) === String(courseTitleOrId) || c.title === courseTitleOrId,
+  );
   if (!course) {
     const teacherCourses = loadLocalStorage("lms_teacher_courses_v1", []);
-    course = teacherCourses.find((c) => String(c.id) === String(courseTitleOrId) || c.title === courseTitleOrId);
+    course = teacherCourses.find(
+      (c) =>
+        String(c.id) === String(courseTitleOrId) || c.title === courseTitleOrId,
+    );
   }
   if (!course) {
     course = coursesData[0];
@@ -2376,11 +2683,12 @@ export function openCoursePreviewVideoModal(courseId) {
   const course = coursesData.find((c) => String(c.id) === String(targetId));
   const videoUrl = SAMPLE_VIDEOS[0];
   const modal = document.createElement("div");
-  modal.style.cssText = "position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;";
+  modal.style.cssText =
+    "position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;";
   modal.innerHTML = `
     <div style="position: relative; width: 100%; max-width: 820px; background: #0f172a; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid #334155;">
       <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: #1e293b; color: #fff;">
-        <span style="font-weight: 700; font-size: 15px;">معاينة الدورة: ${course ? course.title : 'معاينة'}</span>
+        <span style="font-weight: 700; font-size: 15px;">معاينة الدورة: ${course ? course.title : "معاينة"}</span>
         <button type="button" onclick="this.closest('div').parentElement.parentElement.remove()" style="background: rgba(255,255,255,0.1); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;">✕</button>
       </div>
       <video src="${videoUrl}" controls autoplay style="width: 100%; height: auto; max-height: 75vh; display: block;"></video>
@@ -2395,8 +2703,9 @@ export function openCoursePreviewVideoModal(courseId) {
 export function toggleCourseWishlistBtn(courseId, btn) {
   const targetId = Number(courseId) || courseId;
   const teacherCourses = loadLocalStorage("lms_teacher_courses_v1", []);
-  const course = coursesData.find((c) => String(c.id) === String(targetId)) ||
-                 teacherCourses.find((c) => String(c.id) === String(targetId));
+  const course =
+    coursesData.find((c) => String(c.id) === String(targetId)) ||
+    teacherCourses.find((c) => String(c.id) === String(targetId));
   if (!course) return;
   const added = toggleFavorite("course", course);
   if (btn) {
@@ -2420,11 +2729,18 @@ export function toggleCourseWishlistBtn(courseId, btn) {
   }
 }
 
-export function openLessonPreviewOrPlay(courseId, lessonTitle, isFreePreview, isPurchased) {
+export function openLessonPreviewOrPlay(
+  courseId,
+  lessonTitle,
+  isFreePreview,
+  isPurchased,
+) {
   if (isFreePreview || isPurchased) {
     openCoursePreviewVideoModal(courseId);
   } else {
-    showCustomAlert(`🔒 درس "${lessonTitle}" مقفل. اشترك بالدورة لمشاهدة جميع الدروس بالكامل.`);
+    showCustomAlert(
+      `🔒 درس "${lessonTitle}" مقفل. اشترك بالدورة لمشاهدة جميع الدروس بالكامل.`,
+    );
   }
 }
 
@@ -2457,21 +2773,29 @@ export function showTeacherProfilePage(teacherKey) {
   let teacher = getTeacherById(teacherKey);
   if (!teacher && teacherKey) {
     const keyLower = String(teacherKey).toLowerCase();
-    teacher = teachersData.find(t => 
-      String(t.id).toLowerCase() === keyLower || 
-      t.name.toLowerCase().includes(keyLower) || 
-      (t.nameEn && t.nameEn.toLowerCase().includes(keyLower))
+    teacher = teachersData.find(
+      (t) =>
+        String(t.id).toLowerCase() === keyLower ||
+        t.name.toLowerCase().includes(keyLower) ||
+        (t.nameEn && t.nameEn.toLowerCase().includes(keyLower)),
     );
   }
 
   if (!teacher) {
-    const isFemale = String(teacherKey || "").includes("سارة") || String(teacherKey || "").includes("فاطمة") || String(teacherKey || "").includes("أميرة") || String(teacherKey || "").includes("أسماء") || String(teacherKey || "").includes("ليلى");
+    const isFemale =
+      String(teacherKey || "").includes("سارة") ||
+      String(teacherKey || "").includes("فاطمة") ||
+      String(teacherKey || "").includes("أميرة") ||
+      String(teacherKey || "").includes("أسماء") ||
+      String(teacherKey || "").includes("ليلى");
     teacher = {
       id: "teacher-custom",
       name: teacherKey || "محاضر متميز",
       nameEn: teacherKey || "Instructor",
       gender: isFemale ? "female" : "male",
-      avatar: isFemale ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80" : "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
+      avatar: isFemale
+        ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80"
+        : "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
       role: "محاضر وخبير في المنصة",
       bio: "مدرب معتمد بخبرة عريقة في مجاله، قدم العديد من الدورات التدريبية المتميزة وشغوف بنقل الخبرة والمهارات الحقيقية للطلاب.",
       experience: "+5 سنوات خبرة",
@@ -2479,20 +2803,29 @@ export function showTeacherProfilePage(teacherKey) {
       specialization: "التدريب الأكاديمي والتقني",
       rating: "4.9",
       studentsCount: "5.4K",
-      coursesCount: 0
+      coursesCount: 0,
     };
   }
 
   // Filter ONLY courses published by this teacher
   const teacherCourses = coursesData.filter((c) => {
-    if (teacher.id && c.instructorId && String(c.instructorId) === String(teacher.id)) {
+    if (
+      teacher.id &&
+      c.instructorId &&
+      String(c.instructorId) === String(teacher.id)
+    ) {
       return true;
     }
     if (c.instructor) {
       const cName = c.instructor.trim().toLowerCase();
       const tName = teacher.name.trim().toLowerCase();
       const tNameEn = (teacher.nameEn || "").trim().toLowerCase();
-      if (cName === tName || cName === tNameEn || cName.includes(tName) || tName.includes(cName)) {
+      if (
+        cName === tName ||
+        cName === tNameEn ||
+        cName.includes(tName) ||
+        tName.includes(cName)
+      ) {
         return true;
       }
     }
@@ -2561,9 +2894,13 @@ export function showTeacherProfilePage(teacherKey) {
             </h2>
           </div>
 
-          ${activeCoursesCount > 0 ? `
+          ${
+            activeCoursesCount > 0
+              ? `
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;">
-              ${teacherCourses.map(c => `
+              ${teacherCourses
+                .map(
+                  (c) => `
                 <div style="background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #e2e8f0); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 14px rgba(0,0,0,0.04);">
                   <img src="${c.image}" alt="${c.title}" style="width: 100%; height: 150px; object-fit: cover;" />
                   <div style="padding: 18px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
@@ -2586,15 +2923,19 @@ export function showTeacherProfilePage(teacherKey) {
                     </div>
                   </div>
                 </div>
-              `).join('')}
+              `,
+                )
+                .join("")}
             </div>
-          ` : `
+          `
+              : `
             <div style="text-align: center; padding: 48px 20px; background: var(--bg-secondary, #f8fafc); border-radius: 20px; border: 1px dashed var(--border-color, #cbd5e1);">
               <div style="font-size: 48px; margin-bottom: 12px;">📂</div>
               <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary, #0f172a); margin: 0 0 6px 0;">لا توجد دورات منشورة لهذا المعلم حالياً.</h3>
               <p style="font-size: 14px; color: var(--text-secondary, #64748b); margin: 0;">سيتم إضافة دورات جديدة قريباً لهذا المعلم.</p>
             </div>
-          `}
+          `
+          }
         </div>
 
       </div>
@@ -2614,31 +2955,54 @@ export function renderCourseDetailsUI(course, containerElement) {
   const purchased = isCoursePurchased(course.id);
   const favState = isFavorite("course", course.id);
   const formattedLevel = formatCourseLevel(course.level);
-  const instructorAvatar = course.instructorImage || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop";
+  const instructorAvatar =
+    course.instructorImage ||
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop";
 
-  const courseReviews = reviewsData.filter(r => String(r.purchasedItemId) === String(course.id) || (r.courseOrBookName && r.courseOrBookName.includes(course.title)));
-  const displayReviews = courseReviews.length > 0 ? courseReviews : [
-    {
-      studentName: "أحمد محمود علي",
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop",
-      stars: 5,
-      reviewTitle: "دورة شمولية وممتازة جداً!",
-      reviewText: "الشرح وافي والمشاريع التطبيقية أضافت لي الكثير من الخبرة العميقة.",
-      createdDate: "2026-07-28"
-    },
-    {
-      studentName: "سارة خالد العتيبي",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop",
-      stars: 5,
-      reviewTitle: "أسلوب رائع وسلس",
-      reviewText: "استفدت جداً من التمارين وحل الواجبات والتفاعل المستمر مع الأستاذ.",
-      createdDate: "2026-07-30"
-    }
-  ];
+  const courseReviews = reviewsData.filter(
+    (r) =>
+      String(r.purchasedItemId) === String(course.id) ||
+      (r.courseOrBookName && r.courseOrBookName.includes(course.title)),
+  );
+  const displayReviews =
+    courseReviews.length > 0
+      ? courseReviews
+      : [
+          {
+            studentName: "أحمد محمود علي",
+            avatar:
+              "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop",
+            stars: 5,
+            reviewTitle: "دورة شمولية وممتازة جداً!",
+            reviewText:
+              "الشرح وافي والمشاريع التطبيقية أضافت لي الكثير من الخبرة العميقة.",
+            createdDate: "2026-07-28",
+          },
+          {
+            studentName: "سارة خالد العتيبي",
+            avatar:
+              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop",
+            stars: 5,
+            reviewTitle: "أسلوب رائع وسلس",
+            reviewText:
+              "استفدت جداً من التمارين وحل الواجبات والتفاعل المستمر مع الأستاذ.",
+            createdDate: "2026-07-30",
+          },
+        ];
 
-  const relatedCourses = coursesData.filter(c => String(c.id) !== String(course.id) && (c.category === course.category || !course.category)).slice(0, 3);
+  const relatedCourses = coursesData
+    .filter(
+      (c) =>
+        String(c.id) !== String(course.id) &&
+        (c.category === course.category || !course.category),
+    )
+    .slice(0, 3);
   if (relatedCourses.length === 0) {
-    relatedCourses.push(...coursesData.filter(c => String(c.id) !== String(course.id)).slice(0, 3));
+    relatedCourses.push(
+      ...coursesData
+        .filter((c) => String(c.id) !== String(course.id))
+        .slice(0, 3),
+    );
   }
 
   const oldPrice = Math.round((course.price || 99) * 1.35);
@@ -2688,15 +3052,15 @@ export function renderCourseDetailsUI(course, containerElement) {
               <h1 class="course-details-title" style="font-size: 26px; font-weight: 800; color: var(--text-primary, #0f172a); margin: 0 0 16px 0; line-height: 1.4;">${course.title}</h1>
 
               <div class="course-hero-meta-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px; font-size: 14px; color: var(--text-secondary, #64748b); border-top: 1px solid var(--border-color, #e2e8f0); padding-top: 16px;">
-                <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" onclick="navigateToTeacherProfile('${(course.instructorId || course.instructor || 'أحمد محمد').replace(/'/g, "\\'")}')" title="عرض الملف الشخصي للمدرس">
-                  <img src="${instructorAvatar}" alt="${course.instructor || 'المدرس'}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #7c3aed;" />
+                <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" onclick="navigateToTeacherProfile('${(course.instructorId || course.instructor || "أحمد محمد").replace(/'/g, "\\'")}')" title="عرض الملف الشخصي للمدرس">
+                  <img src="${instructorAvatar}" alt="${course.instructor || "المدرس"}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #7c3aed;" />
                   <div>
                     <div style="font-size: 11px; color: var(--text-secondary, #64748b);">المُدرّس:</div>
-                    <div style="font-weight: 700; color: var(--text-primary, #0f172a);">${course.instructor || 'أحمد محمد'}</div>
+                    <div style="font-weight: 700; color: var(--text-primary, #0f172a);">${course.instructor || "أحمد محمد"}</div>
                   </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 6px;">
-                  <span style="color: #f59e0b; font-weight: 800; font-size: 16px;">⭐ ${course.rating || '4.9'}</span>
+                  <span style="color: #f59e0b; font-weight: 800; font-size: 16px;">⭐ ${course.rating || "4.9"}</span>
                   <span style="font-size: 12px; color: var(--text-secondary, #64748b);">(${course.reviewsCount || (course.reviews ? course.reviews.length : displayReviews.length)} تقييم)</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
@@ -2737,7 +3101,7 @@ export function renderCourseDetailsUI(course, containerElement) {
               <span>📖</span> عن الدورة التدريبية
             </h2>
             <p style="font-size: 15px; color: var(--text-secondary, #475569); line-height: 1.8; margin: 0 0 16px 0;">
-              ${course.longDescription || course.description || 'هذه الدورة توفر تجربة تعليمية شاملة ومصممة بعناية لبناء مهارات عملية حقيقية. ستتعلم الأساسيات بالإضافة إلى المفاهيم المتقدمة من خلال مشاريع وتطبيقات واقعية خطوة بخطوة.'}
+              ${course.longDescription || course.description || "هذه الدورة توفر تجربة تعليمية شاملة ومصممة بعناية لبناء مهارات عملية حقيقية. ستتعلم الأساسيات بالإضافة إلى المفاهيم المتقدمة من خلال مشاريع وتطبيقات واقعية خطوة بخطوة."}
             </p>
             <div class="course-features-checklist" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; background: var(--bg-secondary, #f8fafc); padding: 18px; border-radius: 12px; border: 1px solid var(--border-color, #f1f5f9);">
               <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text-primary, #0f172a);">
@@ -2765,26 +3129,34 @@ export function renderCourseDetailsUI(course, containerElement) {
             </div>
 
             <div class="lessons-accordion" style="display: flex; flex-direction: column; gap: 12px;">
-              ${curriculum.map((sec, sIdx) => `
+              ${curriculum
+                .map(
+                  (sec, sIdx) => `
                 <div style="border: 1px solid var(--border-color, #e2e8f0); border-radius: 12px; overflow: hidden;">
                   <div onclick="toggleAccordion(this)" style="background: var(--bg-secondary, #f8fafc); padding: 14px 18px; font-weight: 700; font-size: 14px; color: var(--text-primary, #0f172a); cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
                     <span>${sec.title}</span>
                     <span style="font-size: 12px; color: var(--text-secondary, #64748b); background: var(--card-bg, #ffffff); padding: 2px 10px; border-radius: 20px; border: 1px solid var(--border-color, #cbd5e1);">${(sec.lessons || []).length} دروس</span>
                   </div>
                   <div style="padding: 10px 18px; display: flex; flex-direction: column; gap: 8px;">
-                    ${(sec.lessons || []).map((les, lIdx) => `
-                      <div onclick="openLessonPreviewOrPlay('${course.id}', '${(les.title || '').replace(/'/g, "\\'")}', ${!!les.isFreePreview}, ${!!purchased})" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 8px; background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #f1f5f9); font-size: 13px; cursor: pointer; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='var(--card-bg, #ffffff)'" title="اضغط لمشاهدة أو معاينة الدرس">
+                    ${(sec.lessons || [])
+                      .map(
+                        (les, lIdx) => `
+                      <div onclick="openLessonPreviewOrPlay('${course.id}', '${(les.title || "").replace(/'/g, "\\'")}', ${!!les.isFreePreview}, ${!!purchased})" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 8px; background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #f1f5f9); font-size: 13px; cursor: pointer; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='var(--card-bg, #ffffff)'" title="اضغط لمشاهدة أو معاينة الدرس">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                          <span>${les.isFreePreview ? '▶️' : (purchased ? '▶️' : '🔒')}</span>
+                          <span>${les.isFreePreview ? "▶️" : purchased ? "▶️" : "🔒"}</span>
                           <span style="font-weight: 600; color: var(--text-primary, #0f172a);">${les.title}</span>
-                          ${les.isFreePreview ? `<span style="font-size: 10px; background: #dcfce7; color: #15803d; font-weight: 800; padding: 2px 8px; border-radius: 10px;">معاينة مجانية</span>` : ''}
+                          ${les.isFreePreview ? `<span style="font-size: 10px; background: #dcfce7; color: #15803d; font-weight: 800; padding: 2px 8px; border-radius: 10px;">معاينة مجانية</span>` : ""}
                         </div>
-                        <span style="font-size: 12px; color: var(--text-secondary, #64748b); font-weight: 600;">⏱️ ${les.duration || '10:00'}</span>
+                        <span style="font-size: 12px; color: var(--text-secondary, #64748b); font-weight: 600;">⏱️ ${les.duration || "10:00"}</span>
                       </div>
-                    `).join('')}
+                    `,
+                      )
+                      .join("")}
                   </div>
                 </div>
-              `).join('')}
+              `,
+                )
+                .join("")}
             </div>
           </div>
 
@@ -2809,7 +3181,7 @@ export function renderCourseDetailsUI(course, containerElement) {
 
             <div class="course-rating-summary-box" style="display: grid; grid-template-columns: 180px 1fr; gap: 24px; background: var(--bg-secondary, #f8fafc); padding: 20px; border-radius: 14px; margin-bottom: 24px; border: 1px solid var(--border-color, #f1f5f9); align-items: center;">
               <div style="text-align: center;">
-                <div style="font-size: 42px; font-weight: 900; color: var(--text-primary, #0f172a); line-height: 1;">${course.rating || '4.9'}</div>
+                <div style="font-size: 42px; font-weight: 900; color: var(--text-primary, #0f172a); line-height: 1;">${course.rating || "4.9"}</div>
                 <div style="color: #f59e0b; font-size: 18px; margin: 6px 0;">⭐⭐⭐⭐⭐</div>
                 <div style="font-size: 12px; color: var(--text-secondary, #64748b); font-weight: 600;">تقييم العام</div>
               </div>
@@ -2839,34 +3211,42 @@ export function renderCourseDetailsUI(course, containerElement) {
             </div>
 
             <div class="course-reviews-list" style="display: flex; flex-direction: column; gap: 16px;">
-              ${displayReviews.map((r) => `
+              ${displayReviews
+                .map(
+                  (r) => `
                 <div style="border: 1px solid var(--border-color, #e2e8f0); border-radius: 12px; padding: 18px; background: var(--card-bg, #ffffff);">
                   <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                     <div style="display: flex; align-items: center; gap: 12px;">
-                      <img src="${r.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop'}" alt="${r.studentName}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
+                      <img src="${r.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop"}" alt="${r.studentName}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
                       <div>
                         <div style="font-weight: 700; font-size: 14px; color: var(--text-primary, #0f172a);">${r.studentName}</div>
-                        <div style="font-size: 12px; color: var(--text-secondary, #64748b);">${r.createdDate || 'قبل أسبوع'}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #64748b);">${r.createdDate || "قبل أسبوع"}</div>
                       </div>
                     </div>
-                    <div style="color: #f59e0b; font-size: 14px; font-weight: 700;">${'⭐'.repeat(r.stars || 5)}</div>
+                    <div style="color: #f59e0b; font-size: 14px; font-weight: 700;">${"⭐".repeat(r.stars || 5)}</div>
                   </div>
-                  <h4 style="font-size: 14px; font-weight: 700; color: var(--text-primary, #0f172a); margin: 0 0 6px 0;">${r.reviewTitle || 'دورة ممتازة وشرح احترافي'}</h4>
-                  <p style="font-size: 13px; color: var(--text-secondary, #475569); margin: 0; line-height: 1.6;">${r.reviewText || r.comment || ''}</p>
+                  <h4 style="font-size: 14px; font-weight: 700; color: var(--text-primary, #0f172a); margin: 0 0 6px 0;">${r.reviewTitle || "دورة ممتازة وشرح احترافي"}</h4>
+                  <p style="font-size: 13px; color: var(--text-secondary, #475569); margin: 0; line-height: 1.6;">${r.reviewText || r.comment || ""}</p>
                 </div>
-              `).join('')}
+              `,
+                )
+                .join("")}
             </div>
           </div>
 
           <!-- 9. Related Courses Section -->
-          ${relatedCourses.length > 0 ? `
+          ${
+            relatedCourses.length > 0
+              ? `
             <div class="course-related-box" style="background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #e2e8f0); border-radius: 18px; padding: 28px;">
               <h2 style="font-size: 20px; font-weight: 800; color: var(--text-primary, #0f172a); margin: 0 0 20px 0; display: flex; align-items: center; gap: 10px;">
                 <span>✨</span> دورات أخرى قد تهمك
               </h2>
               <div id="relatedCoursesContainer_${course.id}" class="courses-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;"></div>
             </div>
-          ` : ''}
+          `
+              : ""
+          }
 
         </div>
 
@@ -2884,25 +3264,29 @@ export function renderCourseDetailsUI(course, containerElement) {
             </div>
 
             <div class="course-purchase-actions" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
-              ${purchased ? `
+              ${
+                purchased
+                  ? `
                 <button type="button" class="btn btn-primary" onclick="continueCourse('${course.id}')" style="width: 100%; padding: 14px; font-weight: 800; font-size: 16px; border-radius: 12px; background: linear-gradient(135deg, #10b981, #059669); border: none; color: #fff; cursor: pointer;">
                   ▶ متابعة التعلم والدروس
                 </button>
-              ` : `
+              `
+                  : `
                 <button type="button" class="btn btn-primary" onclick="quickEnrollCourse('${course.id}')" style="width: 100%; padding: 14px; font-weight: 800; font-size: 16px; border-radius: 12px; background: linear-gradient(135deg, #7c3aed, #6d28d9); border: none; color: #fff; cursor: pointer; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);">
                   ⚡ اشترك الآن ($${course.price || 99})
                 </button>
                 <button type="button" class="btn btn-secondary" onclick="addToCart('${course.id}')" style="width: 100%; padding: 12px; font-weight: 700; font-size: 14px; border-radius: 12px; background: var(--bg-secondary, #f8fafc); border: 1px solid var(--border-color, #cbd5e1); color: var(--text-primary, #0f172a); cursor: pointer;">
                   🛒 إضافة إلى السلة
                 </button>
-              `}
+              `
+              }
 
               <div style="display: flex; gap: 8px;">
                 <button type="button" class="wishlist-action-btn" onclick="toggleCourseWishlistBtn('${course.id}', this)" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; font-weight: 700; font-size: 13px; border-radius: 10px; background: transparent; border: 1px solid var(--border-color, #e2e8f0); color: var(--text-primary, #0f172a); cursor: pointer;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="${favState ? '#ef4444' : 'none'}" stroke="${favState ? '#ef4444' : 'currentColor'}" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-                  <span>${favState ? 'إزالة من المفضلة' : 'إضافة إلى المفضلة'}</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="${favState ? "#ef4444" : "none"}" stroke="${favState ? "#ef4444" : "currentColor"}" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                  <span>${favState ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}</span>
                 </button>
-                <button type="button" onclick="shareCourse('${(course.title || '').replace(/'/g, "\\'")}')" style="display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 14px; font-weight: 700; font-size: 13px; border-radius: 10px; background: transparent; border: 1px solid var(--border-color, #e2e8f0); color: var(--text-primary, #0f172a); cursor: pointer;" title="مشاركة رابط الدورة">
+                <button type="button" onclick="shareCourse('${(course.title || "").replace(/'/g, "\\'")}')" style="display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 14px; font-weight: 700; font-size: 13px; border-radius: 10px; background: transparent; border: 1px solid var(--border-color, #e2e8f0); color: var(--text-primary, #0f172a); cursor: pointer;" title="مشاركة رابط الدورة">
                   <span>🔗</span> مشاركة
                 </button>
               </div>
@@ -2940,9 +3324,11 @@ export function renderCourseDetailsUI(course, containerElement) {
     </div>
   `;
 
-  const relatedGrid = containerElement.querySelector(`#relatedCoursesContainer_${course.id}`);
+  const relatedGrid = containerElement.querySelector(
+    `#relatedCoursesContainer_${course.id}`,
+  );
   if (relatedGrid) {
-    relatedCourses.forEach(relCourse => {
+    relatedCourses.forEach((relCourse) => {
       const card = createCourseCard(relCourse, showCourseDetails);
       relatedGrid.appendChild(card);
     });
@@ -2952,8 +3338,9 @@ export function renderCourseDetailsUI(course, containerElement) {
 export function showCourseDetails(courseId) {
   const targetId = Number(courseId) || courseId;
   const teacherCourses = loadLocalStorage("lms_teacher_courses_v1", []);
-  const course = coursesData.find((c) => String(c.id) === String(targetId)) ||
-                 teacherCourses.find((c) => String(c.id) === String(targetId));
+  const course =
+    coursesData.find((c) => String(c.id) === String(targetId)) ||
+    teacherCourses.find((c) => String(c.id) === String(targetId));
 
   if (!course) {
     const booksList = window.booksData || booksData || [];
@@ -2976,7 +3363,9 @@ export function showCourseDetails(courseId) {
 
   hideAllMainSections();
   const page = document.getElementById("courseDetailsPage");
-  const detailsContainer = document.getElementById("courseDetailsContent") || document.getElementById("courseDetails");
+  const detailsContainer =
+    document.getElementById("courseDetailsContent") ||
+    document.getElementById("courseDetails");
   if (!page || !detailsContainer) return;
 
   page.classList.remove("hidden");
@@ -2997,19 +3386,24 @@ export function rateCourse(courseId) {
     return;
   }
 
-  const reviewTitle = prompt("عنوان التقييم (اختياري):") || "تقييم ممتاز ومفيد جداً";
-  const reviewText = prompt("اكتب تعليقك أو ملاحظاتك حول الدورة (اختياري):") || "دورة رائعة وشرح ممتاز ومفصل.";
+  const reviewTitle =
+    prompt("عنوان التقييم (اختياري):") || "تقييم ممتاز ومفيد جداً";
+  const reviewText =
+    prompt("اكتب تعليقك أو ملاحظاتك حول الدورة (اختياري):") ||
+    "دورة رائعة وشرح ممتاز ومفصل.";
 
   const targetId = Number(courseId) || courseId;
   const newReview = {
     id: Date.now(),
     purchasedItemId: targetId,
     studentName: window.appState?.userData?.name || "طالب متميز",
-    avatar: window.appState?.userData?.image || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop",
+    avatar:
+      window.appState?.userData?.image ||
+      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop",
     stars: rating,
     reviewTitle: reviewTitle,
     reviewText: reviewText,
-    createdDate: new Date().toISOString().split("T")[0]
+    createdDate: new Date().toISOString().split("T")[0],
   };
 
   reviewsData.unshift(newReview);
@@ -3019,12 +3413,12 @@ export function rateCourse(courseId) {
 
 export function toggleWishlist(courseId, btn) {
   if (btn) {
-    if (btn.classList.contains('active')) {
-      btn.classList.remove('active');
+    if (btn.classList.contains("active")) {
+      btn.classList.remove("active");
       btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> <span>حفظ في المفضلة</span>`;
       showCustomAlert("تمت إزالة الدورة من المفضلة");
     } else {
-      btn.classList.add('active');
+      btn.classList.add("active");
       btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="#0057e7" stroke="#0057e7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> <span>تم الحفظ في المفضلة</span>`;
       showCustomAlert("تمت إضافة الدورة إلى المفضلة");
     }
@@ -3042,42 +3436,53 @@ export function shareCourse(courseTitle) {
 
 export function toggleAccordion(headerElem) {
   if (!headerElem) return;
-  const item = headerElem.closest('.accordion-item') || headerElem.parentElement;
-  const body = item ? (item.querySelector('.accordion-body') || headerElem.nextElementSibling) : headerElem.nextElementSibling;
-  const arrow = headerElem.querySelector('.accordion-arrow') || headerElem.querySelector('span:last-child');
+  const item =
+    headerElem.closest(".accordion-item") || headerElem.parentElement;
+  const body = item
+    ? item.querySelector(".accordion-body") || headerElem.nextElementSibling
+    : headerElem.nextElementSibling;
+  const arrow =
+    headerElem.querySelector(".accordion-arrow") ||
+    headerElem.querySelector("span:last-child");
 
   if (body) {
-    const isHidden = window.getComputedStyle(body).display === 'none' || body.classList.contains('hidden');
+    const isHidden =
+      window.getComputedStyle(body).display === "none" ||
+      body.classList.contains("hidden");
     if (isHidden) {
-      body.style.display = 'flex';
-      body.style.flexDirection = 'column';
-      body.classList.remove('hidden');
-      body.classList.add('active');
-      headerElem.classList.add('active');
-      if (arrow && arrow.textContent.trim().length <= 2) arrow.textContent = '▲';
+      body.style.display = "flex";
+      body.style.flexDirection = "column";
+      body.classList.remove("hidden");
+      body.classList.add("active");
+      headerElem.classList.add("active");
+      if (arrow && arrow.textContent.trim().length <= 2)
+        arrow.textContent = "▲";
     } else {
-      body.style.display = 'none';
-      body.classList.remove('active');
-      headerElem.classList.remove('active');
-      if (arrow && arrow.textContent.trim().length <= 2) arrow.textContent = '▼';
+      body.style.display = "none";
+      body.classList.remove("active");
+      headerElem.classList.remove("active");
+      if (arrow && arrow.textContent.trim().length <= 2)
+        arrow.textContent = "▼";
     }
   }
 }
 
 export function toggleLessonAccordion(headerElem) {
   if (!headerElem) return;
-  const group = headerElem.closest('.accordion-group');
+  const group = headerElem.closest(".accordion-group");
   if (!group) return;
-  const body = group.querySelector('.accordion-group-body');
+  const body = group.querySelector(".accordion-group-body");
   if (body) {
-    const isHidden = window.getComputedStyle(body).display === 'none' || body.classList.contains('hidden');
+    const isHidden =
+      window.getComputedStyle(body).display === "none" ||
+      body.classList.contains("hidden");
     if (isHidden) {
-      body.style.display = 'block';
-      body.classList.remove('hidden');
-      headerElem.classList.add('active');
+      body.style.display = "block";
+      body.classList.remove("hidden");
+      headerElem.classList.add("active");
     } else {
-      body.style.display = 'none';
-      headerElem.classList.remove('active');
+      body.style.display = "none";
+      headerElem.classList.remove("active");
     }
   }
 }
@@ -3132,5 +3537,3 @@ if (typeof window !== "undefined") {
   window.quickEnrollCourse = quickEnrollCourse;
   window.notifyCourseSystemUpdated = notifyCourseSystemUpdated;
 }
-
-

@@ -8,8 +8,8 @@ import {
   getDraftConfig,
   setDraftConfig,
   saveFeaturedConfig,
-  applyFeaturedMetadata
-} from "../.featured-config.js";
+  applyFeaturedMetadata,
+} from "../featured-config.js";
 import { isOwner } from "./permissionService.js";
 import { showCustomAlert } from "../utils/helpers.js";
 import { showToast } from "./notificationService.js";
@@ -29,12 +29,12 @@ let state = {
     courses: "",
     books: "",
     teachers: "",
-    reviews: ""
+    reviews: "",
   },
   categoryFilters: {
     courses: "all",
-    books: "all"
-  }
+    books: "all",
+  },
 };
 
 function syncStateToDraft() {
@@ -44,17 +44,24 @@ function syncStateToDraft() {
     featuredTeachers: state.featuredTeachers,
     featuredReviews: state.featuredReviews,
     courseMetadata: state.courseMetadata,
-    bookMetadata: state.bookMetadata
+    bookMetadata: state.bookMetadata,
   });
 }
 
 export function openHomepageManagement() {
-  const userRole = window.appState?.userRole || (window.getCurrentUserRole ? window.getCurrentUserRole() : "student");
-  
+  const userRole =
+    window.appState?.userRole ||
+    (window.getCurrentUserRole ? window.getCurrentUserRole() : "student");
+
   if (!isOwner(userRole)) {
-    const alertMsg = "عذراً، صفحة إدارة الصفحة الرئيسية مخصصة فقط لمالك المنصة (Platform Owner).";
+    const alertMsg =
+      "عذراً، صفحة إدارة الصفحة الرئيسية مخصصة فقط لمالك المنصة (Platform Owner).";
     if (typeof showToast === "function") {
-      showToast({ type: "error", title: "صلاحية غير كافية", message: alertMsg });
+      showToast({
+        type: "error",
+        title: "صلاحية غير كافية",
+        message: alertMsg,
+      });
     } else {
       showCustomAlert(alertMsg);
     }
@@ -79,7 +86,9 @@ export function openHomepageManagement() {
 
   hideAllMainSections();
 
-  const container = document.getElementById("homepageManagementContent") || document.getElementById("dashboardContent");
+  const container =
+    document.getElementById("homepageManagementContent") ||
+    document.getElementById("dashboardContent");
   const parentPage = document.getElementById("homepageManagementPage");
 
   if (parentPage) {
@@ -92,8 +101,12 @@ export function openHomepageManagement() {
 }
 
 function renderHomepageManagementUI(container) {
-  const courseCategories = Array.from(new Set(coursesData.map(c => c.category).filter(Boolean)));
-  const bookCategories = Array.from(new Set(booksData.map(b => b.category).filter(Boolean)));
+  const courseCategories = Array.from(
+    new Set(coursesData.map((c) => c.category).filter(Boolean)),
+  );
+  const bookCategories = Array.from(
+    new Set(booksData.map((b) => b.category).filter(Boolean)),
+  );
 
   container.innerHTML = `
     <div style="max-width:1280px; margin: 0 auto; padding: 24px 16px; font-family: inherit; direction: rtl;">
@@ -229,7 +242,7 @@ function renderHomepageManagementUI(container) {
           <div style="min-width: 180px;">
             <select id="coursesCategorySelect" onchange="updateCategoryFilter('courses', this.value)" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; background: #ffffff; color: #1e293b; font-weight: 600;">
               <option value="all" ${state.categoryFilters.courses === "all" ? "selected" : ""}>جميع التخصصات</option>
-              ${courseCategories.map(cat => `<option value="${escapeHtml(cat)}" ${state.categoryFilters.courses === cat ? "selected" : ""}>${escapeHtml(cat)}</option>`).join("")}
+              ${courseCategories.map((cat) => `<option value="${escapeHtml(cat)}" ${state.categoryFilters.courses === cat ? "selected" : ""}>${escapeHtml(cat)}</option>`).join("")}
             </select>
           </div>
         </div>
@@ -275,7 +288,7 @@ function renderHomepageManagementUI(container) {
           <div style="min-width: 180px;">
             <select id="booksCategorySelect" onchange="updateCategoryFilter('books', this.value)" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; background: #ffffff; color: #1e293b; font-weight: 600;">
               <option value="all" ${state.categoryFilters.books === "all" ? "selected" : ""}>جميع تصنيفات الكتب</option>
-              ${bookCategories.map(cat => `<option value="${escapeHtml(cat)}" ${state.categoryFilters.books === cat ? "selected" : ""}>${escapeHtml(cat)}</option>`).join("")}
+              ${bookCategories.map((cat) => `<option value="${escapeHtml(cat)}" ${state.categoryFilters.books === cat ? "selected" : ""}>${escapeHtml(cat)}</option>`).join("")}
             </select>
           </div>
         </div>
@@ -434,7 +447,7 @@ function renderCoursesRows() {
   const query = (state.searchQueries.courses || "").trim().toLowerCase();
   const catFilter = state.categoryFilters.courses;
 
-  const filtered = coursesData.filter(c => {
+  const filtered = coursesData.filter((c) => {
     const matchesCat = catFilter === "all" || c.category === catFilter;
     if (!matchesCat) return false;
     if (!query) return true;
@@ -455,11 +468,14 @@ function renderCoursesRows() {
     `;
   }
 
-  return filtered.map((course) => {
-    const meta = state.courseMetadata[String(course.id)] || {};
-    const isFeatured = state.featuredCourses.some((id) => String(id) === String(course.id));
+  return filtered
+    .map((course) => {
+      const meta = state.courseMetadata[String(course.id)] || {};
+      const isFeatured = state.featuredCourses.some(
+        (id) => String(id) === String(course.id),
+      );
 
-    return `
+      return `
       <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
         <td style="padding: 12px 16px;">
           <div style="display: flex; align-items: center; gap: 12px;">
@@ -490,14 +506,15 @@ function renderCoursesRows() {
         </td>
       </tr>
     `;
-  }).join("");
+    })
+    .join("");
 }
 
 function renderBooksRows() {
   const query = (state.searchQueries.books || "").trim().toLowerCase();
   const catFilter = state.categoryFilters.books;
 
-  const filtered = booksData.filter(b => {
+  const filtered = booksData.filter((b) => {
     const matchesCat = catFilter === "all" || b.category === catFilter;
     if (!matchesCat) return false;
     if (!query) return true;
@@ -519,11 +536,14 @@ function renderBooksRows() {
     `;
   }
 
-  return filtered.map((book) => {
-    const meta = state.bookMetadata[String(book.id)] || {};
-    const isFeatured = state.featuredBooks.some((id) => String(id) === String(book.id));
+  return filtered
+    .map((book) => {
+      const meta = state.bookMetadata[String(book.id)] || {};
+      const isFeatured = state.featuredBooks.some(
+        (id) => String(id) === String(book.id),
+      );
 
-    return `
+      return `
       <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
         <td style="padding: 12px 16px;">
           <div style="display: flex; align-items: center; gap: 12px;">
@@ -554,13 +574,14 @@ function renderBooksRows() {
         </td>
       </tr>
     `;
-  }).join("");
+    })
+    .join("");
 }
 
 function renderTeachersRows() {
   const query = (state.searchQueries.teachers || "").trim().toLowerCase();
 
-  const filtered = teachersData.filter(t => {
+  const filtered = teachersData.filter((t) => {
     if (!query) return true;
     return (
       (t.name && t.name.toLowerCase().includes(query)) ||
@@ -581,10 +602,13 @@ function renderTeachersRows() {
     `;
   }
 
-  return filtered.map((teacher) => {
-    const isFeatured = state.featuredTeachers.some((id) => String(id) === String(teacher.id));
+  return filtered
+    .map((teacher) => {
+      const isFeatured = state.featuredTeachers.some(
+        (id) => String(id) === String(teacher.id),
+      );
 
-    return `
+      return `
       <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
         <td style="padding: 12px 16px;">
           <div style="display: flex; align-items: center; gap: 12px;">
@@ -607,25 +631,27 @@ function renderTeachersRows() {
           </div>
         </td>
         <td style="padding: 12px 16px; text-align: center;">
-          <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; font-weight: 700; color: ${isFeatured ? '#15803d' : '#64748b'}; background: ${isFeatured ? '#f0fdf4' : '#f8fafc'}; padding: 6px 12px; border-radius: 8px; border: 1px solid ${isFeatured ? '#bbf7d0' : '#e2e8f0'};">
+          <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; font-weight: 700; color: ${isFeatured ? "#15803d" : "#64748b"}; background: ${isFeatured ? "#f0fdf4" : "#f8fafc"}; padding: 6px 12px; border-radius: 8px; border: 1px solid ${isFeatured ? "#bbf7d0" : "#e2e8f0"};">
             <input type="checkbox" onchange="toggleTeacherFeatured('${teacher.id}', this.checked)" ${isFeatured ? "checked" : ""} style="width: 16px; height: 16px; accent-color: #16a34a; cursor: pointer;" />
             <span>${isFeatured ? "معروض بالرئيسية" : "غير معروض"}</span>
           </label>
         </td>
       </tr>
     `;
-  }).join("");
+    })
+    .join("");
 }
 
 function renderReviewsRows() {
   const query = (state.searchQueries.reviews || "").trim().toLowerCase();
   const allReviews = getReviewsList();
 
-  const filtered = allReviews.filter(r => {
+  const filtered = allReviews.filter((r) => {
     if (!query) return true;
     return (
       (r.studentName && r.studentName.toLowerCase().includes(query)) ||
-      (r.courseOrBookName && r.courseOrBookName.toLowerCase().includes(query)) ||
+      (r.courseOrBookName &&
+        r.courseOrBookName.toLowerCase().includes(query)) ||
       (r.reviewTitle && r.reviewTitle.toLowerCase().includes(query)) ||
       (r.reviewText && r.reviewText.toLowerCase().includes(query))
     );
@@ -641,11 +667,14 @@ function renderReviewsRows() {
     `;
   }
 
-  return filtered.map((review) => {
-    const isFeatured = state.featuredReviews.some((id) => String(id) === String(review.id));
-    const starsStr = "⭐".repeat(Number(review.stars) || 5);
+  return filtered
+    .map((review) => {
+      const isFeatured = state.featuredReviews.some(
+        (id) => String(id) === String(review.id),
+      );
+      const starsStr = "⭐".repeat(Number(review.stars) || 5);
 
-    return `
+      return `
       <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
         <td style="padding: 12px 16px;">
           <div style="display: flex; align-items: center; gap: 10px;">
@@ -662,14 +691,15 @@ function renderReviewsRows() {
           </div>
         </td>
         <td style="padding: 12px 16px; text-align: center;">
-          <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; font-weight: 700; color: ${isFeatured ? '#92400e' : '#64748b'}; background: ${isFeatured ? '#fef3c7' : '#f8fafc'}; padding: 6px 12px; border-radius: 8px; border: 1px solid ${isFeatured ? '#fde68a' : '#e2e8f0'};">
+          <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; font-weight: 700; color: ${isFeatured ? "#92400e" : "#64748b"}; background: ${isFeatured ? "#fef3c7" : "#f8fafc"}; padding: 6px 12px; border-radius: 8px; border: 1px solid ${isFeatured ? "#fde68a" : "#e2e8f0"};">
             <input type="checkbox" onchange="toggleReviewFeatured('${review.id}', this.checked)" ${isFeatured ? "checked" : ""} style="width: 16px; height: 16px; accent-color: #d97706; cursor: pointer;" />
             <span>${isFeatured ? "معروض بالرئيسية" : "غير معروض"}</span>
           </label>
         </td>
       </tr>
     `;
-  }).join("");
+    })
+    .join("");
 }
 
 function renderCourseOrderItems() {
@@ -677,10 +707,11 @@ function renderCourseOrderItems() {
     return `<div style="padding: 12px; text-align: center; color: #94a3b8; font-size: 12px;">لم يتم اختيار أي دورات مميزة بعد</div>`;
   }
 
-  return state.featuredCourses.map((id, index) => {
-    const course = coursesData.find((c) => String(c.id) === String(id));
-    if (!course) return "";
-    return `
+  return state.featuredCourses
+    .map((id, index) => {
+      const course = coursesData.find((c) => String(c.id) === String(id));
+      if (!course) return "";
+      return `
       <div class="draggable-order-item" data-type="course" data-id="${course.id}" data-index="${index}" draggable="true" style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; cursor: grab; user-select: none;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <span style="font-weight: 800; color: #475569; width: 20px;">${index + 1}.</span>
@@ -696,7 +727,8 @@ function renderCourseOrderItems() {
         </div>
       </div>
     `;
-  }).join("");
+    })
+    .join("");
 }
 
 function renderBookOrderItems() {
@@ -704,10 +736,11 @@ function renderBookOrderItems() {
     return `<div style="padding: 12px; text-align: center; color: #94a3b8; font-size: 12px;">لم يتم اختيار أي كتب مميزة بعد</div>`;
   }
 
-  return state.featuredBooks.map((id, index) => {
-    const book = booksData.find((b) => String(b.id) === String(id));
-    if (!book) return "";
-    return `
+  return state.featuredBooks
+    .map((id, index) => {
+      const book = booksData.find((b) => String(b.id) === String(id));
+      if (!book) return "";
+      return `
       <div class="draggable-order-item" data-type="book" data-id="${book.id}" data-index="${index}" draggable="true" style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; cursor: grab; user-select: none;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <span style="font-weight: 800; color: #475569; width: 20px;">${index + 1}.</span>
@@ -723,7 +756,8 @@ function renderBookOrderItems() {
         </div>
       </div>
     `;
-  }).join("");
+    })
+    .join("");
 }
 
 function renderTeacherOrderItems() {
@@ -731,10 +765,11 @@ function renderTeacherOrderItems() {
     return `<div style="padding: 12px; text-align: center; color: #94a3b8; font-size: 12px;">لم يتم تحديد أي معلمين للعرض بعد</div>`;
   }
 
-  return state.featuredTeachers.map((id, index) => {
-    const teacher = teachersData.find((t) => String(t.id) === String(id));
-    if (!teacher) return "";
-    return `
+  return state.featuredTeachers
+    .map((id, index) => {
+      const teacher = teachersData.find((t) => String(t.id) === String(id));
+      if (!teacher) return "";
+      return `
       <div class="draggable-order-item" data-type="teacher" data-id="${teacher.id}" data-index="${index}" draggable="true" style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; cursor: grab; user-select: none;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <span style="font-weight: 800; color: #475569; width: 20px;">${index + 1}.</span>
@@ -750,7 +785,8 @@ function renderTeacherOrderItems() {
         </div>
       </div>
     `;
-  }).join("");
+    })
+    .join("");
 }
 
 function renderReviewOrderItems() {
@@ -759,10 +795,11 @@ function renderReviewOrderItems() {
   }
 
   const allReviews = getReviewsList();
-  return state.featuredReviews.map((id, index) => {
-    const review = allReviews.find((r) => String(r.id) === String(id));
-    if (!review) return "";
-    return `
+  return state.featuredReviews
+    .map((id, index) => {
+      const review = allReviews.find((r) => String(r.id) === String(id));
+      if (!review) return "";
+      return `
       <div class="draggable-order-item" data-type="review" data-id="${review.id}" data-index="${index}" draggable="true" style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; cursor: grab; user-select: none;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <span style="font-weight: 800; color: #475569; width: 20px;">${index + 1}.</span>
@@ -778,7 +815,8 @@ function renderReviewOrderItems() {
         </div>
       </div>
     `;
-  }).join("");
+    })
+    .join("");
 }
 
 function updateBadgesAndOrderLists() {
@@ -822,7 +860,9 @@ window.toggleCourseMeta = function (courseId, flag, checked) {
         state.featuredCourses.push(courseId);
       }
     } else {
-      state.featuredCourses = state.featuredCourses.filter((id) => String(id) !== idStr);
+      state.featuredCourses = state.featuredCourses.filter(
+        (id) => String(id) !== idStr,
+      );
     }
   }
 
@@ -848,7 +888,9 @@ window.toggleBookMeta = function (bookId, flag, checked) {
         state.featuredBooks.push(bookId);
       }
     } else {
-      state.featuredBooks = state.featuredBooks.filter((id) => String(id) !== idStr);
+      state.featuredBooks = state.featuredBooks.filter(
+        (id) => String(id) !== idStr,
+      );
     }
   }
 
@@ -868,7 +910,9 @@ window.toggleTeacherFeatured = function (teacherId, checked) {
       state.featuredTeachers.push(teacherId);
     }
   } else {
-    state.featuredTeachers = state.featuredTeachers.filter((id) => String(id) !== idStr);
+    state.featuredTeachers = state.featuredTeachers.filter(
+      (id) => String(id) !== idStr,
+    );
   }
 
   syncStateToDraft();
@@ -887,7 +931,9 @@ window.toggleReviewFeatured = function (reviewId, checked) {
       state.featuredReviews.push(reviewId);
     }
   } else {
-    state.featuredReviews = state.featuredReviews.filter((id) => String(id) !== idStr);
+    state.featuredReviews = state.featuredReviews.filter(
+      (id) => String(id) !== idStr,
+    );
   }
 
   syncStateToDraft();
@@ -958,22 +1004,31 @@ window.updateCategoryFilter = function (type, value) {
 window.previewHomepage = function () {
   syncStateToDraft();
   applyFeaturedMetadata(coursesData, booksData);
-  
+
   if (typeof showToast === "function") {
-    showToast({ type: "info", title: "معاينة الرئيسية", message: "جاري الانتقال لمعاينة الصفحة الرئيسية..." });
+    showToast({
+      type: "info",
+      title: "معاينة الرئيسية",
+      message: "جاري الانتقال لمعاينة الصفحة الرئيسية...",
+    });
   }
 
   window.location.hash = "#";
   setTimeout(() => {
     if (typeof window.filterCourses === "function") window.filterCourses();
-    if (typeof window.renderBooksSection === "function") window.renderBooksSection();
-    if (typeof window.renderHomeTeachers === "function") window.renderHomeTeachers();
-    if (typeof window.renderHomeTestimonials === "function") window.renderHomeTestimonials();
+    if (typeof window.renderBooksSection === "function")
+      window.renderBooksSection();
+    if (typeof window.renderHomeTeachers === "function")
+      window.renderHomeTeachers();
+    if (typeof window.renderHomeTestimonials === "function")
+      window.renderHomeTestimonials();
   }, 100);
 };
 
 function refreshUI() {
-  const container = document.getElementById("homepageManagementContent") || document.getElementById("dashboardContent");
+  const container =
+    document.getElementById("homepageManagementContent") ||
+    document.getElementById("dashboardContent");
   if (!container) return;
 
   const coursesBody = document.getElementById("coursesTableBody");
@@ -1052,15 +1107,20 @@ window.handleSaveHomepageConfig = function () {
       state.featuredTeachers,
       state.featuredReviews,
       state.courseMetadata,
-      state.bookMetadata
+      state.bookMetadata,
     );
 
     applyFeaturedMetadata(coursesData, booksData);
 
-    const successMsg = "✅ تم حفظ إعدادات الصفحة الرئيسية وتحديث جميع الأقسام بنجاح!";
-    
+    const successMsg =
+      "✅ تم حفظ إعدادات الصفحة الرئيسية وتحديث جميع الأقسام بنجاح!";
+
     if (typeof showToast === "function") {
-      showToast({ type: "success", title: "تم الحفظ بنجاح", message: successMsg });
+      showToast({
+        type: "success",
+        title: "تم الحفظ بنجاح",
+        message: successMsg,
+      });
     } else {
       showCustomAlert(successMsg);
     }

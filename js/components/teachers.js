@@ -1,5 +1,5 @@
 import { teachersData } from "../data/teachers.js";
-import { getFeaturedConfig } from "../.featured-config.js";
+import { getFeaturedConfig } from "../featured-config.js";
 
 export function renderHomeTeachers() {
   const teachersSection = document.querySelector(".top-teachers-section");
@@ -23,7 +23,9 @@ export function renderHomeTeachers() {
     displayTeachers = teachersData.slice(0, 5);
   }
 
-  teachersGrid.innerHTML = displayTeachers.map((t) => `
+  teachersGrid.innerHTML = displayTeachers
+    .map(
+      (t) => `
     <div class="teacher-card" onclick="if(window.navigateToTeacherProfile) window.navigateToTeacherProfile('${t.id}');" style="cursor: pointer;" title="عرض الملف الشخصي للمعلم ${t.name}">
       <img src="${t.avatar}" alt="${t.name}" class="teacher-avatar-circle" />
       <h3 class="teacher-name">${t.name}</h3>
@@ -41,7 +43,9 @@ export function renderHomeTeachers() {
         <span>📚 ${t.coursesCount || 0} دورة</span>
       </div>
     </div>
-  `).join("");
+  `,
+    )
+    .join("");
 }
 
 window.renderHomeTeachers = renderHomeTeachers;

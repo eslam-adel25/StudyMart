@@ -62,22 +62,19 @@ export default defineConfig(({ command }) => {
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "."),
-        "./.featured-config.js": path.resolve(
+        "./featured-config.js": path.resolve(
           __dirname,
-          "js/.featured-config.js",
+          "js/featured-config.js",
         ),
-        "../services/.featured-config.js": path.resolve(
+        "../services/featured-config.js": path.resolve(
           __dirname,
-          "js/.featured-config.js",
+          "js/featured-config.js",
         ),
-        "./services/.featured-config.js": path.resolve(
+        "./services/featured-config.js": path.resolve(
           __dirname,
-          "js/.featured-config.js",
+          "js/featured-config.js",
         ),
-        "/.featured-config.js": path.resolve(
-          __dirname,
-          "js/.featured-config.js",
-        ),
+        "/featured-config.js": path.resolve(__dirname, "js/featured-config.js"),
       },
     },
     server: {
