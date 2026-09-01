@@ -1974,6 +1974,44 @@ export function updateCertificateButtonsInCards() {
   }
 }
 
+const STUDYMART_PLATFORM_OWNER = "Eslam Adel Jadalrab";
+
+function getCertificateStorageKey(courseId) {
+  return `lms_course_cert_data_${courseId}`;
+}
+
+function ensureCourseCertificate(
+  course,
+  studentName,
+  studentIdentifier = "guest",
+) {
+  const storageKey = getCertificateStorageKey(course.id);
+  let certData = loadLocalStorage(storageKey, null);
+
+  if (!certData || !certData.certificateId) {
+    const certificateId = `SM-${new Date().getFullYear()}-${String(
+      Math.floor(Math.random() * 900000) + 100000,
+    )}`;
+
+    certData = {
+      certificateId,
+      verificationCode: `CERT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+      issuedDate: new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      }).format(new Date()),
+      courseTitle: course.title,
+      studentName,
+      instructor: course.instructor || "Instructor",
+      studentIdentifier,
+    };
+    saveLocalStorage(storageKey, certData);
+  }
+
+  return certData;
+}
+
 export function openCourseCertificateModal(courseId) {
   let targetId = Number(courseId) || courseId;
   let course =
@@ -1995,8 +2033,8 @@ export function openCourseCertificateModal(courseId) {
       title:
         typeof courseId === "string" && courseId.startsWith("دورة")
           ? courseId
-          : "دورة التسويق الرقمي",
-      instructor: "أحمد محمد",
+          : "Digital Marketing Fundamentals",
+      instructor: "Ahmed Hassan",
       duration: 10,
       level: "intermediate",
     };
@@ -2013,36 +2051,30 @@ export function openCourseCertificateModal(courseId) {
     appState.userData?.name ||
     appState.userData?.fullName ||
     currentUser?.name ||
-    "إسلام عادل";
+    "Student";
 
-  // Level Arabic Mapping
-  let levelText = "متوسط";
-  if (course.level === "beginner") levelText = "مبتدئ";
-  else if (course.level === "advanced") levelText = "متقدم";
-  else if (course.level) levelText = course.level;
+  const studentIdentifier =
+    appState.userData?.email ||
+    currentUser?.email ||
+    appState.userData?.name ||
+    currentUser?.name ||
+    "guest";
 
-  const durationText = `${course.duration || 10} ساعات`;
+  const levelText =
+    course.level === "beginner"
+      ? "Beginner"
+      : course.level === "advanced"
+        ? "Advanced"
+        : course.level || "Intermediate";
 
-  // Persistent Certificate ID and Issued Date per course
-  const storageKey = `lms_course_cert_data_${course.id}`;
-  let certData = loadLocalStorage(storageKey, null);
+  const durationText = course.duration ? `${course.duration} hours` : "N/A";
 
-  if (!certData || !certData.certificateId) {
-    const certId = "SM-CERT-2026-000493248";
-    const verifyCode = `CERT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+  const certData = ensureCourseCertificate(
+    course,
+    studentName,
+    studentIdentifier,
+  );
 
-    certData = {
-      certificateId: certId,
-      verificationCode: verifyCode,
-      issuedDate: "15 مايو 2024",
-      courseTitle: course.title,
-      studentName: studentName,
-      instructor: course.instructor || "أحمد محمد",
-    };
-    saveLocalStorage(storageKey, certData);
-  }
-
-  // Remove any existing certificate modal if open
   const existingModal = document.getElementById("certificateModalOverlay");
   if (existingModal) existingModal.remove();
 
@@ -2050,471 +2082,120 @@ export function openCourseCertificateModal(courseId) {
   modal.id = "certificateModalOverlay";
   modal.className = "floating-modal-overlay";
   modal.style.cssText =
-    "position: fixed; inset: 0; background: rgba(10, 18, 38, 0.88); backdrop-filter: blur(10px); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto;";
+    "position: fixed; inset: 0; background: rgba(15, 23, 42, 0.72); display: flex; align-items: flex-start; justify-content: center; padding: 18px 16px 28px; z-index: 99999; backdrop-filter: blur(7px); overflow-y: auto; overflow-x: hidden;";
 
   modal.innerHTML = `
-    <!-- SVG Definitions for Metallic Gold Gradients -->
-    <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
-      <defs>
-        <linearGradient id="masterGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#bf953f" />
-          <stop offset="25%" stop-color="#fcf6ba" />
-          <stop offset="50%" stop-color="#b38728" />
-          <stop offset="75%" stop-color="#fbf5b7" />
-          <stop offset="100%" stop-color="#aa771c" />
-        </linearGradient>
-      </defs>
-    </svg>
-
-    <div style="max-width: 1040px; width: 100%; display: flex; flex-direction: column; gap: 16px; align-items: center; margin: auto;">
-      
-      <!-- Top Action Bar (Screen Only - Hidden in Print) -->
-      <div class="no-print" style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 14px 24px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.25);">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <div style="width: 42px; height: 42px; background: linear-gradient(135deg, #b38728, #aa771c); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #ffffff; box-shadow: 0 4px 12px rgba(170, 119, 28, 0.35);">
-            🎓
-          </div>
-          <div>
-            <h3 style="font-size: 16px; font-weight: 800; color: #0d1b2a; margin: 0;">معاينة الشهادة المعتمدة</h3>
-            <p style="font-size: 12px; color: #64748b; margin: 2px 0 0;">رقم الشهادة: <strong style="color: #b38728;">${certData.certificateId}</strong></p>
-          </div>
-        </div>
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <button type="button" onclick="window.print()" style="padding: 11px 26px; border-radius: 10px; font-weight: 800; background: linear-gradient(135deg, #0d1b2a, #1e293b); color: #fef08a; border: 1.5px solid #d4af37; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 4px 14px rgba(13, 27, 42, 0.3);">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-            طباعة الشهادة / حفظ PDF
-          </button>
-          <button type="button" onclick="document.getElementById('certificateModalOverlay')?.remove()" style="background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 10px; font-size: 18px; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" title="إغلاق">✖</button>
-        </div>
+    <div class="certificate-viewer" style="width: min(1100px, 100%); display: flex; flex-direction: column; align-items: center; gap: 18px; position: relative; z-index: 2;">
+      <div class="certificate-toolbar no-print" style="width: 100%; display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 4px; position: relative; z-index: 20;">
+        <button type="button" class="certificate-close-button" onclick="document.getElementById('certificateModalOverlay')?.remove()" aria-label="Close certificate" style="width: 40px; height: 40px; border-radius: 10px; border: none; background: rgba(15, 23, 42, 0.82); color: #ffffff; font-size: 22px; line-height: 1; cursor: pointer; box-shadow: 0 10px 22px rgba(15,23,42,0.2); display: inline-flex; align-items: center; justify-content: center; font-weight: 700;">×</button>
+        <button type="button" class="certificate-print-button" onclick="window.print()" style="border: none; background: #0f172a; color: #ffffff; border-radius: 10px; padding: 11px 18px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 12px 24px rgba(15,23,42,0.14);">🖨️ طباعة الشهادة</button>
       </div>
 
-      <!-- STEP 13: MASTER BLUEPRINT CERTIFICATE CANVAS WITH PERFECT LAYOUT & ALIGNMENT -->
-      <div class="certificate-printable-area" dir="rtl" style="width: 100%; aspect-ratio: 1.414 / 1; max-width: 1000px; min-height: 620px; position: relative; background: #0b1426; border-radius: 14px; padding: 18px; box-sizing: border-box; box-shadow: 0 30px 70px rgba(0,0,0,0.6); border: 2.5px solid #d4af37; overflow: hidden; display: flex; flex-direction: column;">
-        
-        <!-- Inner Ivory Paper Canvas with Luxury Texture and Subtle Paper Lighting -->
-        <div style="position: relative; width: 100%; height: 100%; flex: 1; background: #fdfbf7; background-image: radial-gradient(circle at center, #ffffff 0%, #fdfbf5 60%, #f7eff0 100%), repeating-linear-gradient(45deg, rgba(180, 150, 90, 0.015) 0px, rgba(180, 150, 90, 0.015) 2px, transparent 2px, transparent 4px); border-radius: 6px; padding: 28px 36px 0px; box-sizing: border-box; border: 3px solid #b38728; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
-          
-          <!-- Inner Double Gold Hairline Accent -->
-          <div style="position: absolute; inset: 10px; border: 1.5px solid #d4af37; border-radius: 4px; pointer-events: none; z-index: 2;"></div>
+      <div class="certificate-printable-area certificate-print-area" dir="ltr" style="position: relative; width: min(1100px, 100%); min-height: 720px; background: #ffffff; border: 1px solid #dbeafe; box-shadow: 0 26px 56px rgba(37,99,235,0.08); border-radius: 22px; overflow: hidden; padding: 42px 48px 18px; box-sizing: border-box; z-index: 1;">
+        <div style="position: absolute; top: -110px; right: -40px; width: 300px; height: 300px; background: rgba(147,197,253,0.18); border-radius: 40% 45% 50% 55%; transform: rotate(18deg);"></div>
+        <div style="position: absolute; right: -30px; top: 180px; width: 260px; height: 420px; background: rgba(147,197,253,0.12); border-radius: 32px; transform: rotate(8deg);"></div>
+        <div style="position: absolute; left: -90px; bottom: -70px; width: 330px; height: 240px; background: rgba(191,219,254,0.22); border-radius: 48% 52% 64% 36% / 58% 38% 62% 42%; transform: rotate(-12deg);"></div>
 
-          <!-- 1. TOP-RIGHT DIGITALLY VERIFIED RIBBON -->
-          <div style="position: absolute; top: -2px; right: 48px; width: 88px; height: 132px; z-index: 10; pointer-events: none; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));">
-            <svg width="88" height="132" viewBox="0 0 92 140" fill="none">
-              <!-- Swallowtail Navy Ribbon -->
-              <path d="M0 0 H92 V118 L46 140 L0 118 Z" fill="#0d1b2a" stroke="url(#masterGoldGrad)" stroke-width="2.5"/>
-              <path d="M5 0 H87 V114 L46 133 L5 114 Z" fill="none" stroke="url(#masterGoldGrad)" stroke-width="1" stroke-dasharray="3 2" opacity="0.8"/>
-            </svg>
-            <div style="position: absolute; top: 10px; left: 0; width: 100%; text-align: center;">
-              <!-- Laurel Wreath -->
-              <svg width="34" height="34" viewBox="0 0 48 48" fill="none" style="margin: 0 auto; display: block;">
-                <circle cx="24" cy="24" r="20" fill="url(#masterGoldGrad)" opacity="0.15"/>
-                <circle cx="24" cy="24" r="18" stroke="url(#masterGoldGrad)" stroke-width="1.5"/>
-                <path d="M16 26 C14 20, 18 14, 24 14 C30 14, 34 20, 32 26" stroke="url(#masterGoldGrad)" stroke-width="2" fill="none"/>
-                <path d="M20 20 L24 16 L28 20 M24 16 V32" stroke="url(#masterGoldGrad)" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              <div style="font-family: Arial, sans-serif; font-size: 9.5px; font-weight: 900; color: #fef08a; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1;">
-                Digitally<br><span style="color: #ffffff; font-size: 10.5px;">Verified</span>
-              </div>
-              <div style="font-size: 8.5px; color: #fbbf24; margin-top: 3px; letter-spacing: 2px;">★ ★ ★</div>
-            </div>
-          </div>
-
-          <!-- 4 LUXURY VICTORIAN ENGRAVED METALLIC GOLD CORNER ORNAMENTS -->
-          
-          <!-- TOP LEFT CORNER ORNAMENT -->
-          <svg width="105" height="105" viewBox="0 0 100 100" fill="none" style="position: absolute; top: 0; left: 0; pointer-events: none; z-index: 5; filter: drop-shadow(0.5px 1px 1px rgba(0,0,0,0.3));">
-            <path d="M 0 0 L 92 0 M 0 0 L 0 92" stroke="url(#masterGoldGrad)" stroke-width="2" />
-            <path d="M 0 3 L 88 3 M 3 0 L 3 88" stroke="url(#masterGoldGrad)" stroke-width="0.8" opacity="0.85" />
-            <path d="M 0 6 L 80 6 M 6 0 L 6 80" stroke="url(#masterGoldGrad)" stroke-width="0.6" opacity="0.7" />
-            <path d="M 18 0 A 18 18 0 0 0 0 18" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 24 0 A 24 24 0 0 0 0 24" stroke="url(#masterGoldGrad)" stroke-width="0.7" fill="none" />
-            <path d="M 32 0 A 32 32 0 0 0 0 32" stroke="url(#masterGoldGrad)" stroke-width="1" stroke-dasharray="2 2" fill="none" />
-            <path d="M 0 90 C 25 90, 42 75, 58 58 C 75 42, 90 25, 90 0" stroke="url(#masterGoldGrad)" stroke-width="1.5" fill="none" />
-            <path d="M 0 82 C 22 82, 38 68, 52 52 C 68 38, 82 22, 82 0" stroke="url(#masterGoldGrad)" stroke-width="0.8" fill="none" />
-            <path d="M 90 0 C 96 6, 98 15, 90 20 C 82 25, 75 16, 82 10 C 87 6, 92 12, 88 15" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 0 90 C 6 96, 15 98, 20 90 C 25 82, 16 75, 10 82 C 6 87, 12 92, 15 88" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 0 68 C 15 68, 28 58, 42 42 C 58 28, 68 15, 68 0" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 0 52 C 12 52, 22 44, 32 32 C 44 22, 52 12, 52 0" stroke="url(#masterGoldGrad)" stroke-width="1" fill="none" />
-            <path d="M 0 38 C 8 38, 16 32, 24 24 C 32 16, 38 8, 38 0" stroke="url(#masterGoldGrad)" stroke-width="0.8" fill="none" />
-            <path d="M 28 28 C 40 18, 58 15, 62 25 C 52 30, 38 32, 28 28 Z" stroke="url(#masterGoldGrad)" stroke-width="0.9" fill="url(#masterGoldGrad)" fill-opacity="0.1" />
-            <path d="M 28 28 C 18 40, 15 58, 25 62 C 30 52, 32 38, 28 28 Z" stroke="url(#masterGoldGrad)" stroke-width="0.9" fill="url(#masterGoldGrad)" fill-opacity="0.1" />
-            <path d="M 8 8 C 22 22, 42 42, 60 60" stroke="url(#masterGoldGrad)" stroke-width="1.4" />
-            <path d="M 18 18 L 26 12 M 22 22 L 28 16 M 30 30 L 38 22 M 38 38 L 48 28 M 46 46 L 56 36" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <path d="M 18 18 L 12 26 M 22 22 L 16 28 M 30 30 L 22 38 M 38 38 L 28 48 M 46 46 L 36 56" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <path d="M 45 2 L 45 8 M 55 2 L 55 8 M 65 2 L 65 8 M 75 2 L 75 8 M 85 2 L 85 8" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <path d="M 2 45 L 8 45 M 2 55 L 8 55 M 2 65 L 8 65 M 2 75 L 8 75 M 2 85 L 8 85" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <circle cx="28" cy="28" r="2.5" fill="url(#masterGoldGrad)" />
-            <circle cx="12" cy="12" r="2" fill="url(#masterGoldGrad)" />
-            <circle cx="48" cy="48" r="2" fill="url(#masterGoldGrad)" />
-            <circle cx="68" cy="20" r="1.5" fill="url(#masterGoldGrad)" />
-            <circle cx="20" cy="68" r="1.5" fill="url(#masterGoldGrad)" />
-          </svg>
-
-          <!-- TOP RIGHT CORNER ORNAMENT -->
-          <svg width="105" height="105" viewBox="0 0 100 100" fill="none" style="position: absolute; top: 0; right: 0; pointer-events: none; z-index: 5; filter: drop-shadow(-0.5px 1px 1px rgba(0,0,0,0.3)); transform: scaleX(-1);">
-            <path d="M 0 0 L 92 0 M 0 0 L 0 92" stroke="url(#masterGoldGrad)" stroke-width="2" />
-            <path d="M 0 3 L 88 3 M 3 0 L 3 88" stroke="url(#masterGoldGrad)" stroke-width="0.8" opacity="0.85" />
-            <path d="M 0 6 L 80 6 M 6 0 L 6 80" stroke="url(#masterGoldGrad)" stroke-width="0.6" opacity="0.7" />
-            <path d="M 18 0 A 18 18 0 0 0 0 18" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 24 0 A 24 24 0 0 0 0 24" stroke="url(#masterGoldGrad)" stroke-width="0.7" fill="none" />
-            <path d="M 32 0 A 32 32 0 0 0 0 32" stroke="url(#masterGoldGrad)" stroke-width="1" stroke-dasharray="2 2" fill="none" />
-            <path d="M 0 90 C 25 90, 42 75, 58 58 C 75 42, 90 25, 90 0" stroke="url(#masterGoldGrad)" stroke-width="1.5" fill="none" />
-            <path d="M 0 82 C 22 82, 38 68, 52 52 C 68 38, 82 22, 82 0" stroke="url(#masterGoldGrad)" stroke-width="0.8" fill="none" />
-            <path d="M 90 0 C 96 6, 98 15, 90 20 C 82 25, 75 16, 82 10 C 87 6, 92 12, 88 15" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 0 90 C 6 96, 15 98, 20 90 C 25 82, 16 75, 10 82 C 6 87, 12 92, 15 88" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 0 68 C 15 68, 28 58, 42 42 C 58 28, 68 15, 68 0" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 0 52 C 12 52, 22 44, 32 32 C 44 22, 52 12, 52 0" stroke="url(#masterGoldGrad)" stroke-width="1" fill="none" />
-            <path d="M 0 38 C 8 38, 16 32, 24 24 C 32 16, 38 8, 38 0" stroke="url(#masterGoldGrad)" stroke-width="0.8" fill="none" />
-            <path d="M 28 28 C 40 18, 58 15, 62 25 C 52 30, 38 32, 28 28 Z" stroke="url(#masterGoldGrad)" stroke-width="0.9" fill="url(#masterGoldGrad)" fill-opacity="0.1" />
-            <path d="M 28 28 C 18 40, 15 58, 25 62 C 30 52, 32 38, 28 28 Z" stroke="url(#masterGoldGrad)" stroke-width="0.9" fill="url(#masterGoldGrad)" fill-opacity="0.1" />
-            <path d="M 8 8 C 22 22, 42 42, 60 60" stroke="url(#masterGoldGrad)" stroke-width="1.4" />
-            <path d="M 18 18 L 26 12 M 22 22 L 28 16 M 30 30 L 38 22 M 38 38 L 48 28 M 46 46 L 56 36" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <path d="M 18 18 L 12 26 M 22 22 L 16 28 M 30 30 L 22 38 M 38 38 L 28 48 M 46 46 L 36 56" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <path d="M 45 2 L 45 8 M 55 2 L 55 8 M 65 2 L 65 8 M 75 2 L 75 8 M 85 2 L 85 8" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <path d="M 2 45 L 8 45 M 2 55 L 8 55 M 2 65 L 8 65 M 2 75 L 8 75 M 2 85 L 8 85" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <circle cx="28" cy="28" r="2.5" fill="url(#masterGoldGrad)" />
-            <circle cx="12" cy="12" r="2" fill="url(#masterGoldGrad)" />
-            <circle cx="48" cy="48" r="2" fill="url(#masterGoldGrad)" />
-            <circle cx="68" cy="20" r="1.5" fill="url(#masterGoldGrad)" />
-            <circle cx="20" cy="68" r="1.5" fill="url(#masterGoldGrad)" />
-          </svg>
-
-          <!-- BOTTOM LEFT CORNER ORNAMENT -->
-          <svg width="105" height="105" viewBox="0 0 100 100" fill="none" style="position: absolute; bottom: 0; left: 0; pointer-events: none; z-index: 5; filter: drop-shadow(0.5px -1px 1px rgba(0,0,0,0.3)); transform: scaleY(-1);">
-            <path d="M 0 0 L 92 0 M 0 0 L 0 92" stroke="url(#masterGoldGrad)" stroke-width="2" />
-            <path d="M 0 3 L 88 3 M 3 0 L 3 88" stroke="url(#masterGoldGrad)" stroke-width="0.8" opacity="0.85" />
-            <path d="M 0 6 L 80 6 M 6 0 L 6 80" stroke="url(#masterGoldGrad)" stroke-width="0.6" opacity="0.7" />
-            <path d="M 18 0 A 18 18 0 0 0 0 18" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 24 0 A 24 24 0 0 0 0 24" stroke="url(#masterGoldGrad)" stroke-width="0.7" fill="none" />
-            <path d="M 32 0 A 32 32 0 0 0 0 32" stroke="url(#masterGoldGrad)" stroke-width="1" stroke-dasharray="2 2" fill="none" />
-            <path d="M 0 90 C 25 90, 42 75, 58 58 C 75 42, 90 25, 90 0" stroke="url(#masterGoldGrad)" stroke-width="1.5" fill="none" />
-            <path d="M 0 82 C 22 82, 38 68, 52 52 C 68 38, 82 22, 82 0" stroke="url(#masterGoldGrad)" stroke-width="0.8" fill="none" />
-            <path d="M 90 0 C 96 6, 98 15, 90 20 C 82 25, 75 16, 82 10 C 87 6, 92 12, 88 15" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 0 90 C 6 96, 15 98, 20 90 C 25 82, 16 75, 10 82 C 6 87, 12 92, 15 88" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 0 68 C 15 68, 28 58, 42 42 C 58 28, 68 15, 68 0" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 0 52 C 12 52, 22 44, 32 32 C 44 22, 52 12, 52 0" stroke="url(#masterGoldGrad)" stroke-width="1" fill="none" />
-            <path d="M 0 38 C 8 38, 16 32, 24 24 C 32 16, 38 8, 38 0" stroke="url(#masterGoldGrad)" stroke-width="0.8" fill="none" />
-            <path d="M 28 28 C 40 18, 58 15, 62 25 C 52 30, 38 32, 28 28 Z" stroke="url(#masterGoldGrad)" stroke-width="0.9" fill="url(#masterGoldGrad)" fill-opacity="0.1" />
-            <path d="M 28 28 C 18 40, 15 58, 25 62 C 30 52, 32 38, 28 28 Z" stroke="url(#masterGoldGrad)" stroke-width="0.9" fill="url(#masterGoldGrad)" fill-opacity="0.1" />
-            <path d="M 8 8 C 22 22, 42 42, 60 60" stroke="url(#masterGoldGrad)" stroke-width="1.4" />
-            <path d="M 18 18 L 26 12 M 22 22 L 28 16 M 30 30 L 38 22 M 38 38 L 48 28 M 46 46 L 56 36" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <path d="M 18 18 L 12 26 M 22 22 L 16 28 M 30 30 L 22 38 M 38 38 L 28 48 M 46 46 L 36 56" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <path d="M 45 2 L 45 8 M 55 2 L 55 8 M 65 2 L 65 8 M 75 2 L 75 8 M 85 2 L 85 8" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <path d="M 2 45 L 8 45 M 2 55 L 8 55 M 2 65 L 8 65 M 2 75 L 8 75 M 2 85 L 8 85" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <circle cx="28" cy="28" r="2.5" fill="url(#masterGoldGrad)" />
-            <circle cx="12" cy="12" r="2" fill="url(#masterGoldGrad)" />
-            <circle cx="48" cy="48" r="2" fill="url(#masterGoldGrad)" />
-            <circle cx="68" cy="20" r="1.5" fill="url(#masterGoldGrad)" />
-            <circle cx="20" cy="68" r="1.5" fill="url(#masterGoldGrad)" />
-          </svg>
-
-          <!-- BOTTOM RIGHT CORNER ORNAMENT -->
-          <svg width="105" height="105" viewBox="0 0 100 100" fill="none" style="position: absolute; bottom: 0; right: 0; pointer-events: none; z-index: 5; filter: drop-shadow(-0.5px -1px 1px rgba(0,0,0,0.3)); transform: scale(-1, -1);">
-            <path d="M 0 0 L 92 0 M 0 0 L 0 92" stroke="url(#masterGoldGrad)" stroke-width="2" />
-            <path d="M 0 3 L 88 3 M 3 0 L 3 88" stroke="url(#masterGoldGrad)" stroke-width="0.8" opacity="0.85" />
-            <path d="M 0 6 L 80 6 M 6 0 L 6 80" stroke="url(#masterGoldGrad)" stroke-width="0.6" opacity="0.7" />
-            <path d="M 18 0 A 18 18 0 0 0 0 18" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 24 0 A 24 24 0 0 0 0 24" stroke="url(#masterGoldGrad)" stroke-width="0.7" fill="none" />
-            <path d="M 32 0 A 32 32 0 0 0 0 32" stroke="url(#masterGoldGrad)" stroke-width="1" stroke-dasharray="2 2" fill="none" />
-            <path d="M 0 90 C 25 90, 42 75, 58 58 C 75 42, 90 25, 90 0" stroke="url(#masterGoldGrad)" stroke-width="1.5" fill="none" />
-            <path d="M 0 82 C 22 82, 38 68, 52 52 C 68 38, 82 22, 82 0" stroke="url(#masterGoldGrad)" stroke-width="0.8" fill="none" />
-            <path d="M 90 0 C 96 6, 98 15, 90 20 C 82 25, 75 16, 82 10 C 87 6, 92 12, 88 15" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 0 90 C 6 96, 15 98, 20 90 C 25 82, 16 75, 10 82 C 6 87, 12 92, 15 88" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 0 68 C 15 68, 28 58, 42 42 C 58 28, 68 15, 68 0" stroke="url(#masterGoldGrad)" stroke-width="1.2" fill="none" />
-            <path d="M 0 52 C 12 52, 22 44, 32 32 C 44 22, 52 12, 52 0" stroke="url(#masterGoldGrad)" stroke-width="1" fill="none" />
-            <path d="M 0 38 C 8 38, 16 32, 24 24 C 32 16, 38 8, 38 0" stroke="url(#masterGoldGrad)" stroke-width="0.8" fill="none" />
-            <path d="M 28 28 C 40 18, 58 15, 62 25 C 52 30, 38 32, 28 28 Z" stroke="url(#masterGoldGrad)" stroke-width="0.9" fill="url(#masterGoldGrad)" fill-opacity="0.1" />
-            <path d="M 28 28 C 18 40, 15 58, 25 62 C 30 52, 32 38, 28 28 Z" stroke="url(#masterGoldGrad)" stroke-width="0.9" fill="url(#masterGoldGrad)" fill-opacity="0.1" />
-            <path d="M 8 8 C 22 22, 42 42, 60 60" stroke="url(#masterGoldGrad)" stroke-width="1.4" />
-            <path d="M 18 18 L 26 12 M 22 22 L 28 16 M 30 30 L 38 22 M 38 38 L 48 28 M 46 46 L 56 36" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <path d="M 18 18 L 12 26 M 22 22 L 16 28 M 30 30 L 22 38 M 38 38 L 28 48 M 46 46 L 36 56" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <path d="M 45 2 L 45 8 M 55 2 L 55 8 M 65 2 L 65 8 M 75 2 L 75 8 M 85 2 L 85 8" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <path d="M 2 45 L 8 45 M 2 55 L 8 55 M 2 65 L 8 65 M 2 75 L 8 75 M 2 85 L 8 85" stroke="url(#masterGoldGrad)" stroke-width="0.7" />
-            <circle cx="28" cy="28" r="2.5" fill="url(#masterGoldGrad)" />
-            <circle cx="12" cy="12" r="2" fill="url(#masterGoldGrad)" />
-            <circle cx="48" cy="48" r="2" fill="url(#masterGoldGrad)" />
-            <circle cx="68" cy="20" r="1.5" fill="url(#masterGoldGrad)" />
-            <circle cx="20" cy="68" r="1.5" fill="url(#masterGoldGrad)" />
-          </svg>
-
-          <!-- WATERMARK BACKGROUND SEAL (CENTERED BEHIND TEXT) -->
-          <div style="position: absolute; top: 46%; left: 50%; transform: translate(-50%, -50%); width: 420px; height: 420px; pointer-events: none; opacity: 0.055; z-index: 1;">
-            <svg width="420" height="420" viewBox="0 0 400 400" fill="none">
-              <circle cx="200" cy="200" r="190" stroke="#0d1b2a" stroke-width="4"/>
-              <circle cx="200" cy="200" r="180" stroke="#0d1b2a" stroke-width="1.5" stroke-dasharray="4 3"/>
-              <circle cx="200" cy="200" r="150" stroke="#0d1b2a" stroke-width="2"/>
-              <path id="watermarkTextPath" d="M 60, 200 A 140,140 0 1,1 340,200 A 140,140 0 1,1 60,200" fill="none"/>
-              <text font-size="14" font-weight="900" fill="#0d1b2a" letter-spacing="4">
-                <textPath href="#watermarkTextPath" startOffset="0%">STUDYMART ★ OFFICIAL CERTIFICATE ★ STUDYMART ★ OFFICIAL CERTIFICATE ★</textPath>
-              </text>
-              <g transform="translate(130, 140)">
-                <path d="M70 15 L130 45 L70 75 L10 45 Z" fill="#0d1b2a"/>
-                <path d="M35 58 V90 C35 98 50 105 70 105 C90 105 105 98 105 90 V58" fill="none" stroke="#0d1b2a" stroke-width="6"/>
-              </g>
-            </svg>
-          </div>
-
-          <!-- FOREGROUND LAYOUT CONTAINER -->
-          <div style="position: relative; z-index: 4; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; width: 100%;">
-
-            <!-- TOP LOGO & TITLE SECTION -->
-            <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-              
-              <!-- 1. LOGO & BRANDING -->
-              <div style="display: inline-flex; align-items: center; gap: 10px; margin-top: 2px; margin-bottom: 2px;">
-                <svg width="42" height="42" viewBox="0 0 64 64" fill="none">
-                  <path d="M32 8 L60 22 L32 36 L4 22 Z" fill="#0d1b2a" stroke="url(#masterGoldGrad)" stroke-width="2"/>
-                  <path d="M16 29 V44 C16 48 23 52 32 52 C41 52 48 48 48 44 V29" fill="none" stroke="#0d1b2a" stroke-width="3"/>
-                  <path d="M52 23 V40" stroke="url(#masterGoldGrad)" stroke-width="2.5"/>
-                  <circle cx="52" cy="42" r="3.5" fill="url(#masterGoldGrad)"/>
-                </svg>
-                <div style="text-align: right;">
-                  <div style="font-size: 32px; font-weight: 900; line-height: 1; letter-spacing: -0.5px; font-family: sans-serif;">
-                    <span style="color: #0d1b2a;">Study</span><span style="background: linear-gradient(135deg, #bf953f, #b38728, #aa771c); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Mart</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Subtitle Tagline -->
-              <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
-                <div style="width: 36px; height: 1px; background: linear-gradient(90deg, transparent, #c59b27);"></div>
-                <span style="color: #c59b27; font-size: 9px;">◆</span>
-                <span style="font-size: 10px; font-weight: 800; color: #1e293b; letter-spacing: 2px; text-transform: uppercase; font-family: sans-serif;">PROFESSIONAL LEARNING PLATFORM</span>
-                <span style="color: #c59b27; font-size: 9px;">◆</span>
-                <div style="width: 36px; height: 1px; background: linear-gradient(-90deg, transparent, #c59b27);"></div>
-              </div>
-
-              <!-- 3. ARABIC MAIN TITLE -->
-              <h1 style="font-size: 32px; font-weight: 900; color: #0d1b2a; margin: 0 0 2px; letter-spacing: -0.5px; line-height: 1.15;">
-                شهادة إتمام دورة تدريبية
-              </h1>
-
-              <!-- 4. GOLD ORNATE DIVIDER -->
-              <svg width="240" height="16" viewBox="0 0 260 18" fill="none" style="margin: 0 auto 8px; display: block;">
-                <path d="M0 9 H95 M165 9 H260" stroke="url(#masterGoldGrad)" stroke-width="1.5"/>
-                <path d="M95 9 C105 4, 110 14, 130 9 C150 4, 155 14, 165 9" stroke="url(#masterGoldGrad)" stroke-width="2" fill="none"/>
-                <polygon points="130,3 136,9 130,15 124,9" fill="url(#masterGoldGrad)"/>
-              </svg>
-
-              <!-- RECIPIENT INTRODUCTION -->
-              <p style="font-size: 14px; font-weight: 700; color: #334155; margin: 0 0 2px;">
-                تشهد منصة StudyMart أن
-              </p>
-
-              <!-- UPPER SCROLL FLOURISH -->
-              <svg width="240" height="12" viewBox="0 0 260 14" fill="none" style="margin: 0 auto 2px; display: block;">
-                <path d="M0 7 H95 M165 7 H260" stroke="url(#masterGoldGrad)" stroke-width="1"/>
-                <path d="M95 7 C105 2, 110 12, 130 7 C150 2, 155 12, 165 7" stroke="url(#masterGoldGrad)" stroke-width="1.5" fill="none"/>
-                <circle cx="130" cy="7" r="2.5" fill="url(#masterGoldGrad)"/>
-              </svg>
-
-              <!-- 5. STUDENT NAME -->
-              <h2 style="font-size: 42px; font-weight: 900; color: #0d1b2a; margin: 0 0 2px; letter-spacing: -0.5px; line-height: 1.1;">
-                ${studentName}
-              </h2>
-
-              <!-- LOWER SCROLL FLOURISH -->
-              <svg width="240" height="12" viewBox="0 0 260 14" fill="none" style="margin: 0 auto 6px; display: block;">
-                <path d="M0 7 H95 M165 7 H260" stroke="url(#masterGoldGrad)" stroke-width="1"/>
-                <path d="M95 7 C105 12, 110 2, 130 7 C150 12, 155 2, 165 7" stroke="url(#masterGoldGrad)" stroke-width="1.5" fill="none"/>
-                <circle cx="130" cy="7" r="2.5" fill="url(#masterGoldGrad)"/>
-              </svg>
-
-              <p style="font-size: 14px; font-weight: 700; color: #334155; margin: 0 0 6px;">
-                قد إكمل بنجاح جميع متطلبات دورة
-              </p>
-
-              <!-- 6. GOLD METALLIC COURSE BANNER -->
-              <div style="position: relative; display: inline-flex; align-items: center; justify-content: center; margin: 2px 0 6px;">
-                <svg width="28" height="44" viewBox="0 0 32 50" fill="none" style="margin-left: -2px; filter: drop-shadow(-3px 3px 5px rgba(0,0,0,0.25));">
-                  <path d="M32 0 L0 25 L32 50 Z" fill="url(#masterGoldGrad)"/>
-                  <path d="M30 4 L4 25 L30 46 Z" fill="none" stroke="#634505" stroke-width="1" opacity="0.6"/>
-                </svg>
-                
-                <div style="background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%); padding: 9px 46px; min-width: 380px; border-radius: 2px; box-shadow: 0 8px 20px rgba(176, 131, 35, 0.4); border-top: 1.5px solid #fff5c0; border-bottom: 1.5px solid #634505;">
-                  <h3 style="font-size: 22px; font-weight: 900; color: #0d1b2a; margin: 0; text-shadow: 0 1px 0 rgba(255,255,255,0.6);">
-                    ${course.title}
-                  </h3>
-                </div>
-
-                <svg width="28" height="44" viewBox="0 0 32 50" fill="none" style="margin-right: -2px; filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.25));">
-                  <path d="M0 0 L32 25 L0 50 Z" fill="url(#masterGoldGrad)"/>
-                  <path d="M2 4 L28 25 L2 46 Z" fill="none" stroke="#634505" stroke-width="1" opacity="0.6"/>
+        <div style="position: relative; z-index: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 18px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(30,64,175,0.08); display: flex; align-items: center; justify-content: center;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 3.5 20 8v6c0 4.2-2.9 7.7-8 9.5-5.1-1.8-8-5.3-8-9.5V8l8-4.5Z" stroke="#1d4ed8" stroke-width="1.5"/>
+                  <path d="M8 14.5V9.7c0-1.2 1.8-2.2 4-2.2s4 1 4 2.2v4.8" stroke="#1d4ed8" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M12 9.5v10" stroke="#1d4ed8" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
               </div>
-
-              <!-- 7. DESCRIPTION -->
-              <p style="font-size: 13px; font-weight: 700; color: #475569; margin: 0 0 12px;">
-                وقد أظهر التزاماً واجتهاداً في التعلم وأثبت كفاءته في هذا المجال.
-              </p>
-
-              <!-- 8. INFORMATION ROW (3 COLUMNS) -->
-              <div style="display: flex; align-items: center; justify-content: center; gap: 32px; width: 100%; max-width: 580px; margin: 0 auto 12px;">
-                
-                <!-- Column 1: Level -->
-                <div style="display: flex; align-items: center; gap: 8px; text-align: right;">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0d1b2a" stroke-width="2">
-                    <rect x="3" y="12" width="4" height="8" rx="1"/>
-                    <rect x="10" y="8" width="4" height="12" rx="1"/>
-                    <rect x="17" y="4" width="4" height="16" rx="1"/>
-                  </svg>
-                  <div>
-                    <div style="font-size: 10.5px; color: #64748b; font-weight: 700;">مستوى الدورة</div>
-                    <div style="font-size: 13.5px; font-weight: 900; color: #0d1b2a;">${levelText}</div>
-                  </div>
+              <div>
+                <div style="font-size: 32px; font-weight: 900; letter-spacing: -0.8px; line-height: 1; font-family: Arial, sans-serif;">
+                  <span style="color: #0f172a;">Study</span><span style="color: #1d4ed8;">Mart</span>
                 </div>
-
-                <!-- Divider -->
-                <div style="width: 1px; height: 24px; background: #cbd5e1;"></div>
-
-                <!-- Column 2: Duration -->
-                <div style="display: flex; align-items: center; gap: 8px; text-align: right;">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0d1b2a" stroke-width="2">
-                    <circle cx="12" cy="12" r="9"/>
-                    <polyline points="12 7 12 12 15 15"/>
-                  </svg>
-                  <div>
-                    <div style="font-size: 10.5px; color: #64748b; font-weight: 700;">مدة الدورة</div>
-                    <div style="font-size: 13.5px; font-weight: 900; color: #0d1b2a;">${durationText}</div>
-                  </div>
-                </div>
-
-                <!-- Divider -->
-                <div style="width: 1px; height: 24px; background: #cbd5e1;"></div>
-
-                <!-- Column 3: Completion Date -->
-                <div style="display: flex; align-items: center; gap: 8px; text-align: right;">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0d1b2a" stroke-width="2">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                  <div>
-                    <div style="font-size: 10.5px; color: #64748b; font-weight: 700;">تاريخ الإكمال</div>
-                    <div style="font-size: 13.5px; font-weight: 900; color: #0d1b2a;">${certData.issuedDate}</div>
-                  </div>
-                </div>
-
+                <div style="font-size: 10px; font-weight: 700; color: #64748b; letter-spacing: 1.8px; margin-top: 5px;">Learn · Grow · Achieve</div>
               </div>
-
             </div>
 
-            <!-- LOWER SECTION: SIGNATURES & SEAL ROW -->
-            <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-              
-              <div style="display: grid; grid-template-columns: 1fr 120px 1fr; gap: 16px; width: 100%; max-width: 780px; margin: 0 auto 6px; align-items: flex-end;">
-                
-                <!-- 10. LEFT SIGNATURE (INSTRUCTOR) -->
-                <div style="text-align: center;">
-                  <div style="font-family: 'Dancing Script', 'Brush Script MT', 'Caveat', cursive, sans-serif; font-size: 26px; font-weight: 700; color: #0d1b2a; height: 34px; display: flex; align-items: center; justify-content: center;">
-                    Ahmed Mohamed
-                  </div>
-                  <div style="width: 135px; height: 1.5px; background: #cbd5e1; margin: 3px auto 5px;"></div>
-                  <div style="font-size: 13.5px; font-weight: 900; color: #0d1b2a;">أحمد محمد</div>
-                  <div style="font-size: 11px; font-weight: 700; color: #64748b;">مدرب الدورة</div>
-                </div>
-
-                <!-- 9. SEAL (CENTER OFFICIAL 3D GOLD EMBOSSED SEAL) -->
-                <div style="text-align: center; margin-bottom: -6px;">
-                  <svg width="110" height="110" viewBox="0 0 120 120" fill="none" style="filter: drop-shadow(0 8px 16px rgba(0,0,0,0.35)); display: block; margin: 0 auto;">
-                    <path d="M60 0 L64 6 L71 2 L73 9 L81 7 L81 14 L89 14 L87 21 L94 23 L91 30 L97 34 L92 40 L97 46 L91 50 L94 57 L87 59 L89 66 L81 66 L81 73 L73 71 L71 78 L64 74 L60 80 L56 74 L49 78 L47 71 L39 73 L39 66 L31 66 L33 59 L26 57 L29 50 L23 46 L28 40 L23 34 L29 30 L26 23 L33 21 L31 14 L39 14 L39 7 L47 9 L49 2 L56 6 Z" fill="url(#masterGoldGrad)"/>
-                    <circle cx="60" cy="40" r="38" fill="url(#masterGoldGrad)" stroke="#634505" stroke-width="1"/>
-                    <circle cx="60" cy="40" r="34" fill="#0d1b2a" stroke="url(#masterGoldGrad)" stroke-width="2"/>
-                    <circle cx="60" cy="40" r="31" fill="none" stroke="url(#masterGoldGrad)" stroke-width="1" stroke-dasharray="2 2"/>
-                    <text x="60" y="26" text-anchor="middle" fill="#fef08a" font-size="8" font-weight="bold">★ ★ ★</text>
-                    <text x="60" y="36" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="900" letter-spacing="1">STUDYMART</text>
-                    <text x="60" y="45" text-anchor="middle" fill="#fef08a" font-size="7.5" font-weight="800" letter-spacing="0.5">OFFICIAL</text>
-                    <text x="60" y="53" text-anchor="middle" fill="#fef08a" font-size="7" font-weight="800" letter-spacing="1">SEAL</text>
-                  </svg>
-                </div>
-
-                <!-- 11. RIGHT SIGNATURE (FOUNDER & CEO) -->
-                <div style="text-align: center;">
-                  <div style="font-family: 'Dancing Script', 'Brush Script MT', 'Caveat', cursive, sans-serif; font-size: 26px; font-weight: 700; color: #0d1b2a; height: 34px; display: flex; align-items: center; justify-content: center;">
-                    Omar Alaa
-                  </div>
-                  <div style="width: 135px; height: 1.5px; background: #cbd5e1; margin: 3px auto 5px;"></div>
-                  <div style="font-size: 13.5px; font-weight: 900; color: #0d1b2a;">عمر علاء</div>
-                  <div style="font-size: 11px; font-weight: 700; color: #64748b; line-height: 1.2;">مؤسس منصة StudyMart<br>الرئيس التنفيذي</div>
-                </div>
-
+            <div style="text-align: right; min-width: 220px;">
+              <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-bottom: 6px;">
+                <span style="font-size: 12px; color: #64748b; font-weight: 700; letter-spacing: 0.08em;">Certificate ID:</span>
+                <span style="font-size: 15px; color: #1d4ed8; font-weight: 800;">${certData.certificateId}</span>
               </div>
-
-              <!-- LOWER BAR: CERTIFICATE NO. (13) & QR CODE (12) -->
-              <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 4px 10px 8px; border-top: 1px dashed #cbd5e1; margin-top: 2px;">
-                
-                <!-- 13. CERTIFICATE NO. -->
-                <div style="text-align: right;">
-                  <div style="font-size: 10.5px; color: #64748b; font-weight: 700; font-family: Arial, sans-serif;">Certificate No.</div>
-                  <div style="font-size: 13.5px; font-weight: 900; color: #0d1b2a; font-family: monospace; letter-spacing: 0.5px;">${certData.certificateId}</div>
-                </div>
-
-                <!-- 12. QR VERIFICATION CODE -->
-                <div style="display: flex; align-items: center; gap: 8px; text-align: left;">
-                  <div style="text-align: left;">
-                    <div style="font-size: 11.5px; font-weight: 900; color: #0d1b2a;">تحقق من صحة الشهادة</div>
-                    <div style="font-size: 10px; font-weight: 700; color: #64748b;">امسح رمز QR للتحقق</div>
-                  </div>
-                  <div style="width: 48px; height: 48px; background: #ffffff; border: 1.5px solid #c59b27; border-radius: 6px; padding: 3px; box-sizing: border-box; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
-                    <svg width="100%" height="100%" viewBox="0 0 33 33" fill="#0d1b2a">
-                      <rect x="0" y="0" width="9" height="9" fill="none" stroke="#0d1b2a" stroke-width="2"/>
-                      <rect x="2" y="2" width="5" height="5" fill="#0d1b2a"/>
-                      <rect x="24" y="0" width="9" height="9" fill="none" stroke="#0d1b2a" stroke-width="2"/>
-                      <rect x="26" y="2" width="5" height="5" fill="#0d1b2a"/>
-                      <rect x="0" y="24" width="9" height="9" fill="none" stroke="#0d1b2a" stroke-width="2"/>
-                      <rect x="2" y="26" width="5" height="5" fill="#0d1b2a"/>
-                      <rect x="12" y="2" width="3" height="3"/>
-                      <rect x="18" y="2" width="3" height="3"/>
-                      <rect x="12" y="12" width="9" height="9"/>
-                      <rect x="2" y="12" width="3" height="3"/>
-                      <rect x="6" y="15" width="3" height="3"/>
-                      <rect x="15" y="24" width="3" height="6"/>
-                      <rect x="24" y="12" width="6" height="3"/>
-                      <rect x="27" y="18" width="3" height="6"/>
-                      <rect x="21" y="27" width="6" height="3"/>
-                    </svg>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- 14. BOTTOM NAVY FOOTER BAR -->
-          <div style="margin: 0 -36px; background: #0d1b2a; padding: 8px 24px; display: flex; justify-content: center; align-items: center; gap: 24px; border-top: 2px solid #b38728;">
-            <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; color: #fef08a; font-family: sans-serif;">
-              <span>🔒</span> <span>Digitally Signed</span>
-            </div>
-            <div style="width: 1px; height: 12px; background: #334155;"></div>
-            <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; color: #fef08a; font-family: sans-serif;">
-              <span>✔</span> <span>Verified Certificate</span>
-            </div>
-            <div style="width: 1px; height: 12px; background: #334155;"></div>
-            <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; color: #fef08a; font-family: sans-serif;">
-              <span>🛡</span> <span>Encrypted</span>
+              <div style="height: 1px; width: 100%; background: linear-gradient(90deg, rgba(148,163,184,0.2), rgba(59,130,246,0.6), rgba(148,163,184,0.2));"></div>
             </div>
           </div>
 
+          <div style="text-align: center; margin-top: 52px;">
+            <div style="font-size: 32px; font-weight: 800; letter-spacing: 0.18em; color: #0f172a; text-transform: uppercase;">Certificate</div>
+            <div style="margin-top: 14px; font-size: 12px; font-weight: 700; letter-spacing: 0.8em; color: #1d4ed8; text-transform: uppercase;">O F &nbsp;&nbsp; C O M P L E T I O N</div>
+            <div style="width: 150px; height: 2px; background: #93c5fd; margin: 18px auto 0; position: relative;">
+              <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 9px; height: 9px; border-radius: 50%; background: #1d4ed8; display: block;"></span>
+            </div>
+          </div>
+
+          <div style="margin-top: 34px; text-align: center;">
+            <div style="font-size: 17px; color: #334155; font-weight: 500; margin-bottom: 8px;">This is to certify that</div>
+            <div style="font-size: 40px; font-weight: 800; color: #0f172a; letter-spacing: -0.04em; margin: 0 auto 10px; max-width: 700px; word-break: break-word; line-height: 1.1;">${studentName}</div>
+            <div style="font-size: 17px; color: #334155; font-weight: 500; margin-bottom: 10px;">has successfully completed the course</div>
+            <div style="font-size: 27px; font-weight: 700; color: #1d4ed8; margin: 0 auto; max-width: 800px; word-break: break-word; line-height: 1.2;">${course.title}</div>
+          </div>
+
+          <div style="margin-top: 32px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid rgba(148,163,184,0.5); border-bottom: 1px solid rgba(148,163,184,0.5); background: rgba(219,234,254,0.18);">
+            ${[
+              ["Completion Date", certData.issuedDate || "—", "calendar"],
+              ["Duration", durationText, "clock"],
+              ["Level", levelText, "bar-chart"],
+              ["Instructor", course.instructor || "Instructor", "user"],
+            ]
+              .map(
+                ([label, value, icon]) => `
+              <div style="position: relative; display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 78px; padding: 14px 10px; text-align: left;">
+                <div style="width: 32px; height: 32px; border-radius: 10px; background: rgba(96,165,250,0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  ${icon === "calendar" ? '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" stroke="#1d4ed8" stroke-width="1.8"/><path d="M8 3v4M16 3v4M3 10h18" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round"/></svg>' : icon === "clock" ? '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="#1d4ed8" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' : icon === "bar-chart" ? '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 18V9M10 18V5M16 18v-8M22 18v-12" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round"/></svg>' : '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="#1d4ed8" stroke-width="1.8"/><path d="M5 20c1.5-3 4-4.5 7-4.5s5.5 1.5 7 4.5" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round"/></svg>'}
+                </div>
+
+                <div style="min-width: 0;">
+                  <div style="font-size: 10px; color: #64748b; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">${label}</div>
+                  <div style="font-size: 15px; color: #0f172a; font-weight: 700; line-height: 1.35; word-break: break-word;">${value}</div>
+                </div>
+                ${label !== "Instructor" ? '<div style="position: absolute; right: 0; top: 16%; width: 1px; height: 68%; background: rgba(148,163,184,0.55);"></div>' : ""}
+              </div>
+            `,
+              )
+              .join("")}
+          </div>
+
+          <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 170px 1fr; gap: 14px; align-items: end;">
+            <div style="text-align: center; padding-bottom: 10px;">
+              <div style="font-size: 18px; color: #0f172a; font-weight: 800; margin-bottom: 2px;">${course.instructor || "Instructor"}</div>
+              <div style="height: 1.5px; background: rgba(148,163,184,0.8); width: 140px; margin: 6px auto 8px;"></div>
+              <div style="font-size: 12px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">Course Instructor</div>
+              <div style="font-size: 11px; color: #64748b; margin-top: 3px;">StudyMart</div>
+            </div>
+
+            <div style="display: flex; justify-content: center;">
+              <div style="width: 118px; height: 118px; border-radius: 50%; border: 2px solid rgba(29,78,216,0.22); background: rgba(219,234,254,0.45); position: relative; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 6px rgba(255,255,255,0.75);">
+                <svg width="72" height="72" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+                  <circle cx="40" cy="40" r="31" fill="rgba(29,78,216,0.12)" stroke="#1d4ed8" stroke-width="1.5"/>
+                  <path d="M40 15 57 24v12c0 10.7-7.7 18.3-17 21.5C27.7 54.3 20 46.7 20 36V24l17-9Z" fill="rgba(29,78,216,0.1)" stroke="#0f172a" stroke-width="1.5"/>
+                  <path d="M28 36.5v-8.6c0-4.6 5.5-7.9 12-7.9s12 3.3 12 7.9v8.6" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M40 28v17" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M27 49.8c2.5-4.8 7-6.5 13-6.5 6 0 10.5 1.7 13 6.5" stroke="#0f172a" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+
+            <div style="text-align: center; padding-bottom: 10px;">
+              <div style="font-size: 18px; color: #0f172a; font-weight: 800; margin-bottom: 2px;">${STUDYMART_PLATFORM_OWNER}</div>
+              <div style="height: 1.5px; background: rgba(148,163,184,0.8); width: 140px; margin: 6px auto 8px;"></div>
+              <div style="font-size: 12px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">Founder</div>
+              <div style="font-size: 11px; color: #64748b; margin-top: 3px;">StudyMart</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px; text-align: center; font-size: 12px; color: #0f172a; font-weight: 700; letter-spacing: 0.05em;">
+            Platform Owner: ${STUDYMART_PLATFORM_OWNER}
+          </div>
         </div>
       </div>
-    </div>
-            <div style="width: 1px; height: 14px; background: #334155;"></div>
-            <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 800; color: #fef08a; font-family: sans-serif;">
-              <span>✔</span> <span>Verified Certificate</span>
-            </div>
-            <div style="width: 1px; height: 14px; background: #334155;"></div>
-            <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 800; color: #fef08a; font-family: sans-serif;">
-              <span>🛡</span> <span>Encrypted</span>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
     </div>
   `;
 
