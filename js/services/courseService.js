@@ -2099,13 +2099,21 @@ export function openCourseCertificateModal(courseId) {
         <div style="position: relative; z-index: 1;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 18px;">
             <div style="display: flex; align-items: center; gap: 12px;">
-              <div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(30,64,175,0.08); display: flex; align-items: center; justify-content: center;">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M12 3.5 20 8v6c0 4.2-2.9 7.7-8 9.5-5.1-1.8-8-5.3-8-9.5V8l8-4.5Z" stroke="#1d4ed8" stroke-width="1.5"/>
-                  <path d="M8 14.5V9.7c0-1.2 1.8-2.2 4-2.2s4 1 4 2.2v4.8" stroke="#1d4ed8" stroke-width="1.5" stroke-linecap="round"/>
-                  <path d="M12 9.5v10" stroke="#1d4ed8" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-              </div>
+              <svg width="52" height="52" viewBox="0 0 64 64" fill="none" aria-hidden="true" style="flex-shrink: 0; display: block; filter: drop-shadow(0 3px 6px rgba(29,78,216,0.18));">
+                <defs>
+                  <linearGradient id="studyMartCapGradient" x1="10" y1="10" x2="52" y2="56" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stop-color="#3b82f6"/>
+                    <stop offset="0.45" stop-color="#2563eb"/>
+                    <stop offset="1" stop-color="#1e40af"/>
+                  </linearGradient>
+                </defs>
+                <path d="M8 25.5 32 14l24 11.5L32 37 8 25.5Z" fill="url(#studyMartCapGradient)"/>
+                <path d="M15 28.1 32 36.5l17-8.4v14.1c0 6.2-7.1 11.4-17 11.4s-17-5.2-17-11.4V28.1Z" fill="url(#studyMartCapGradient)"/>
+                <path d="M15 28.1 32 36.5l17-8.4" stroke="#dbeafe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M32 36.5v14.1" stroke="#dbeafe" stroke-width="2" stroke-linecap="round"/>
+                <path d="M47.5 39.7v10.4" stroke="#dbeafe" stroke-width="2" stroke-linecap="round"/>
+                <path d="M47.5 39.7c4.5 0 7.8 2.8 7.8 6.2 0 3.4-3.3 6.2-7.8 6.2-4.4 0-7.8-2.8-7.8-6.2 0-3.4 3.4-6.2 7.8-6.2Z" fill="#dbeafe" opacity="0.95"/>
+              </svg>
               <div>
                 <div style="font-size: 32px; font-weight: 900; letter-spacing: -0.8px; line-height: 1; font-family: Arial, sans-serif;">
                   <span style="color: #0f172a;">Study</span><span style="color: #1d4ed8;">Mart</span>
@@ -2165,7 +2173,9 @@ export function openCourseCertificateModal(courseId) {
 
           <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 170px 1fr; gap: 14px; align-items: end;">
             <div style="text-align: center; padding-bottom: 10px;">
-              <div style="font-size: 18px; color: #0f172a; font-weight: 800; margin-bottom: 2px;">${course.instructor || "Instructor"}</div>
+              <div style="min-height: 54px; display: flex; align-items: end; justify-content: center; margin-bottom: 8px;">
+                <div style="font-family: 'Alex Brush', 'Segoe Script', 'Lucida Handwriting', cursive; font-size: 30px; line-height: 1; color: #102a43; font-weight: 400; letter-spacing: 1px; text-shadow: 0 0 0 rgba(16, 42, 67, 0.05);">${course.instructor || "Instructor"}</div>
+              </div>
               <div style="height: 1.5px; background: rgba(148,163,184,0.8); width: 140px; margin: 6px auto 8px;"></div>
               <div style="font-size: 12px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">Course Instructor</div>
               <div style="font-size: 11px; color: #64748b; margin-top: 3px;">StudyMart</div>
@@ -2184,7 +2194,9 @@ export function openCourseCertificateModal(courseId) {
             </div>
 
             <div style="text-align: center; padding-bottom: 10px;">
-              <div style="font-size: 18px; color: #0f172a; font-weight: 800; margin-bottom: 2px;">${STUDYMART_PLATFORM_OWNER}</div>
+              <div style="min-height: 54px; display: flex; align-items: end; justify-content: center; margin-bottom: 8px;">
+                <div style="font-family: 'Alex Brush', 'Segoe Script', 'Lucida Handwriting', cursive; font-size: 30px; line-height: 1; color: #102a43; font-weight: 400; letter-spacing: 1px; text-shadow: 0 0 0 rgba(16, 42, 67, 0.05);">${STUDYMART_PLATFORM_OWNER}</div>
+              </div>
               <div style="height: 1.5px; background: rgba(148,163,184,0.8); width: 140px; margin: 6px auto 8px;"></div>
               <div style="font-size: 12px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">Founder</div>
               <div style="font-size: 11px; color: #64748b; margin-top: 3px;">StudyMart</div>
