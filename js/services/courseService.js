@@ -2092,9 +2092,7 @@ export function openCourseCertificateModal(courseId) {
       </div>
 
       <div class="certificate-printable-area certificate-print-area" dir="ltr" style="position: relative; width: min(1100px, 100%); min-height: 720px; background: #ffffff; border: 1px solid #dbeafe; box-shadow: 0 26px 56px rgba(37,99,235,0.08); border-radius: 22px; overflow: hidden; padding: 42px 48px 18px; box-sizing: border-box; z-index: 1;">
-        <div style="position: absolute; top: -110px; right: -40px; width: 300px; height: 300px; background: rgba(147,197,253,0.18); border-radius: 40% 45% 50% 55%; transform: rotate(18deg);"></div>
-        <div style="position: absolute; right: -30px; top: 180px; width: 260px; height: 420px; background: rgba(147,197,253,0.12); border-radius: 32px; transform: rotate(8deg);"></div>
-        <div style="position: absolute; left: -90px; bottom: -70px; width: 330px; height: 240px; background: rgba(191,219,254,0.22); border-radius: 48% 52% 64% 36% / 58% 38% 62% 42%; transform: rotate(-12deg);"></div>
+        <div aria-hidden="true" style="position: absolute; inset: 12px; border: 1.5px solid rgba(143, 179, 232, 0.9); border-radius: 18px; pointer-events: none; z-index: 0;"></div>
 
         <div style="position: relative; z-index: 1;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 18px;">
