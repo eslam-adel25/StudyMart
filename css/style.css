@@ -70,6 +70,14 @@
   .teacher-dashboard-sidebar .sidebar-inner,
   .profile-sidebar .sidebar-inner {
     padding: 16px 14px !important;
+    box-sizing: border-box !important;
+  }
+
+  .teacher-dashboard-sidebar .sidebar-inner::after,
+  .profile-sidebar .sidebar-inner::after {
+    content: "";
+    display: block;
+    flex: 0 0 calc(48px + env(safe-area-inset-bottom));
   }
 
   .teacher-dashboard-sidebar .sidebar-close-btn,
@@ -89,6 +97,7 @@
   .teacher-dashboard-sidebar .sidebar-inner,
   .profile-sidebar .sidebar-inner {
     padding: 14px 10px !important;
+    box-sizing: border-box !important;
   }
 }
 
