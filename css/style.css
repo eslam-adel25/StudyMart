@@ -69,7 +69,9 @@
 
   .teacher-dashboard-sidebar .sidebar-inner,
   .profile-sidebar .sidebar-inner {
-    padding: 16px 14px !important;
+    padding: 16px 14px calc(16px + env(safe-area-inset-bottom)) !important;
+    box-sizing: border-box+ env(safe-area-inset-bottom) !important;
+    box-sizing: border-box;
   }
 
   .teacher-dashboard-sidebar .sidebar-close-btn,
