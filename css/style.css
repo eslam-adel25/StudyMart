@@ -5489,16 +5489,126 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 }
 
-@media (max-width: 640px) {
-  .my-courses-stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 767px) {
+  .my-courses-page-section {
+    width: min(100%, 100%);
+    padding: 20px 12px 44px;
   }
-  .all-courses-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-  .continue-learning-card {
+
+  .my-courses-top-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+  }
+
+  .header-icon-title {
+    width: 100%;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .my-courses-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .my-courses-controls-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .filter-pills-group {
+    flex-wrap: wrap;
+  }
+
+  .search-input-wrapper {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .continue-learning-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .react-thumbnail {
+    width: 100%;
+    height: 150px;
+  }
+
+  .card-details-middle {
+    width: 100%;
+  }
+
+  .card-actions-side {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .card-actions-side .btn-primary-purple,
+  .card-actions-side .btn-secondary-outline,
+  .card-button-group .btn-primary-purple,
+  .card-button-group .btn-secondary-outline {
+    width: 100%;
+  }
+
+  .all-courses-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .my-course-card {
+    border-radius: 16px;
+  }
+
+  .course-card-thumb {
+    height: 150px;
+  }
+
+  .course-card-body {
+    padding: 14px;
+  }
+
+  .card-title {
+    font-size: 15px;
+  }
+
+  .progress-bar-container {
+    gap: 8px;
+  }
+
+  .progress-percentage {
+    min-width: 42px;
+  }
+}
+
+@media (max-width: 420px) {
+  .my-courses-title {
+    font-size: 22px;
+  }
+
+  .my-courses-subtitle {
+    font-size: 12px;
+  }
+
+  .filter-pill {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .my-courses-stat-card {
+    padding: 10px;
+  }
+
+  .stat-number {
+    font-size: 18px;
+  }
+
+  .stat-label {
+    font-size: 11px;
   }
 }
 

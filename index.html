@@ -605,6 +605,10 @@
                 id="searchInput"
                 class="hero-search-input"
                 placeholder="ماذا تريد أن تتعلم اليوم؟"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
                 oninput="handleHeroSearch()"
                 onkeydown="if (event.key === 'Enter') handleHeroSearchSubmit();"
               />

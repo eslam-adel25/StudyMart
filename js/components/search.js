@@ -21,39 +21,39 @@ function getInstructorArabic(name) {
   if (!name) return "";
   const map = {
     "dr.": "د. دكتور",
-    "dr": "د. دكتور",
+    dr: "د. دكتور",
     "eng.": "م. مهندس",
-    "eng": "م. مهندس",
-    "fatima": "فاطمة فاطمه",
-    "ali": "علي",
-    "sarah": "سارة ساره",
-    "sara": "سارة ساره",
-    "khaled": "خالد",
-    "mahmoud": "محمود",
+    eng: "م. مهندس",
+    fatima: "فاطمة فاطمه",
+    ali: "علي",
+    sarah: "سارة ساره",
+    sara: "سارة ساره",
+    khaled: "خالد",
+    mahmoud: "محمود",
     "al-da'ayee": "الداعي الداعيه",
-    "layla": "ليلى ليلي",
-    "hassan": "حسن",
-    "mohammed": "محمد",
-    "mohamad": "محمد",
-    "muhammad": "محمد",
-    "mohamed": "محمد",
-    "salem": "سالم",
-    "noor": "نور",
-    "ahmed": "أحمد احمد",
-    "amira": "أميرة اميره",
-    "hind": "هند",
-    "abdullah": "عبد الله عبدالله",
-    "omar": "عمر",
-    "asmaa": "أسماء اسماء",
-    "ibrahim": "إبراهيم ابراهيم",
-    "yasmin": "ياسمين",
-    "sherif": "الشريف",
-    "abdelrahman": "عبد الرحمن عبدالرحمن",
-    "majed": "الماجد",
-    "tareq": "طارق",
-    "mona": "منى مني",
+    layla: "ليلى ليلي",
+    hassan: "حسن",
+    mohammed: "محمد",
+    mohamad: "محمد",
+    muhammad: "محمد",
+    mohamed: "محمد",
+    salem: "سالم",
+    noor: "نور",
+    ahmed: "أحمد احمد",
+    amira: "أميرة اميره",
+    hind: "هند",
+    abdullah: "عبد الله عبدالله",
+    omar: "عمر",
+    asmaa: "أسماء اسماء",
+    ibrahim: "إبراهيم ابراهيم",
+    yasmin: "ياسمين",
+    sherif: "الشريف",
+    abdelrahman: "عبد الرحمن عبدالرحمن",
+    majed: "الماجد",
+    tareq: "طارق",
+    mona: "منى مني",
     "al-morsi": "المرسي",
-    "youssef": "يوسف"
+    youssef: "يوسف",
   };
   const words = String(name).toLowerCase().split(/\s+/);
   const arabicWords = words.map((w) => map[w] || w);
@@ -64,7 +64,9 @@ export function matchCourse(course, query) {
   const normQuery = normalizeSearchString(query);
   if (!normQuery) return true;
 
-  const tagsStr = Array.isArray(course.tags) ? course.tags.join(" ") : (course.tags || "");
+  const tagsStr = Array.isArray(course.tags)
+    ? course.tags.join(" ")
+    : course.tags || "";
   const catArabic = formatCourseCategory(course.category);
   const lvlArabic = formatCourseLevel(course.level);
   const instArabic = getInstructorArabic(course.instructor);
@@ -84,8 +86,10 @@ export function matchCourse(course, query) {
       course.level,
       lvlArabic,
       course.language,
-      course.price
-    ].filter(Boolean).join(" ")
+      course.price,
+    ]
+      .filter(Boolean)
+      .join(" "),
   );
 
   const tokens = normQuery.split(" ").filter(Boolean);
@@ -96,7 +100,9 @@ export function matchBook(book, query) {
   const normQuery = normalizeSearchString(query);
   if (!normQuery) return true;
 
-  const tagsStr = Array.isArray(book.tags) ? book.tags.join(" ") : (book.tags || "");
+  const tagsStr = Array.isArray(book.tags)
+    ? book.tags.join(" ")
+    : book.tags || "";
   const authorArabic = getInstructorArabic(book.author);
 
   const searchableText = normalizeSearchString(
@@ -114,8 +120,10 @@ export function matchBook(book, query) {
       book.fullDescription,
       tagsStr,
       book.language,
-      book.price
-    ].filter(Boolean).join(" ")
+      book.price,
+    ]
+      .filter(Boolean)
+      .join(" "),
   );
 
   const tokens = normQuery.split(" ").filter(Boolean);
@@ -131,6 +139,16 @@ export function performGlobalSearch(rawQuery) {
   const heroInput = document.getElementById("searchInput");
   const courseInput = document.getElementById("standaloneCourseSearch");
   const bookInput = document.getElementById("standaloneBookSearch");
+
+  if (heroInput) {
+    const userEmail = String(window.appState?.userData?.email || "")
+      .trim()
+      .toLowerCase();
+    const currentValue = String(heroInput.value || "").trim();
+    if (userEmail && currentValue && currentValue.toLowerCase() === userEmail) {
+      heroInput.value = "";
+    }
+  }
 
   const query = rawQuery !== undefined ? rawQuery : getSearchQuery();
   const normQuery = normalizeSearchString(query);
@@ -152,8 +170,10 @@ export function performGlobalSearch(rawQuery) {
 
     if (typeof window.filterCourses === "function") window.filterCourses();
     if (typeof window.renderBooks === "function") window.renderBooks();
-    if (typeof window.filterStandaloneCourses === "function") window.filterStandaloneCourses();
-    if (typeof window.filterStandaloneBooks === "function") window.filterStandaloneBooks();
+    if (typeof window.filterStandaloneCourses === "function")
+      window.filterStandaloneCourses();
+    if (typeof window.filterStandaloneBooks === "function")
+      window.filterStandaloneBooks();
     return;
   }
 
@@ -214,13 +234,21 @@ export function performGlobalSearch(rawQuery) {
       </div>
     `;
 
-    const standaloneCoursesPage = document.getElementById("standaloneCoursesPage");
+    const standaloneCoursesPage = document.getElementById(
+      "standaloneCoursesPage",
+    );
     const standaloneBooksPage = document.getElementById("standaloneBooksPage");
 
-    if (standaloneCoursesPage && !standaloneCoursesPage.classList.contains("hidden")) {
+    if (
+      standaloneCoursesPage &&
+      !standaloneCoursesPage.classList.contains("hidden")
+    ) {
       const listContainer = document.getElementById("standaloneCoursesList");
       if (listContainer) listContainer.innerHTML = emptyMsg;
-    } else if (standaloneBooksPage && !standaloneBooksPage.classList.contains("hidden")) {
+    } else if (
+      standaloneBooksPage &&
+      !standaloneBooksPage.classList.contains("hidden")
+    ) {
       const gridContainer = document.getElementById("standaloneBooksGrid");
       if (gridContainer) gridContainer.innerHTML = emptyMsg;
     } else {
@@ -236,6 +264,21 @@ export function performGlobalSearch(rawQuery) {
 export function setupSearch() {
   const searchInput = document.getElementById("searchInput");
   const searchBtn = document.querySelector(".hero-search-btn");
+
+  if (searchInput) {
+    searchInput.autocomplete = "off";
+    searchInput.autocorrect = "off";
+    searchInput.autocapitalize = "off";
+    searchInput.spellcheck = false;
+
+    const userEmail = String(window.appState?.userData?.email || "")
+      .trim()
+      .toLowerCase();
+    const currentValue = String(searchInput.value || "").trim();
+    if (userEmail && currentValue && currentValue.toLowerCase() === userEmail) {
+      searchInput.value = "";
+    }
+  }
 
   if (searchInput && !searchInput.dataset.globalSearchBound) {
     searchInput.dataset.globalSearchBound = "true";
@@ -266,4 +309,3 @@ if (typeof window !== "undefined") {
   window.matchCourse = matchCourse;
   window.matchBook = matchBook;
 }
-

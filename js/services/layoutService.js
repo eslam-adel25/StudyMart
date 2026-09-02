@@ -6,11 +6,18 @@ export function updateNavbarPadding() {
   if (navbar) {
     const height = navbar.offsetHeight;
     if (height > 0) {
-      document.documentElement.style.setProperty("--navbar-height", `${height}px`);
+      document.documentElement.style.setProperty(
+        "--navbar-height",
+        `${height}px`,
+      );
       document.body.style.paddingTop = `${height}px`;
     }
 
-    if (typeof window !== "undefined" && window.ResizeObserver && !navbar.dataset.resizeObserved) {
+    if (
+      typeof window !== "undefined" &&
+      window.ResizeObserver &&
+      !navbar.dataset.resizeObserved
+    ) {
       navbar.dataset.resizeObserved = "true";
       const ro = new ResizeObserver(() => {
         updateNavbarPadding();
@@ -56,12 +63,15 @@ export function setupLayout() {
 }
 
 export function hideAllMainSections() {
-  document.querySelectorAll(".home-section").forEach((sec) => sec.classList.add("hidden"));
+  document
+    .querySelectorAll(".home-section")
+    .forEach((sec) => sec.classList.add("hidden"));
 
   const sectionsToHide = [
     document.querySelector(".hero"),
     document.querySelector(".features"),
-    document.getElementById("coursesSection") || document.querySelector(".courses"),
+    document.getElementById("coursesSection") ||
+      document.querySelector(".courses"),
     document.getElementById("books"),
     document.getElementById("standaloneCoursesPage"),
     document.getElementById("standaloneBooksPage"),
@@ -112,7 +122,7 @@ export function hideAllMainSections() {
     document.getElementById("ownerTeachersPage"),
     document.getElementById("ownerStudentDetailsPage"),
     document.getElementById("ownerTeacherDetailsPage"),
-    document.getElementById("ownerFreeAccessPage")
+    document.getElementById("ownerFreeAccessPage"),
   ];
 
   sectionsToHide.forEach((sec) => {
@@ -126,10 +136,20 @@ export function updateActiveNavLink(activePage) {
     const href = link.getAttribute("href") || "";
     const onclickAttr = link.getAttribute("onclick") || "";
     if (
-      (activePage === "home" && (href === "#home" || href === "#/home" || onclickAttr.includes("showHomePage"))) ||
-      (activePage === "courses" && (href === "#courses" || href === "#/courses" || onclickAttr.includes("showCoursesPage"))) ||
-      (activePage === "books" && (href === "#books" || href === "#/books" || onclickAttr.includes("showBooksPage"))) ||
-      (activePage === "contact" && (href.includes("contact") || onclickAttr.includes("contact")))
+      (activePage === "home" &&
+        (href === "#home" ||
+          href === "#/home" ||
+          onclickAttr.includes("showHomePage"))) ||
+      (activePage === "courses" &&
+        (href === "#courses" ||
+          href === "#/courses" ||
+          onclickAttr.includes("showCoursesPage"))) ||
+      (activePage === "books" &&
+        (href === "#books" ||
+          href === "#/books" ||
+          onclickAttr.includes("showBooksPage"))) ||
+      (activePage === "contact" &&
+        (href.includes("contact") || onclickAttr.includes("contact")))
     ) {
       link.classList.add("active");
     } else {
@@ -150,6 +170,20 @@ export function showHomePage() {
   if (footer) footer.classList.remove("hidden");
 
   const searchInput = document.getElementById("searchInput");
+  if (searchInput) {
+    const userEmail = String(window.appState?.userData?.email || "")
+      .trim()
+      .toLowerCase();
+    const currentValue = String(searchInput.value || "").trim();
+    if (userEmail && currentValue && currentValue.toLowerCase() === userEmail) {
+      searchInput.value = "";
+    }
+    searchInput.autocomplete = "off";
+    searchInput.autocorrect = "off";
+    searchInput.autocapitalize = "off";
+    searchInput.spellcheck = false;
+  }
+
   const query = searchInput ? searchInput.value.trim() : "";
 
   if (!query) {
@@ -168,7 +202,9 @@ export function showHomePage() {
 export function showCoursesPage() {
   hideAllMainSections();
 
-  const standaloneCoursesPage = document.getElementById("standaloneCoursesPage");
+  const standaloneCoursesPage = document.getElementById(
+    "standaloneCoursesPage",
+  );
   if (standaloneCoursesPage) {
     standaloneCoursesPage.classList.remove("hidden");
     standaloneCoursesPage.classList.remove("section-hidden");
@@ -302,7 +338,11 @@ export function scrollToSection(sectionId) {
     return;
   }
 
-  if (sectionId === "courses" || sectionId === "coursesList" || sectionId === "coursesSection") {
+  if (
+    sectionId === "courses" ||
+    sectionId === "coursesList" ||
+    sectionId === "coursesSection"
+  ) {
     window.location.hash = "#courses";
     showCoursesPage();
     return;
