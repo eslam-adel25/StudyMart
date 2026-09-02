@@ -65,14 +65,11 @@
   .teacher-dashboard-sidebar {
     width: 80vw !important;
     max-width: 320px !important;
-    padding-bottom: calc(72px + env(safe-area-inset-bottom)) !important;
-    box-sizing: border-box !important;
   }
 
   .teacher-dashboard-sidebar .sidebar-inner,
   .profile-sidebar .sidebar-inner {
-    padding: 20px 14px !important;
-    box-sizing: border-box !important;
+    padding: 16px 14px !important;
   }
 
   .teacher-dashboard-sidebar .sidebar-close-btn,
@@ -87,14 +84,11 @@
   .teacher-dashboard-sidebar {
     width: 82vw !important;
     max-width: 285px !important;
-    padding-bottom: calc(72px + env(safe-area-inset-bottom)) !important;
-    box-sizing: border-box !important;
   }
 
   .teacher-dashboard-sidebar .sidebar-inner,
   .profile-sidebar .sidebar-inner {
     padding: 14px 10px !important;
-    box-sizing: border-box !important;
   }
 }
 
@@ -333,8 +327,9 @@
 
 .teacher-dashboard-sidebar .sidebar-inner {
   position: relative;
-    padding: 20px 14px calc(72px + env(safe-area-inset-bottom)) !important;
-    box-sizing: border-box !important;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
   min-height: 100%;
   background: #0b1329;
@@ -5491,8 +5486,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
   .course-player-3col-layout {
     grid-template-columns: 1fr;
-    padding: 20px 14px !important;
-    box-sizing: border-box !important;
   }
 }
 
